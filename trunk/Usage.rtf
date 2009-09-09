@@ -1,0 +1,341 @@
+{\rtf1\ansi\ansicpg1252\cocoartf949\cocoasubrtf460
+{\fonttbl\f0\fnil\fcharset0 Verdana;}
+{\colortbl;\red255\green255\blue255;\red242\green0\blue43;\red176\green45\blue127;\red43\green96\blue67;
+}
+\deftab360
+\pard\pardeftab360\ql\qnatural\pardirnatural
+
+\f0\b\fs36 \cf0 Operation\
+\pard\pardeftab360\ql\qnatural\pardirnatural
+
+\b0\fs28 \cf0 \
+Typical usage looks like this: 
+\i peg-sharp --out=FooParser.cs Foo.peg
+\i0 . Foo.peg is a Parsing Expression Grammer which defines the grammar of the language using a syntax which resembles Extended Backus\'96Naur Form (EBNF) augmented with custom code to execute when non-terminals are parsed.\
+\
+FooParser.cs will be created (or over-written) with a back-tracking recursive descent parser using memoization to store intermediate results. The memoization allows the parser to operate in linear time. The parser is thread safe as long as each parser instance is used by a single thread (and assuming that the semantic actions are thread safe as well).\
+\
+\pard\pardeftab360\ql\qnatural\pardirnatural
+
+\b\fs36 \cf0 Peg Files\
+\pard\pardeftab360\ql\qnatural\pardirnatural
+
+\b0\fs28 \cf0 \
+Here's an example of a peg file:\
+\
+\pard\pardeftab360\ql\qnatural\pardirnatural
+
+\i \cf2 # 
+\i0 Simple grammer used to evaluate arithmetic expressions such as `3 + 4*5`.
+\i \
+# 
+\i0 EvaluateBinary is a custom method defined using a partial Parser class
+\i .
+\i0 \cf0 \
+start = Expr\
+value = double\
+\
+Expr := S Sum;\
+Sum := Product ((\cf3 '+'\cf0  / \cf3 '-'\cf0 ) S Product)*  
+\b \cf4 `if (results.Count > 0) value = EvaluateBinary(results)`
+\b0 \cf0 \
+Product := Value ((\cf3 '*'\cf0  / \cf3 '/'\cf0 ) S Value)*  
+\b \cf4 `if (results.Count > 0) value = EvaluateBinary(results)`
+\b0 \cf0 \
+Value := \cf3 [0-9]\cf0 + S 
+\b \cf4 `value = Double.Parse(text.Trim())`
+\b0 \cf0  
+\b \cf4 `expected = "number"`
+\b0 \cf0 \
+Value := \cf3 '('\cf0  Expr \cf3 ')'\cf0  S 
+\b \cf4 `value = results[1].Value`
+\b0 \cf0  
+\b \cf4 `expected = "parenthesized expression"`
+\b0 \cf0 \
+S := Space* 
+\b \cf4 `text = null` 
+\i\b0 \cf2  
+\i0 # We use a separate space rule because x* always succeeds.\cf0 \
+Space := \cf3 [ \\t\\r\\n]\cf0  
+\b \cf4 `;`
+\b0 \cf0  
+\b \cf4 `expected = "whitespace"`
+\b0 \cf0 \
+\
+Peg files consist of two or more settings and one or more non-terminal definitions. Comments may appear at the start or end of lines, start with a '#', and extend to the end of the line.\
+\
+\pard\pardeftab360\ql\qnatural\pardirnatural
+
+\b \cf0 Settings
+\b0  must appear before the non-terminal definitions. The syntax is 
+\i name = value
+\i0 . These are used to configure the generation of the parser. The supported settings are:\
+\'95\'a0
+\b comment
+\b0  - Custom class comment. This may appear multiple times for multiple line comments and '// ' will be added to the start if it does not begin with '//'.\
+\'95\'a0
+\b debug
+\b0  - If value is 
+\i true
+\i0  then the parser will write progress information to stdout.\
+\'95\'a0
+\b exclude-exception
+\b0  - If 
+\i true 
+\i0 then the exception class will not be generated. Defaults to false.\
+\'95\'a0
+\b exclude-methods
+\b0  - Space separated list of parser method names to not generate. Note that these must still be defined (in a partial class).\
+\'95\'a0
+\b ignore-case
+\b0  - If true terminals are lower cased before they are compared. Defaults to false.\
+\'95\'a0
+\b namespace
+\b0  - Name of the namespace to put the parser within. Defaults to the global namespace.\
+\'95\'a0
+\b start
+\b0  - The name of the non-terminal with which parsing starts. If 
+\i void
+\i0  then semantic actions have no values and the Parse method returns a count of characters consumed instead of a value.\
+\'95\'a0
+\b unconsumed
+\b0  - If this is 
+\i error
+\i0  (the default if value is not 
+\i void
+\i0 ) then any input which is not consumed triggers an exception, if it is 
+\i expose
+\i0  (the default if value is 
+\i void
+\i0 ) then Parse will not throw and an Unconsumed property is added, and if it is 
+\i ignore
+\i0  then unconsumed input is completely ignored.\
+\'95\'a0
+\b using
+\b0  - Space separated list of custom namespace names to include.\
+\'95\'a0
+\b value
+\b0  - The name of the type used for the result value of semantic actions.\
+\'95\'a0
+\b visibility
+\b0  - The visibility of the parser and exception classes. Defaults to "internal".\
+\
+Start and value are required settings.\
+\
+
+\b Non-terminals
+\b0  are used to define the grammar of the language the parser will parse. They consist of a name, a ':=' symbol and a rule. 
+\b Rules
+\b0  consist of a parse expression and an optional semantic action. Multiple definitions of a non-terminal may appear. These are interpreted as an ordered choice (see below) with the earlier definitions having precedence over the later ones.\
+\
+
+\b Parse expressions
+\b0  are used to match input. In general these will attempt to match a portion of the input string and if the match succeeds they will consume that part of the input string. If they fail then no input is consumed and the parser will back-track and try another alternative. If there are no more alternatives the parser will thrown a ParserException.\
+\
+Expressions are written using the following constructs:\
+
+\b \
+Any
+\b0  - 
+\i .
+\i0  will match any character. Note that this will match end of line characters as well. If you don't wish to match these use 
+\i [^\\n\\r]
+\i0 .\
+
+\b \
+General Greedy Repetition
+\b0  - If e is an expression then 
+\i e\{min, max\}
+\i0  will attempt to match e between min and max times (inclusive). 
+\i e\{min,\} 
+\i0 can be used to match between min and an unbounded number.\
+
+\b \
+Greedy Repetition
+\b0  - If e is an expression then 
+\i e*
+\i0  is equivalent to 
+\i e\{0,\}
+\i0 .\
+
+\b \
+Greedy Positive Repetition
+\b0  - If e is an expression then 
+\i e+
+\i0  is equivalent to 
+\i e\{1,\}
+\i0 .\
+
+\b \
+Non-Terminal
+\b0  - will attempt to match the input using the expressions associated with the named non-terminal.\
+
+\b \
+Ordered Choice
+\b0  - If e1 and e2 are expressions then 
+\i e1 / e2
+\i0  will attempt to match e1 and if that fails e2. If both fail to match then the sequence as a whole fails without consuming any input. Note that unlike the EBNF | operator this is not symmetric.\
+
+\b \
+Negative Assert
+\b0  - If e is an expression then 
+\i !e
+\i0  will match if e fails and fail if e matches. In neither case is input consumed. This is usually uses as a look-behind assertion.\
+
+\b \
+Optional
+\b0  - If e is an expression then 
+\i e?
+\i0  is equivalent to 
+\i e\{0, 1\}
+\i0 \
+
+\b \
+Positive Assert
+\b0  - If e is an expression then 
+\i &e
+\i0  will work exactly like 
+\i e
+\i0  except that input is not consumed if e matches. This is usually uses as a look-ahead assertion.\
+
+\b \
+Sequence
+\b0  - If e1 and e2 are expressions then 
+\i e1 e2
+\i0  will attempt to match e1 and if that succeeds e2. If either fail to match then the sequence as a whole fails without consuming any input.\
+
+\b \
+Subexpressions
+\b0  - Parenthesis can be used to group expressions together.\
+
+\b \
+Terminal
+\b0  - 
+\i 'foo' 
+\i0 will attempt to match the characters within the quotes against the input. 
+\i [ab0-9] 
+\i0 will attempt to match one character from the input aganst any character in the square brackets. A dash which is not the first or last character is interpreted as an inclusive character range. A ^ as the first character matches any character not in the range.\
+\
+All terminals support hexadecimal escapes (
+\i \\x20
+\i0 ). Ranges also support Unicode character category escapes (
+\i \\cLu
+\i0 ). <http://www.fileformat.info/info/unicode/category/index.htm> has a good breakdown of which characters are in the various classes.\
+\
+The precedence is as follows (from highest to lowest):\
+\{\} * + ?	repetition, optional\
+! &			asserts\
+ 				sequence\
+/				ordered choice\
+\
+\pard\pardeftab360\ql\qnatural\pardirnatural
+
+\b\fs36 \cf0 Semantic Actions\
+\pard\pardeftab360\ql\qnatural\pardirnatural
+
+\b0\fs28 \cf0 \
+Semantic actions appear at the end of rules enclosed in backticks and are used to execute custom code when a non-terminal is parsed. They may contain arbitrary C# code and if the code does not end with a semi-colon or curly brace then a semi-colon will be added. The parser class is a partial class to allow custom helper methods to be defined. The first semantic action is executed if the rule succeeded, the second if it failed.\
+\
+Semantic actions may use the following local variables from the generated code:\
+\
+\pard\pardeftab360\ql\qnatural\pardirnatural
+
+\b \cf0 expected
+\b0  - This is of type System.String. If the semantic action sets this then errors that occur because the parser expected a terminal use this text instead of the terminal text. This may be used only within the failure case.\
+\
+
+\b fatal
+\b0  - This is of type System.String. If the semantic action sets this then a ParserException is thrown using fatal for the message. This may be used only within the success case.\
+\
+
+\b results 
+\b0 - This of type List<Result>. Result is a struct and contains a Value property for a custom result, a Text property for the text the rule or (non)terminal consumed, and Line and Col properties. Terminals and non-terminals parsed by the rule will add new results to the list. For terminals Value will be set to the default value for the result type. For non-terminals it will be set using the value variable from the rule.\
+\
+
+\b text
+\b0  - This is of type System.String and contains all of the text consumed by the rule. If a semantic action sets this to null then the rule will not append a result onto results. This may be used only within the success case.\
+\
+
+\b value
+\b0  - The type is determined by the value setting. It defaults to results[0].Value. Typically semantic actions will set this using the results local variable. This may be used only within the success case.\
+\
+Using anything else from the generated code is not guaranteed to work in the future.\
+\
+\pard\pardeftab360\ql\qnatural\pardirnatural
+
+\b\fs36 \cf0 Notes\
+\pard\pardeftab360\ql\qnatural\pardirnatural
+
+\b0\fs28 \cf0 \
+Context Free Grammars (CFGs) have a difficult time encoding whitespace rules and so usually rely on a separate lexer to convert characters into tokens. PEG parsers on the other hand allow whitespace rules to be expressed in a natural way and so allow lexing and parsing to be integrated (see the example above).\
+\
+Reserved words are also a difficulty for CFGs and another reason they rely on a lexer. They are however rather easy to encode in a PEG parser:\
+\
+Identifier := !ReservedWord Letter AlphaNum* Space*;\
+ReservedWord := \cf3 'if'\cf0  / \cf3 'else'\cf0  / \cf3 'while'\cf0  
+\i \cf2 # etc
+\i0 \cf0 \
+\
+A third problem with CFGs are expressions with a dangling tail that may apply to an inner or outer expression. The classic example is 
+\i if (e) if (f) else s;
+\i0  which in a CFG grammar is normally ambiguous: the else may refer to the inner or outer if. PEG parsers on the other hand will greedily match expressions so the inner if is used which is nearly always what is wanted.\
+\
+CFGs are often written using 
+\b left recursive
+\b0  expressions. For example, a rule for addition might look like this:\
+\
+Additive := Additive \cf3 '+'\cf0  Multitive;	
+\i \cf2 # illegal left recursion
+\i0 \cf0 \
+Additive := Additive \cf3 '-'\cf0  Multitive;\
+Additive := Multitive;\
+\
+This is illegal in peg-sharp because it causes the parser to fall into an infinite loop. It should instead be rewritten to look something like this:\
+\
+Additive := Multitive ((\cf3 '+'\cf0  / \cf3 ' -'\cf0 ) Multitive)*;\
+\
+\pard\pardeftab360\ql\qnatural\pardirnatural
+
+\b\fs36 \cf0 Peg File Grammar\
+\pard\pardeftab360\ql\qnatural\pardirnatural
+
+\b0\fs28 \cf0 \
+start = PegFile\
+\
+Action := \cf3 '`'\cf0  \cf3 [^`]+\cf0  \cf3 '`'\cf0 ;\
+\
+AssertExpression := (\cf3 '&'\cf0  / \cf3 '!'\cf0 )? PostfixExpression;\
+\
+Comment := \cf3 '#'\cf0  \cf3 [^\\n\\r]\cf0 * S;\
+\
+Expression := SequenceExpression (\cf3 '/'\cf0  S SequenceExpression)*;\
+\
+Identifier := \cf3 [a-zA-Z]\cf0  \cf3 [a-zA-Z0-9_-]\cf0 * S;\
+\
+Integer := \cf3 [0-9]\cf0 + S;\
+\
+Literal := \cf3 '\\''\cf0  ( \cf3 [^']\cf0  / \cf3 '\\\\\\''\cf0 )+ \cf3 '\\''\cf0  S;\
+\
+PegFile := S (Setting / Comment)+ (Rule / Comment)+;\
+\
+PrimitiveExpression := \cf3 '.'\cf0  / Literal / Range / Identifier / SubExpression;\
+\
+Range := \cf3 '['\cf0  ( \cf3 [^\\]]\cf0  / \cf3 '\\\\]'\cf0 ) \cf3 ']'\cf0  S;\
+\
+PostfixExpression := PrimitiveExpression \cf3 '\{'\cf0  S Integer \cf3 ','\cf0  S Integer \cf3 '\}'\cf0  S;\
+PostfixExpression := PrimitiveExpression \cf3 '\{'\cf0  S Integer \cf3 ','\cf0  S \cf3 '\}'\cf0  S;\
+PostfixExpression := PrimitiveExpression (\cf3 '*'\cf0  / \cf3 '+'\cf0  / \cf3 '?'\cf0 ) S;\
+PostfixExpression := PrimitiveExpression;\
+\
+Rule := Identifier \cf3 ':='\cf0  S Expression (\cf3 ';'\cf0  / Action S Action?) S;\
+\
+S := Space*;\
+\
+SequenceExpression := AssertExpression (Space+ AssertExpression)*;\
+\
+Setting := Identifier \cf3 '='\cf0  S  \cf3 [^\\n\\r]\cf0 + S;\
+\
+Space := \cf3 [ \\t\\r\\n]\cf0 ;\
+\
+SubExpression := \cf3 '('\cf0  S Expression \cf3 ')'\cf0  S;\
+}

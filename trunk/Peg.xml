@@ -1,0 +1,7 @@
+<!-- Continuum syntax coloring regexen -->
+<Language name = "peg">
+	<comment>\x23 .* $</comment>
+	<other1>` [^`]+ `</other1>
+	<string>&apos; (?: [^&apos;\r\n\\] | \\.)* &apos;</string>
+	<string>\[ (?: [^\]\r\n\\] | \\.)* \]</string>
+</Language>
