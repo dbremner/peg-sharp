@@ -21,7 +21,7 @@
 
 using System;
 
-public static class Unused
+internal static class Unused
 {
 	public static object Value
 	{

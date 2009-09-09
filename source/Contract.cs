@@ -36,20 +36,20 @@ using System.Security.Permissions;
 // it should be called manually at the end of all public methods.
 [Serializable]
 [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
-public sealed class ContractInvariantMethodAttribute : Attribute
+internal sealed class ContractInvariantMethodAttribute : Attribute
 {
 }
 
 // Signals that an abstract class or interface has an associated class
 // which defines contracts. Usage is like this:
 // [ContractClass(typeof(IFooContract))]
-// public interface IFoo
+// internal interface IFoo
 // {
 // 		int Work(object data);
 // }
 [Serializable]
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface, AllowMultiple = false)]
-public sealed class ContractClassAttribute : Attribute
+internal sealed class ContractClassAttribute : Attribute
 {
 	public ContractClassAttribute(Type otherClass)
 	{
@@ -72,7 +72,7 @@ public sealed class ContractClassAttribute : Attribute
 // }
 [Serializable]
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-public sealed class ContractClassForAttribute : Attribute
+internal sealed class ContractClassForAttribute : Attribute
 {
 	public ContractClassForAttribute(Type otherClass)
 	{
@@ -87,13 +87,13 @@ public sealed class ContractClassForAttribute : Attribute
 // assumed to be pure.
 [Serializable]
 [AttributeUsage(AttributeTargets.Method | AttributeTargets.Delegate, AllowMultiple = false)]
-public sealed class PureAttribute : Attribute
+internal sealed class PureAttribute : Attribute
 {
 }
 
 // Thrown when a contract method fails.
 [Serializable]
-public class ContractException : Exception
+internal sealed class ContractException : Exception
 {
 	public ContractException()
 	{
@@ -108,12 +108,12 @@ public class ContractException : Exception
 	}
 	
 	[SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
-	protected ContractException(SerializationInfo info, StreamingContext context) : base(info, context)
+	private ContractException(SerializationInfo info, StreamingContext context) : base(info, context)
 	{
 	}
 }
 
-public static class Contract
+internal static class Contract
 {
 	#region Asserts
 	[Conditional("CONTRACTS_FULL")]

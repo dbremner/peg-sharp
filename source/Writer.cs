@@ -24,7 +24,7 @@ using System.IO;
 using System.Collections.Generic;
 
 // Writes the parser file.
-internal sealed partial class Writer
+internal sealed partial class Writer : IDisposable
 {
 	public Writer(TextWriter writer, Grammar grammar)
 	{
@@ -35,6 +35,9 @@ internal sealed partial class Writer
 	
 	public void Write(string pegFile)
 	{
+		if (m_disposed)
+			throw new ObjectDisposedException(GetType().Name);
+		
 		m_className = System.IO.Path.GetFileNameWithoutExtension(pegFile);
 		
 		var rules = new Dictionary<string, List<Rule>>();
@@ -63,6 +66,15 @@ internal sealed partial class Writer
 		DoWriteTypes();
 		DoWriteFields();
 		DoWriteClassTrailer();
+	}
+	
+	public void Dispose()
+	{
+		if (!m_disposed)
+		{
+			m_writer.Dispose();
+			m_disposed = true;
+		}
 	}
 	
 	#region Private Methods
@@ -922,5 +934,6 @@ internal sealed partial class Writer
 	private bool m_debug;
 	private Used m_used;
 	private string m_className;
+	private bool m_disposed;
 	#endregion
 }

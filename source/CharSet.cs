@@ -74,13 +74,13 @@ internal sealed class CharSet
 		return false;
 	}
 	
-	private bool DoCategoriesInclude(string Categories, char ch)
+	private bool DoCategoriesInclude(string categories, char ch)
 	{
 		UnicodeCategory cat = char.GetUnicodeCategory(ch);
 		
-		for (int i = 0; i < Categories.Length; i += 5)
+		for (int i = 0; i < categories.Length; i += 5)
 		{
-			UnicodeCategory candidate = DoGetCategory(Categories.Substring(i + 3, 2));
+			UnicodeCategory candidate = DoGetCategory(categories.Substring(i + 3, 2));
 			if (candidate == cat)
 				return true;
 		}

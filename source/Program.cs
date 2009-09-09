@@ -26,6 +26,10 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
+
+[assembly: CLSCompliant (true)]
+[assembly: ComVisible (false)]
 
 internal static class Program
 {
@@ -72,9 +76,11 @@ internal static class Program
 		
 		using (var stream = new StreamWriter(ms_outFile))
 		{
-			var writer = new Writer(stream, grammar);
-			writer.Write(pegFile);
-			stream.Flush();
+			using (var writer = new Writer(stream, grammar))
+			{
+				writer.Write(pegFile);
+				stream.Flush();
+			}
 		}
 	}
 	
