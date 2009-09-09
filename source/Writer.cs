@@ -765,9 +765,6 @@ internal sealed partial class Writer
 		DoWriteLine("	// This will be the name of something which was expected, but not found.");
 		DoWriteLine("	public string[] Expected {get; private set;}");
 		DoWriteLine("	");
-		DoWriteLine("	// These are arbitrary error messages.");
-		DoWriteLine("//		public string[] Failures {get; private set;}		// TODO: support this");
-		DoWriteLine("	");
 		DoWriteLine("	public static ErrorSet Combine(ErrorSet lhs, ErrorSet rhs)");
 		DoWriteLine("	{");
 		DoWriteLine("		if (lhs.Index > rhs.Index)");
