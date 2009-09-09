@@ -28,9 +28,11 @@ export version
 
 # ------------------
 # Primary targets
-all: app
+all: app example
 
 app: bin/peg-sharp.exe
+
+example: bin/example.exe
 
 check: utest ftest
 
@@ -51,6 +53,12 @@ sources := source/*.cs
 bin/peg-sharp.exe: bin/csc_flags $(sources)
 	@./gen_version.sh $(version) source/AssemblyVersion.cs
 	$(CSC) -out:$@ $(CSC_FLAGS) -target:exe $(sources)
+
+example/Parser.cs: bin/peg-sharp.exe example/Parser.peg
+	$(MONO) --debug bin/peg-sharp.exe --out=example/Parser.cs example/Parser.peg
+
+bin/example.exe: example/Parser.cs example/*.cs
+	$(CSC) -out:bin/example.exe $(CSC_FLAGS) -target:exe example/*.cs
 
 bin/unit-tests.dll: bin/csc_flags $(sources)
 	$(CSC) -out:$@ $(CSC_FLAGS) -d:TEST -r:bin/nunit.framework.dll -target:library $(sources)
