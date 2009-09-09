@@ -24,7 +24,7 @@ using System.Runtime.Serialization;
 using System.Security.Permissions;
 
 [Serializable]
-public sealed class ParserException : Exception
+internal sealed class ParserException : Exception
 {
 	public ParserException()
 	{

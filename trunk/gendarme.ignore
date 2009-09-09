@@ -1,0 +1,146 @@
+# Ignore lists start with a rule name (R) followed by a list of assemblies (A),
+# types (T), and methods (M) to ignore.
+
+# It would be icky to refactor these methods and we don't care about
+# performance too much when generating the parser.
+R: Gendarme.Rules.Performance.AvoidMethodWithLargeMaximumStackSize
+A: peg-sharp
+
+R: Gendarme.Rules.Performance.AvoidRepetitiveCastsRule
+M: Expression BinaryExpression::Evaluate(System.Collections.Generic.Dictionary`2<System.String,Expression>)
+M: System.Int64 Program::get_OutBase()
+
+R: Gendarme.Rules.Maintainability.AvoidComplexMethodsRule
+M: System.Globalization.UnicodeCategory CharSet::DoGetCategory(System.String)
+M: System.String RangeExpression::DoGetCategory(System.String)
+M: System.Void Writer::DoWriteHelpers()
+
+# This struct is only 20 bytes.
+R: Gendarme.Rules.Performance#.AvoidLargeStructureRule
+T: Parser/CacheValue
+
+# I don't care about these rule.
+R: Gendarme.Rules.Performance.AvoidReturningArraysOnPropertiesRule
+A: peg-sharp
+A: example
+
+R: Gendarme.Rules.Design.AvoidRefAndOutParametersRule
+A: peg-sharp
+A: example
+
+R: Gendarme.Rules.Correctness.MethodCanBeMadeStaticRule
+A: peg-sharp
+A: example
+
+R: Gendarme.Rules.Naming.AvoidRedundancyInMethodNameRule
+M: System.Void Writer::DoWriteNonTerminalRule(Rule)
+
+R: Gendarme.Rules.Naming#UsePluralNameInEnumFlagsRule
+T: Used
+
+# This rule would be great if it was only for externally visible methods, but it
+# fires for private types too which is far too picky.
+R: Gendarme.Rules.Maintainability.AvoidUnnecessarySpecializationRule
+A: peg-sharp
+A: example
+
+# Not all semantic actions use these.
+R: Gendarme.Rules.Performance.AvoidUncalledPrivateCodeRule
+M: System.Int32 Parser/Result::get_Line()
+M: System.Int32 Parser/Result::get_Col()
+
+# We don't have any public types so this defect is silly.
+R: Gendarme.Rules.Exceptions#ExceptionShouldBeVisibleRule
+T: ParserException
+T: ContractException
+
+# We want to initialize ParserException with line and col info so we don't
+# want to include these ctors.
+R: Gendarme.Rules.Exceptions#MissingExceptionConstructorsRule
+T: ParserException
+
+# This rule seems to just suck.
+R: Gendarme.Rules.Maintainability.AvoidLackOfCohesionOfMethodsRule
+A: peg-sharp
+A: example
+
+# Debug code that we can't actually implement.
+R: Gendarme.Rules.Design.Generic#AvoidMethodWithUnusedGenericTypeRule
+M: System.Void Contract::EnsuresOnThrow(System.Boolean)
+M: System.Void Contract::EnsuresOnThrow(System.Boolean,System.String)
+
+# We don't want a getter here. Nor do we use the value in the setter
+R: Gendarme.Rules.Design.AvoidPropertiesWithoutGetAccessorRule
+T: Unused
+
+R: Gendarme.Rules.Performance:AvoidUnusedParametersRule
+M: System.Void Unused::set_Value(System.Object)
+
+# These are OK.
+R: Gendarme.Rules.Exceptions.DoNotSwallowErrorsCatchingNonSpecificExceptionsRule
+M: Parser/State Parser::DoParseRangeRule(Parser/State,System.Collections.Generic.List`1<Parser/Result>)
+M: System.Void Program::DoEval(System.String)
+
+R: Gendarme.Rules.Portability.NewLineLiteralRule
+M: Parser/State Parser::DoParseToEol(Parser/State,System.Collections.Generic.List`1<Parser/Result>)
+M: Parser/State Parser::DoParseSpaceRule(Parser/State,System.Collections.Generic.List`1<Parser/Result>)
+M: Parser/State Parser::DoParseSpaceRule(Parser/State,System.Collections.Generic.List`1<Parser/Result>)
+
+R: Gendarme.Rules.Performance.OverrideValueTypeDefaultsRule
+T: Parser/ErrorSet
+T: Parser/State
+T: Parser/Result
+T: Parser/CacheValue
+
+# Debug code.
+R: Gendarme.Rules.Performance.AvoidUninstantiatedInternalClassesRule
+T: ContractInvariantMethodAttribute
+T: PureAttribute
+
+R: Gendarme.Rules.Performance.AvoidUncalledPrivateCodeRule
+M: System.Void ContractException::.ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+M: System.Void Contract::Assert(System.Boolean)
+M: System.Void Contract::Assert(System.Boolean,System.String)
+M: System.Void Contract::Assume(System.Boolean)
+M: System.Void Contract::Assume(System.Boolean,System.String)
+M: System.Void Contract::RequiresAlways(System.Boolean)
+M: System.Void Contract::RequiresAlways(System.Boolean,System.String)
+M: System.Void Contract::Ensures(System.Boolean)
+M: System.Void Contract::Ensures(System.Boolean,System.String)
+M: System.Void Contract::EnsuresOnThrow(System.Boolean)
+M: System.Void Contract::EnsuresOnThrow(System.Boolean,System.String)
+M: System.Void Contract::Invariant(System.Boolean)
+M: System.Void Contract::Invariant(System.Boolean,System.String)
+M: System.Boolean Contract::ForAll(System.Collections.Generic.IEnumerable`1<T>,System.Func`2<T,System.Boolean>)
+M: System.Boolean Contract::ForAll(System.Int32,System.Int32,System.Func`2<System.Int32,System.Boolean>)
+M: System.Boolean Contract::Exists(System.Collections.Generic.IEnumerable`1<T>,System.Func`2<T,System.Boolean>)
+M: System.Boolean Contract::Exists(System.Int32,System.Int32,System.Func`2<System.Int32,System.Boolean>)
+M: System.Void Unused::set_Value(System.Object)
+
+# This is mono code.
+R: Gendarme.Rules.Correctness#CheckParametersNullityInVisibleMethodsRule
+M: System.Collections.Generic.List`1<System.String> Mono.Options.OptionSet::Parse(System.Collections.Generic.IEnumerable`1<System.String>)
+
+R: Gendarme.Rules.Exceptions#InstantiateArgumentExceptionCorrectlyRule
+M: System.Void Mono.Options.Option::AddSeparators(System.String,System.Int32,System.Collections.Generic.ICollection`1<System.String>)
+M: System.String Mono.Options.OptionSet::GetKeyForItem(Mono.Options.Option)
+
+R: Gendarme.Rules.Design.Generic#AvoidMethodWithUnusedGenericTypeRule
+M: T Mono.Options.Option::Parse(System.String,Mono.Options.OptionContext)
+
+R: Gendarme.Rules.Performance#AvoidUnusedParametersRule
+M: T Mono.Options.Option::Parse(System.String,Mono.Options.OptionContext)
+M: System.Boolean Mono.Options.OptionSet::Parse(System.String,Mono.Options.OptionContext)
+
+R: Gendarme.Rules.Exceptions.DoNotSwallowErrorsCatchingNonSpecificExceptionsRule
+M: T Mono.Options.Option::Parse(System.String,Mono.Options.OptionContext)
+
+R: Gendarme.Rules.Performance.PreferCharOverloadRule
+M: System.String Mono.Options.OptionSet::GetArgumentName(System.Int32,System.Int32,System.String)
+
+R: Gendarme.Rules.Naming.UseCorrectSuffixRule
+T: Mono.Options.OptionSet
+
+R: Gendarme.Rules.Serialization.MarkEnumerationsAsSerializableRule
+T: Mono.Options.OptionValueType
+

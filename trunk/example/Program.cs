@@ -21,10 +21,16 @@
 
 using System;
 using System.Collections.Generic;
+using System.Reflection;
+using System.Runtime.InteropServices;
+
+[assembly: AssemblyVersion("0.1.0.0")]
+[assembly: CLSCompliant (true)]
+[assembly: ComVisible (false)]
 
 internal static class Program
 {
-	public static void Main(string[] args)
+	public static void Main()
 	{
 		while (true)
 		{

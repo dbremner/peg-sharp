@@ -24,9 +24,9 @@ using System.Collections.Generic;
 using System.Text;
 
 [Flags]
+[Serializable]
 internal enum Used
 {
-	None = 0x0000,
 	Literal = 0x0001,
 	Sequence = 0x0002,
 	Choice = 0x0004,

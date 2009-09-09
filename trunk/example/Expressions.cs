@@ -184,7 +184,7 @@ internal sealed class IntegerExpression : Expression
 		else if (Program.OutBase == 2)
 			return "0b" + DoGetBinaryString(unchecked((ulong) Value));
 		
-		throw new InvalidOperationException("$base should be 2, 10, or 16.");
+		return "$base should be 2, 10, or 16.";		// It's very bad style to throw from ToString so we'll do this instead.
 	}
 	
 	private string DoGetBinaryString(ulong value)
