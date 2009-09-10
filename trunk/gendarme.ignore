@@ -16,7 +16,7 @@ M: System.String RangeExpression::DoGetCategory(System.String)
 M: System.Void Writer::DoWriteHelpers()
 
 # This struct is only 20 bytes.
-R: Gendarme.Rules.Performance#.AvoidLargeStructureRule
+R: Gendarme.Rules.Performance.AvoidLargeStructureRule
 T: Parser/CacheValue
 
 # I don't care about these rule.
@@ -35,7 +35,7 @@ A: example
 R: Gendarme.Rules.Naming.AvoidRedundancyInMethodNameRule
 M: System.Void Writer::DoWriteNonTerminalRule(Rule)
 
-R: Gendarme.Rules.Naming#UsePluralNameInEnumFlagsRule
+R: Gendarme.Rules.Naming.UsePluralNameInEnumFlagsRule
 T: Used
 
 # This rule would be great if it was only for externally visible methods, but it
@@ -50,13 +50,13 @@ M: System.Int32 Parser/Result::get_Line()
 M: System.Int32 Parser/Result::get_Col()
 
 # We don't have any public types so this defect is silly.
-R: Gendarme.Rules.Exceptions#ExceptionShouldBeVisibleRule
-T: ParserException
+R: Gendarme.Rules.Exceptions.ExceptionShouldBeVisibleRule
 T: ContractException
+T: ParserException
 
 # We want to initialize ParserException with line and col info so we don't
 # want to include these ctors.
-R: Gendarme.Rules.Exceptions#MissingExceptionConstructorsRule
+R: Gendarme.Rules.Exceptions.MissingExceptionConstructorsRule
 T: ParserException
 
 # This rule seems to just suck.
@@ -65,7 +65,7 @@ A: peg-sharp
 A: example
 
 # Debug code that we can't actually implement.
-R: Gendarme.Rules.Design.Generic#AvoidMethodWithUnusedGenericTypeRule
+R: Gendarme.Rules.Design.Generic.AvoidMethodWithUnusedGenericTypeRule
 M: System.Void Contract::EnsuresOnThrow(System.Boolean)
 M: System.Void Contract::EnsuresOnThrow(System.Boolean,System.String)
 
@@ -73,7 +73,7 @@ M: System.Void Contract::EnsuresOnThrow(System.Boolean,System.String)
 R: Gendarme.Rules.Design.AvoidPropertiesWithoutGetAccessorRule
 T: Unused
 
-R: Gendarme.Rules.Performance:AvoidUnusedParametersRule
+R: Gendarme.Rules.Performance.AvoidUnusedParametersRule
 M: System.Void Unused::set_Value(System.Object)
 
 # These are OK.
@@ -118,17 +118,19 @@ M: System.Boolean Contract::Exists(System.Int32,System.Int32,System.Func`2<Syste
 M: System.Void Unused::set_Value(System.Object)
 
 # This is mono code.
-R: Gendarme.Rules.Correctness#CheckParametersNullityInVisibleMethodsRule
+R: Gendarme.Rules.Correctness.CheckParametersNullityInVisibleMethodsRule
 M: System.Collections.Generic.List`1<System.String> Mono.Options.OptionSet::Parse(System.Collections.Generic.IEnumerable`1<System.String>)
+M: T Mono.Options.Option::Parse(System.String,Mono.Options.OptionContext)
+M: System.Boolean Mono.Options.OptionSet::Parse(System.String,Mono.Options.OptionContext)
 
-R: Gendarme.Rules.Exceptions#InstantiateArgumentExceptionCorrectlyRule
+R: Gendarme.Rules.Exceptions.InstantiateArgumentExceptionCorrectlyRule
 M: System.Void Mono.Options.Option::AddSeparators(System.String,System.Int32,System.Collections.Generic.ICollection`1<System.String>)
 M: System.String Mono.Options.OptionSet::GetKeyForItem(Mono.Options.Option)
 
-R: Gendarme.Rules.Design.Generic#AvoidMethodWithUnusedGenericTypeRule
+R: Gendarme.Rules.Design.Generic.AvoidMethodWithUnusedGenericTypeRule
 M: T Mono.Options.Option::Parse(System.String,Mono.Options.OptionContext)
 
-R: Gendarme.Rules.Performance#AvoidUnusedParametersRule
+R: Gendarme.Rules.Performance.AvoidUnusedParametersRule
 M: T Mono.Options.Option::Parse(System.String,Mono.Options.OptionContext)
 M: System.Boolean Mono.Options.OptionSet::Parse(System.String,Mono.Options.OptionContext)
 
