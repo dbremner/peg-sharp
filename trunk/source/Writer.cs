@@ -159,6 +159,7 @@ internal sealed partial class Writer : IDisposable
 			DoWriteLine(line.ToString());
 		}
 		
+		DoWriteLine("\tOnCtorEpilog();");
 		DoWriteLine("}");
 		DoWriteLine();
 	}
@@ -207,9 +208,13 @@ internal sealed partial class Writer : IDisposable
 	
 	private void DoWriteHelpers()
 	{
+		DoWriteLine("#region Private Helper Methods");
+		DoWriteLine("partial void OnCtorEpilog();");
+		DoWriteLine("partial void OnParseProlog();");
+		DoWriteLine("partial void OnParseEpilog(State state);");
+		DoWriteLine();
 		if (!m_grammar.Settings["exclude-methods"].Contains("DoEscapeAll "))
 		{
-			DoWriteLine("#region Private Helper Methods");
 			DoWriteLine("public string DoEscapeAll(string s)");
 			DoWriteLine("{");
 			DoWriteLine("	var builder = new System.Text.StringBuilder(s.Length);");
@@ -634,7 +639,10 @@ internal sealed partial class Writer : IDisposable
 		DoWriteLine("State state = new State(0, true);");
 		DoWriteLine("var results = new List<Result>();");
 		DoWriteLine();
+		DoWriteLine("OnParseProlog();");
 		DoWriteLine("state = DoParse(state, results, \"{0}\");", m_grammar.Settings["start"]);
+		DoWriteLine("OnParseEpilog(state);");
+		DoWriteLine();
 		
 		if (m_grammar.Settings["unconsumed"] == "expose")
 		{
@@ -643,7 +651,6 @@ internal sealed partial class Writer : IDisposable
 		else if (m_grammar.Settings["unconsumed"] == "error")
 		{
 			DoWriteLine("int i = state.Index;");
-			DoWriteLine();
 			DoWriteLine("if (!state.Parsed)");
 			DoWriteLine("	DoThrow(state.Errors.Index, state.Errors.ToString());");
 			DoWriteLine("else if (i < input.Length)");
