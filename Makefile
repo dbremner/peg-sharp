@@ -21,7 +21,7 @@ endif
 dummy1 := $(shell mkdir bin 2> /dev/null)
 dummy2 := $(shell if [[ "$(CSC_FLAGS)" != `cat bin/csc_flags 2> /dev/null` ]]; then echo "$(CSC_FLAGS)" > bin/csc_flags; fi)
 
-base_version := 0.1.xxx.0										# major.minor.build.revision
+base_version := 0.2.xxx.0										# major.minor.build.revision
 version := $(shell ./get_version.sh $(base_version) build_num)	# this will increment the build number stored in build_num
 version := $(strip $(version))
 export version
@@ -49,6 +49,9 @@ update-libraries:
 # ------------------
 # Binary targets 
 sources := source/*.cs
+
+source/Parser.cs: source/Parser.peg
+	$(MONO) --debug bin/peg-sharp.exe --out=source/Parser.cs source/Parser.peg
 
 bin/peg-sharp.exe: bin/csc_flags $(sources)
 	@./gen_version.sh $(version) source/AssemblyVersion.cs

@@ -61,7 +61,7 @@ internal static class Program
 		try
 		{
 			parser.Parse(input);
-			Console.Error.WriteLine("Expected a parse failure.");
+			Console.Error.WriteLine("Expected a parse failure for: " + input);
 		}
 		catch (ParserException e)
 		{

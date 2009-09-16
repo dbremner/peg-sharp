@@ -36,19 +36,19 @@ value = double
 Expr := 'x';";
 		
 		var parser = new Parser();
-		Grammar grammar = parser.Parse(input);
+		parser.Parse(input);
 		
-		Assert.NotNull(grammar);
-		grammar.Validate();
+		Assert.NotNull(parser.Grammar);
+		parser.Grammar.Validate();
 		
-		Assert.AreEqual("Expr", grammar.Settings["start"]);
-		Assert.AreEqual("double", grammar.Settings["value"]);
+		Assert.AreEqual("Expr", parser.Grammar.Settings["start"]);
+		Assert.AreEqual("double", parser.Grammar.Settings["value"]);
 		
-		Assert.AreEqual(1, grammar.Rules.Count);
-		Assert.AreEqual("Expr", grammar.Rules[0].Name);
-		Assert.AreEqual(typeof(LiteralExpression), grammar.Rules[0].Expression.GetType());
+		Assert.AreEqual(1, parser.Grammar.Rules.Count);
+		Assert.AreEqual("Expr", parser.Grammar.Rules[0].Name);
+		Assert.AreEqual(typeof(LiteralExpression), parser.Grammar.Rules[0].Expression.GetType());
 		
-		var le = (LiteralExpression) grammar.Rules[0].Expression;
+		var le = (LiteralExpression) parser.Grammar.Rules[0].Expression;
 		Assert.AreEqual("x", le.Literal);
 	}
 	
@@ -64,11 +64,11 @@ Expr := 'x';
 ";
 		
 		var parser = new Parser();
-		Grammar grammar = parser.Parse(input);
-		grammar.Validate();
+		parser.Parse(input);
+		parser.Grammar.Validate();
 		
-		Assert.AreEqual("Expr", grammar.Settings["start"]);
-		Assert.AreEqual("double", grammar.Settings["value"]);
+		Assert.AreEqual("Expr", parser.Grammar.Settings["start"]);
+		Assert.AreEqual("double", parser.Grammar.Settings["value"]);
 	}
 	
 	[Test]
@@ -81,14 +81,14 @@ value = double
 Expr := 'x'    'y';
 ";
 		var parser = new Parser();
-		Grammar grammar = parser.Parse(input);
-		grammar.Validate();
+		parser.Parse(input);
+		parser.Grammar.Validate();
 		
-		Assert.AreEqual(1, grammar.Rules.Count);
-		Assert.AreEqual("Expr", grammar.Rules[0].Name);
-		Assert.AreEqual(typeof(SequenceExpression), grammar.Rules[0].Expression.GetType());
+		Assert.AreEqual(1, parser.Grammar.Rules.Count);
+		Assert.AreEqual("Expr", parser.Grammar.Rules[0].Name);
+		Assert.AreEqual(typeof(SequenceExpression), parser.Grammar.Rules[0].Expression.GetType());
 		
-		var e = (SequenceExpression) grammar.Rules[0].Expression;
+		var e = (SequenceExpression) parser.Grammar.Rules[0].Expression;
 		Assert.AreEqual(2, e.Expressions.Length);
 		Assert.AreEqual("'x' 'y'", e.ToString());
 	}
@@ -103,14 +103,14 @@ value = double
 Expr := 'x' / 'y';
 ";
 		var parser = new Parser();
-		Grammar grammar = parser.Parse(input);
-		grammar.Validate();
+		parser.Parse(input);
+		parser.Grammar.Validate();
 		
-		Assert.AreEqual(1, grammar.Rules.Count);
-		Assert.AreEqual("Expr", grammar.Rules[0].Name);
-		Assert.AreEqual(typeof(ChoiceExpression), grammar.Rules[0].Expression.GetType());
+		Assert.AreEqual(1, parser.Grammar.Rules.Count);
+		Assert.AreEqual("Expr", parser.Grammar.Rules[0].Name);
+		Assert.AreEqual(typeof(ChoiceExpression), parser.Grammar.Rules[0].Expression.GetType());
 		
-		var e = grammar.Rules[0].Expression;
+		var e = parser.Grammar.Rules[0].Expression;
 		Assert.AreEqual("'x' / 'y'", e.ToString());
 	}
 	
@@ -124,14 +124,14 @@ value = double
 Expr := 'x'*;
 ";
 		var parser = new Parser();
-		Grammar grammar = parser.Parse(input);
-		grammar.Validate();
+		parser.Parse(input);
+		parser.Grammar.Validate();
 		
-		Assert.AreEqual(1, grammar.Rules.Count);
-		Assert.AreEqual("Expr", grammar.Rules[0].Name);
-		Assert.AreEqual(typeof(RepetitionExpression), grammar.Rules[0].Expression.GetType());
+		Assert.AreEqual(1, parser.Grammar.Rules.Count);
+		Assert.AreEqual("Expr", parser.Grammar.Rules[0].Name);
+		Assert.AreEqual(typeof(RepetitionExpression), parser.Grammar.Rules[0].Expression.GetType());
 		
-		var e = grammar.Rules[0].Expression;
+		var e = parser.Grammar.Rules[0].Expression;
 		Assert.AreEqual("'x'*", e.ToString());
 	}
 	
@@ -145,14 +145,14 @@ value = double
 Expr := ('x'    'y')*;
 ";
 		var parser = new Parser();
-		Grammar grammar = parser.Parse(input);
-		grammar.Validate();
+		parser.Parse(input);
+		parser.Grammar.Validate();
 		
-		Assert.AreEqual(1, grammar.Rules.Count);
-		Assert.AreEqual("Expr", grammar.Rules[0].Name);
-		Assert.AreEqual(typeof(RepetitionExpression), grammar.Rules[0].Expression.GetType());
+		Assert.AreEqual(1, parser.Grammar.Rules.Count);
+		Assert.AreEqual("Expr", parser.Grammar.Rules[0].Name);
+		Assert.AreEqual(typeof(RepetitionExpression), parser.Grammar.Rules[0].Expression.GetType());
 		
-		var e = grammar.Rules[0].Expression;
+		var e = parser.Grammar.Rules[0].Expression;
 		Assert.AreEqual("('x' 'y')*", e.ToString());
 	}
 	
@@ -170,18 +170,18 @@ Value := 'x' / 'y' / 'z';
 Value := '(' Expr ')';
 ";
 		var parser = new Parser();
-		Grammar grammar = parser.Parse(input);
-		grammar.Validate();
+		parser.Parse(input);
+		parser.Grammar.Validate();
 		
-		Assert.AreEqual(5, grammar.Rules.Count);
-		Assert.AreEqual("Expr", grammar.Rules[0].Name);
-		Assert.AreEqual("Sum", grammar.Rules[1].Name);
-		Assert.AreEqual("Product", grammar.Rules[2].Name);
-		Assert.AreEqual("Value", grammar.Rules[3].Name);
-		Assert.AreEqual("Value", grammar.Rules[4].Name);
-		Assert.AreEqual(typeof(RuleExpression), grammar.Rules[0].Expression.GetType());
+		Assert.AreEqual(5, parser.Grammar.Rules.Count);
+		Assert.AreEqual("Expr", parser.Grammar.Rules[0].Name);
+		Assert.AreEqual("Sum", parser.Grammar.Rules[1].Name);
+		Assert.AreEqual("Product", parser.Grammar.Rules[2].Name);
+		Assert.AreEqual("Value", parser.Grammar.Rules[3].Name);
+		Assert.AreEqual("Value", parser.Grammar.Rules[4].Name);
+		Assert.AreEqual(typeof(RuleExpression), parser.Grammar.Rules[0].Expression.GetType());
 		
-		var e = grammar.Rules[0].Expression;
+		var e = parser.Grammar.Rules[0].Expression;
 		Assert.AreEqual("Sum", e.ToString());
 	}
 	
@@ -195,13 +195,13 @@ value = double
 Expr := [abc-];";
 		
 		var parser = new Parser();
-		Grammar grammar = parser.Parse(input);
-		grammar.Validate();
+		parser.Parse(input);
+		parser.Grammar.Validate();
 		
-		Assert.AreEqual(1, grammar.Rules.Count);
-		Assert.AreEqual(typeof(RangeExpression), grammar.Rules[0].Expression.GetType());
+		Assert.AreEqual(1, parser.Grammar.Rules.Count);
+		Assert.AreEqual(typeof(RangeExpression), parser.Grammar.Rules[0].Expression.GetType());
 		
-		var e = grammar.Rules[0].Expression;
+		var e = parser.Grammar.Rules[0].Expression;
 		Assert.AreEqual("[abc-]", e.ToString());
 	}
 	
@@ -215,13 +215,13 @@ value = double
 Expr := [-a-x];";
 		
 		var parser = new Parser();
-		Grammar grammar = parser.Parse(input);
-		grammar.Validate();
+		parser.Parse(input);
+		parser.Grammar.Validate();
 		
-		Assert.AreEqual(1, grammar.Rules.Count);
-		Assert.AreEqual(typeof(RangeExpression), grammar.Rules[0].Expression.GetType());
+		Assert.AreEqual(1, parser.Grammar.Rules.Count);
+		Assert.AreEqual(typeof(RangeExpression), parser.Grammar.Rules[0].Expression.GetType());
 		
-		var e = grammar.Rules[0].Expression;
+		var e = parser.Grammar.Rules[0].Expression;
 		Assert.AreEqual("[-a-x]", e.ToString());
 	}
 	
@@ -235,15 +235,15 @@ value = double
 Expr := [a-x] `foo bar`";
 		
 		var parser = new Parser();
-		Grammar grammar = parser.Parse(input);
-		grammar.Validate();
+		parser.Parse(input);
+		parser.Grammar.Validate();
 		
-		Assert.AreEqual(1, grammar.Rules.Count);
-		Assert.AreEqual(typeof(RangeExpression), grammar.Rules[0].Expression.GetType());
+		Assert.AreEqual(1, parser.Grammar.Rules.Count);
+		Assert.AreEqual(typeof(RangeExpression), parser.Grammar.Rules[0].Expression.GetType());
 		
-		var e = grammar.Rules[0].Expression;
+		var e = parser.Grammar.Rules[0].Expression;
 		Assert.AreEqual("[a-x]", e.ToString());
-		Assert.AreEqual("foo bar", grammar.Rules[0].PassAction);
+		Assert.AreEqual("foo bar", parser.Grammar.Rules[0].PassAction);
 	}
 	
 	[Test]
@@ -256,16 +256,16 @@ value = double
 Expr := [a-x] `foo bar` `fie fum`";
 		
 		var parser = new Parser();
-		Grammar grammar = parser.Parse(input);
-		grammar.Validate();
+		parser.Parse(input);
+		parser.Grammar.Validate();
 		
-		Assert.AreEqual(1, grammar.Rules.Count);
-		Assert.AreEqual(typeof(RangeExpression), grammar.Rules[0].Expression.GetType());
+		Assert.AreEqual(1, parser.Grammar.Rules.Count);
+		Assert.AreEqual(typeof(RangeExpression), parser.Grammar.Rules[0].Expression.GetType());
 		
-		var e = grammar.Rules[0].Expression;
+		var e = parser.Grammar.Rules[0].Expression;
 		Assert.AreEqual("[a-x]", e.ToString());
-		Assert.AreEqual("foo bar", grammar.Rules[0].PassAction);
-		Assert.AreEqual("fie fum", grammar.Rules[0].FailAction);
+		Assert.AreEqual("foo bar", parser.Grammar.Rules[0].PassAction);
+		Assert.AreEqual("fie fum", parser.Grammar.Rules[0].FailAction);
 	}
 	
 	[Test]
@@ -278,13 +278,13 @@ value = double
 Expr := 'x'+;
 ";
 		var parser = new Parser();
-		Grammar grammar = parser.Parse(input);
-		grammar.Validate();
+		parser.Parse(input);
+		parser.Grammar.Validate();
 		
-		Assert.AreEqual(1, grammar.Rules.Count);
-		Assert.AreEqual("Expr", grammar.Rules[0].Name);
+		Assert.AreEqual(1, parser.Grammar.Rules.Count);
+		Assert.AreEqual("Expr", parser.Grammar.Rules[0].Name);
 		
-		var e = grammar.Rules[0].Expression;
+		var e = parser.Grammar.Rules[0].Expression;
 		Assert.AreEqual("'x'+", e.ToString());
 	}
 	
@@ -298,13 +298,13 @@ value = double
 Expr := !'foo' 'x'+ &'bar';
 ";
 		var parser = new Parser();
-		Grammar grammar = parser.Parse(input);
-		grammar.Validate();
+		parser.Parse(input);
+		parser.Grammar.Validate();
 		
-		Assert.AreEqual(1, grammar.Rules.Count);
-		Assert.AreEqual("Expr", grammar.Rules[0].Name);
+		Assert.AreEqual(1, parser.Grammar.Rules.Count);
+		Assert.AreEqual("Expr", parser.Grammar.Rules[0].Name);
 		
-		var e = grammar.Rules[0].Expression;
+		var e = parser.Grammar.Rules[0].Expression;
 		Assert.AreEqual("!'foo' 'x'+ &'bar'", e.ToString());
 	}
 	
@@ -318,13 +318,13 @@ value = double
 Expr := 'x'? 'y';
 ";
 		var parser = new Parser();
-		Grammar grammar = parser.Parse(input);
-		grammar.Validate();
+		parser.Parse(input);
+		parser.Grammar.Validate();
 		
-		Assert.AreEqual(1, grammar.Rules.Count);
-		Assert.AreEqual("Expr", grammar.Rules[0].Name);
+		Assert.AreEqual(1, parser.Grammar.Rules.Count);
+		Assert.AreEqual("Expr", parser.Grammar.Rules[0].Name);
 		
-		var e = grammar.Rules[0].Expression;
+		var e = parser.Grammar.Rules[0].Expression;
 		Assert.AreEqual("'x'? 'y'", e.ToString());
 	}
 	
@@ -339,13 +339,13 @@ unconsumed = expose
 Expr := 'x'? 'y';
 ";
 		var parser = new Parser();
-		Grammar grammar = parser.Parse(input);
-		grammar.Validate();
+		parser.Parse(input);
+		parser.Grammar.Validate();
 		
-		Assert.AreEqual(1, grammar.Rules.Count);
-		Assert.AreEqual("Expr", grammar.Rules[0].Name);
+		Assert.AreEqual(1, parser.Grammar.Rules.Count);
+		Assert.AreEqual("Expr", parser.Grammar.Rules[0].Name);
 		
-		var e = grammar.Rules[0].Expression;
+		var e = parser.Grammar.Rules[0].Expression;
 		Assert.AreEqual("'x'? 'y'", e.ToString());
 	}
 	
@@ -360,13 +360,13 @@ unconsumed = expose
 Expr := 'x'{0, 100};
 ";
 		var parser = new Parser();
-		Grammar grammar = parser.Parse(input);
-		grammar.Validate();
+		parser.Parse(input);
+		parser.Grammar.Validate();
 		
-		Assert.AreEqual(1, grammar.Rules.Count);
-		Assert.AreEqual("Expr", grammar.Rules[0].Name);
+		Assert.AreEqual(1, parser.Grammar.Rules.Count);
+		Assert.AreEqual("Expr", parser.Grammar.Rules[0].Name);
 		
-		var e = grammar.Rules[0].Expression;
+		var e = parser.Grammar.Rules[0].Expression;
 		Assert.AreEqual("'x'{0, 100}", e.ToString());
 	}
 	
@@ -381,13 +381,13 @@ unconsumed = expose
 Expr := 'x'{32,};
 ";
 		var parser = new Parser();
-		Grammar grammar = parser.Parse(input);
-		grammar.Validate();
+		parser.Parse(input);
+		parser.Grammar.Validate();
 		
-		Assert.AreEqual(1, grammar.Rules.Count);
-		Assert.AreEqual("Expr", grammar.Rules[0].Name);
+		Assert.AreEqual(1, parser.Grammar.Rules.Count);
+		Assert.AreEqual("Expr", parser.Grammar.Rules[0].Name);
 		
-		var e = grammar.Rules[0].Expression;
+		var e = parser.Grammar.Rules[0].Expression;
 		Assert.AreEqual("'x'{32,}", e.ToString());
 	}
 	
@@ -402,13 +402,13 @@ unconsumed = expose
 Expr := ..;
 ";
 		var parser = new Parser();
-		Grammar grammar = parser.Parse(input);
-		grammar.Validate();
+		parser.Parse(input);
+		parser.Grammar.Validate();
 		
-		Assert.AreEqual(1, grammar.Rules.Count);
-		Assert.AreEqual("Expr", grammar.Rules[0].Name);
+		Assert.AreEqual(1, parser.Grammar.Rules.Count);
+		Assert.AreEqual("Expr", parser.Grammar.Rules[0].Name);
 		
-		var e = grammar.Rules[0].Expression;
+		var e = parser.Grammar.Rules[0].Expression;
 		Assert.AreEqual(". .", e.ToString());
 	}
 }
