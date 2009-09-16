@@ -1,26 +1,23 @@
 {\rtf1\ansi\ansicpg1252\cocoartf949\cocoasubrtf460
 {\fonttbl\f0\fnil\fcharset0 Verdana;}
 {\colortbl;\red255\green255\blue255;\red242\green0\blue43;\red176\green45\blue127;\red43\green96\blue67;
-}
+\red0\green91\blue255;}
 \deftab360
 \pard\pardeftab360\ql\qnatural\pardirnatural
 
 \f0\b\fs36 \cf0 Operation\
-\pard\pardeftab360\ql\qnatural\pardirnatural
 
-\b0\fs28 \cf0 \
+\b0\fs28 \
 Typical usage looks like this: 
 \i peg-sharp --out=FooParser.cs Foo.peg
 \i0 . Foo.peg is a Parsing Expression Grammer which defines the grammar of the language using a syntax which resembles Extended Backus\'96Naur Form (EBNF) augmented with custom code to execute when non-terminals are parsed.\
 \
 FooParser.cs will be created (or over-written) with a back-tracking recursive descent parser using memoization to store intermediate results. The memoization allows the parser to operate in linear time. The parser is thread safe as long as each parser instance is used by a single thread (and assuming that the semantic actions are thread safe as well).\
 \
-\pard\pardeftab360\ql\qnatural\pardirnatural
 
-\b\fs36 \cf0 Peg Files\
-\pard\pardeftab360\ql\qnatural\pardirnatural
+\b\fs36 Peg Files\
 
-\b0\fs28 \cf0 \
+\b0\fs28 \
 Here's an example of a peg file:\
 \
 \pard\pardeftab360\ql\qnatural\pardirnatural
@@ -148,7 +145,7 @@ General Greedy Repetition
 \i e\{min, max\}
 \i0  will attempt to match e between min and max times (inclusive). 
 \i e\{min,\} 
-\i0 can be used to match between min and an unbounded number.\
+\i0 can be used to match between min and an unbounded number. Note that matching will terminate if e matches, but does not consume input.\
 
 \b \
 Greedy Repetition
@@ -231,12 +228,11 @@ The precedence is as follows (from highest to lowest):\
 \pard\pardeftab360\ql\qnatural\pardirnatural
 
 \b\fs36 \cf0 Semantic Actions\
-\pard\pardeftab360\ql\qnatural\pardirnatural
 
-\b0\fs28 \cf0 \
+\b0\fs28 \
 Semantic actions appear at the end of rules enclosed in backticks and are used to execute custom code when a non-terminal is parsed. They may contain arbitrary C# code and if the code does not end with a semi-colon or curly brace then a semi-colon will be added. The parser class is a partial class to allow custom helper methods to be defined. The first semantic action is executed if the rule succeeded, the second if it failed.\
 \
-Semantic actions may use the following local variables from the generated code:\
+Because the parser may back-track semantic actions should not have side effects. Semantic actions may use the following local variables from the generated code:\
 \
 \pard\pardeftab360\ql\qnatural\pardirnatural
 
@@ -259,14 +255,57 @@ Semantic actions may use the following local variables from the generated code:\
 \b value
 \b0  - The type is determined by the value setting. It defaults to results[0].Value. Typically semantic actions will set this using the results local variable. This may be used only within the success case.\
 \
-Using anything else from the generated code is not guaranteed to work in the future.\
+\pard\pardeftab360\ql\qnatural\pardirnatural
+
+\b\fs36 \cf0 Partial Methods\
+
+\b0\fs28 \
+There are a handful of partial methods that you can choose to implement in order to hook into parsing:\
 \
-\pard\pardeftab360\ql\qnatural\pardirnatural
+\pard\tx0\pardeftab360\ql\qnatural\pardirnatural
 
-\b\fs36 \cf0 Notes\
+\b \cf5 partial
+\b0 \cf0  
+\b \cf5 private
+\b0 \cf0  
+\b \cf5 void
+\b0 \cf0  
+\b OnCtorEpilog
+\b0 ();\
 \pard\pardeftab360\ql\qnatural\pardirnatural
+\cf0 This is called at the end of the constructor.\
+\pard\tx0\pardeftab360\ql\qnatural\pardirnatural
 
-\b0\fs28 \cf0 \
+\b \cf5 \
+partial
+\b0 \cf0  
+\b \cf5 private
+\b0 \cf0  
+\b \cf5 void
+\b0 \cf0  
+\b OnParseProlog
+\b0 ();\
+\pard\pardeftab360\ql\qnatural\pardirnatural
+\cf0 This is called immediately before the input is parsed.\
+\pard\tx0\pardeftab360\ql\qnatural\pardirnatural
+
+\b \cf5 \
+\pard\tx0\pardeftab360\ql\qnatural\pardirnatural
+\cf5 partial
+\b0 \cf0  
+\b \cf5 private
+\b0 \cf0  
+\b \cf5 void
+\b0 \cf0  
+\b OnParseEpilog
+\b0 (State state);\
+\pard\pardeftab360\ql\qnatural\pardirnatural
+\cf0 This is called immediately after the input is parsed. The state argument has properties to indicate if parsing succeeded, the index of the first unconsumed character, and error messages. \
+\
+
+\b\fs36 Notes\
+
+\b0\fs28 \
 Context Free Grammars (CFGs) have a difficult time encoding whitespace rules and so usually rely on a separate lexer to convert characters into tokens. PEG parsers on the other hand allow whitespace rules to be expressed in a natural way and so allow lexing and parsing to be integrated (see the example above).\
 \
 Reserved words are also a difficulty for CFGs and another reason they rely on a lexer. They are however rather easy to encode in a PEG parser:\
@@ -294,12 +333,10 @@ This is illegal in peg-sharp because it causes the parser to fall into an infini
 \
 Additive := Multitive ((\cf3 '+'\cf0  / \cf3 ' -'\cf0 ) Multitive)*;\
 \
-\pard\pardeftab360\ql\qnatural\pardirnatural
 
-\b\fs36 \cf0 Peg File Grammar\
-\pard\pardeftab360\ql\qnatural\pardirnatural
+\b\fs36 Peg File Grammar\
 
-\b0\fs28 \cf0 \
+\b0\fs28 \
 start = PegFile\
 \
 Action := \cf3 '`'\cf0  \cf3 [^`]+\cf0  \cf3 '`'\cf0 ;\
