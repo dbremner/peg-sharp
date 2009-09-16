@@ -61,10 +61,10 @@ internal static class Program
 		
 		var parser = new Parser();
 		string input = System.IO.File.ReadAllText(pegFile);
-		Grammar grammar = parser.Parse(input);
+		parser.Parse(input);
 		
 		// Check for errors.
-		grammar.Validate();
+		parser.Grammar.Validate();
 		
 		// Delete the old parser.
 		if (File.Exists(ms_outFile))
@@ -76,7 +76,7 @@ internal static class Program
 		
 		using (var stream = new StreamWriter(ms_outFile))
 		{
-			using (var writer = new Writer(stream, grammar))
+			using (var writer = new Writer(stream, parser.Grammar))
 			{
 				writer.Write(pegFile);
 				stream.Flush();

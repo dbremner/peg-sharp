@@ -66,7 +66,7 @@ internal sealed class AssertExpression : Expression
 	{
 		if (depth == 0)
 		{
-			line.Append("state = DoAssert(state, results,");
+			line.Append("_state = DoAssert(_state, results,");
 			Expression.Write(line, depth + 1);
 			line.Append(")");
 		}
@@ -146,7 +146,7 @@ internal sealed class ChoiceExpression : Expression
 		string args = DoGetArgs(depth + 1);
 		if (depth == 0)
 		{
-			line.AppendFormat("state = DoChoice(state, results{0})", args);
+			line.AppendFormat("_state = DoChoice(_state, results{0})", args);
 		}
 		else
 		{
@@ -206,7 +206,7 @@ internal sealed class LiteralExpression : Expression
 	{
 		if (depth == 0)
 		{
-			line.AppendFormat("state = DoParseLiteral(state, results, \"{0}\")", Literal);
+			line.AppendFormat("_state = DoParseLiteral(_state, results, \"{0}\")", Literal);
 		}
 		else
 		{
@@ -279,7 +279,7 @@ internal sealed class NAssertExpression : Expression
 	{
 		if (depth == 0)
 		{
-			line.Append("state = DoNAssert(state, results,");
+			line.Append("_state = DoNAssert(_state, results,");
 			Expression.Write(line, depth + 1);
 			line.Append(")");
 		}
@@ -373,12 +373,12 @@ internal sealed class RangeExpression : Expression
 	
 	public override void Write(StringBuilder line, int depth)
 	{
-		string chars = Chars.Length > 0 ? "\"" + Chars.EscapeAll() + "\"" : "string.Empty";
-		string ranges = Ranges.Length > 0 ? "\"" + Ranges.EscapeAll() + "\"" : "string.Empty";
+		string chars = Chars.Length > 0 ? "\"" + Chars.EscapeAll().Replace("\\]", "]") + "\"" : "string.Empty";
+		string ranges = Ranges.Length > 0 ? "\"" + DoEscape(Ranges) + "\"" : "string.Empty";
 		
 		if (depth == 0)
 		{
-			line.AppendFormat("state = DoParseRange(state, results, {0}, {1}, {2}, {3}, \"{4}\")",
+			line.AppendFormat("_state = DoParseRange(_state, results, {0}, {1}, {2}, {3}, \"{4}\")",
 				Inverted ? "true" : "false", chars, ranges, Categories, this);
 		}
 		else
@@ -433,7 +433,7 @@ internal sealed class RangeExpression : Expression
 	
 	private string DoEscape(string s)
 	{
-		return s.EscapeAll().Replace("]", "\\\\]");
+		return s.EscapeAll().Replace("]", "\\]");
 	}
 	
 	private string DoGetCategory(string s)
@@ -563,7 +563,7 @@ internal sealed class RangeExpression : Expression
 				break;
 				
 			default:
-				throw new ArgumentException(s + " is not a valid Unicode character category.");
+				throw new ArgumentException(s + " is not a valid Unicode character category");
 		}
 		
 		return result;
@@ -618,7 +618,7 @@ internal sealed class RepetitionExpression : Expression
 	{
 		if (depth == 0)
 		{
-			line.AppendFormat("state = DoRepetition(state, results, {0}, {1},", Min, Max);
+			line.AppendFormat("_state = DoRepetition(_state, results, {0}, {1},", Min, Max);
 			Expression.Write(line, depth + 1);
 			line.Append(")");
 		}
@@ -702,7 +702,7 @@ internal sealed class RuleExpression : Expression
 	{
 		if (depth == 0)
 		{
-			line.Append("state = DoParse(state, results, \"");
+			line.Append("_state = DoParse(_state, results, \"");
 			line.Append(Name);
 			line.Append("\")");
 		}
@@ -783,7 +783,7 @@ internal sealed class SequenceExpression : Expression
 		string args = DoGetArgs(depth + 1);
 		if (depth == 0)
 		{
-			line.AppendFormat("state = DoSequence(state, results{0})", args);
+			line.AppendFormat("_state = DoSequence(_state, results{0})", args);
 		}
 		else
 		{

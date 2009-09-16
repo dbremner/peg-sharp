@@ -173,6 +173,10 @@ internal sealed partial class Writer : IDisposable
 		DoWriteLine("	{");
 		DoWriteLine("	}");
 		DoWriteLine("	");
+		DoWriteLine("	public ParserException(string message) : base(message)");
+		DoWriteLine("	{");
+		DoWriteLine("	}");
+		DoWriteLine("	");
 		DoWriteLine("	public ParserException(int line, int col, string message) : base(string.Format(\"{0} at line {1} col {2}.\", message, line, col))");
 		DoWriteLine("	{");
 		DoWriteLine("	}");
@@ -417,12 +421,13 @@ internal sealed partial class Writer : IDisposable
 			DoWriteLine("		");
 			if (m_grammar.Settings["value"] != "void")
 			{
-				DoWriteLine("		{0} value = state.Parsed && results.Count > oldCount ? results[results.Count - 1].Value : default({0});", m_grammar.Settings["value"]);
-				DoWriteLine("		cache = new CacheValue(state, value);");
+				DoWriteLine("		bool hasResult = state.Parsed && results.Count > oldCount;");
+				DoWriteLine("		{0} value = hasResult ? results[results.Count - 1].Value : default({0});", m_grammar.Settings["value"]);
+				DoWriteLine("		cache = new CacheValue(state, value, hasResult);");
 			}
 			else
 			{
-				DoWriteLine("		cache = new CacheValue(state);");
+				DoWriteLine("		cache = new CacheValue(state, state.Parsed);");
 			}
 			DoWriteLine("		m_cache.Add(key, cache);");
 			DoWriteLine("	}");
@@ -433,14 +438,16 @@ internal sealed partial class Writer : IDisposable
 				DoWriteLine("		DoDebugProlog(\"cached \" + nonterminal, start);");
 				DoWriteLine("		");
 			}
-			DoWriteLine("		if (cache.State.Parsed)");
+			DoWriteLine("		if (cache.HasResult)");
 			if (m_grammar.Settings["value"] != "void")
 				DoWriteLine("			results.Add(new Result(this, start.Index, m_input.Substring(start.Index, cache.State.Index - start.Index), cache.Value));");
 			else
 				DoWriteLine("			results.Add(new Result(this, start.Index, m_input.Substring(start.Index, cache.State.Index - start.Index)));");
-			DoWriteLine("		");
 			if (m_debug)
+			{
+				DoWriteLine("		");
 				DoWriteLine("		DoDebugEpilog(\"cached \" + nonterminal, start, cache.State);");
+			}
 			DoWriteLine("	}");
 			DoWriteLine("	");
 			DoWriteLine("	return cache.State;");
@@ -641,7 +648,6 @@ internal sealed partial class Writer : IDisposable
 		DoWriteLine();
 		DoWriteLine("OnParseProlog();");
 		DoWriteLine("state = DoParse(state, results, \"{0}\");", m_grammar.Settings["start"]);
-		DoWriteLine("OnParseEpilog(state);");
 		DoWriteLine();
 		
 		if (m_grammar.Settings["unconsumed"] == "expose")
@@ -656,6 +662,7 @@ internal sealed partial class Writer : IDisposable
 			DoWriteLine("else if (i < input.Length)");
 			DoWriteLine("	DoThrow(state.Errors.Index, \"Not all input was consumed starting from '\" + input.Substring(i, Math.Min(16, input.Length - i)) + \"'\");");
 		}
+		DoWriteLine("OnParseEpilog(state);");
 		
 		DoWriteLine();
 		if (value == "void")
@@ -742,13 +749,14 @@ internal sealed partial class Writer : IDisposable
 		DoWriteLine("private struct CacheValue");
 		DoWriteLine("{");
 		if (m_grammar.Settings["value"] != "void")
-			DoWriteLine("	public CacheValue(State state, {0} value)", m_grammar.Settings["value"]);
+			DoWriteLine("	public CacheValue(State state, {0} value, bool hasResult)", m_grammar.Settings["value"]);
 		else
-			DoWriteLine("	public CacheValue(State state)");
+			DoWriteLine("	public CacheValue(State state, bool hasResult)");
 		DoWriteLine("	{");
 		DoWriteLine("		State = state;");
 		if (m_grammar.Settings["value"] != "void")
 			DoWriteLine("		Value = value;");
+		DoWriteLine("		HasResult = hasResult;");
 		DoWriteLine("	}");
 		DoWriteLine("	");
 		DoWriteLine("	public State State {get; private set;}");
@@ -757,6 +765,8 @@ internal sealed partial class Writer : IDisposable
 			DoWriteLine("	");
 			DoWriteLine("	public {0} Value {1}get; private set;{2}", m_grammar.Settings["value"], "{", "}");
 		}
+		DoWriteLine("	");
+		DoWriteLine("	public bool HasResult {get; private set;}");
 		DoWriteLine("}");
 		DoWriteLine("");
 		DoWriteLine("private delegate State ParseMethod(State state, List<Result> results);");

@@ -14,8 +14,12 @@ def run(path, command):
 		return False
 	else:
 		return True
+		
+def doRun(dir):
+	sys.stdout.write(dir + "...")
+	if run(dir, "make run"):
+		sys.stdout.write("passed\n")
 
-# TODO: print stats
 failures = 0
 for root, dirs, files in os.walk("."):
 	for dir in dirs:

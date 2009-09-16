@@ -43,7 +43,7 @@ public sealed class BadTests
 	[Test]
 	public void Empty()
 	{
-		AssertThrows<ParserException>(() => new Parser().Parse(""), "line 1: Expected identifier or #.");
+		AssertThrows<ParserException>(() => new Parser().Parse(""), "Expected whitespace or identifier or comment at line 1 col 1.");
 	}
 	
 	[Test]
@@ -63,7 +63,7 @@ start = Expr
 ";
 		
 		var parser = new Parser();
-		AssertThrows<ParserException>(() => parser.Parse(input), "line 4: Setting 'start' is already defined.");
+		AssertThrows<ParserException>(() => parser.Parse(input), "Setting 'start' is already defined at line 4 col 1.");
 	}
 	
 	[Test]
@@ -76,7 +76,7 @@ foo = Expr
 ";
 		
 		var parser = new Parser();
-		AssertThrows<ParserException>(() => parser.Parse(input), "line 4: Setting 'foo' is not a valid name.");
+		AssertThrows<ParserException>(() => parser.Parse(input), "Setting 'foo' is not a valid name at line 4 col 1.");
 	}
 	
 	[Test]
@@ -89,7 +89,7 @@ some bogus text
 ";
 		
 		var parser = new Parser();
-		AssertThrows<ParserException>(() => parser.Parse(input), "line 4: Expected = or :=.");
+		AssertThrows<ParserException>(() => parser.Parse(input), "Expected = or comment or := at line 4 col 6.");
 	}
 	
 	[Test]
@@ -103,7 +103,7 @@ Expr :=
 ";
 		
 		var parser = new Parser();
-		AssertThrows<ParserException>(() => parser.Parse(input), "line 6: Expected & or ! or . or ' or [ or identifier or (.");
+		AssertThrows<ParserException>(() => parser.Parse(input), "Expected whitespace or & or ! or . or literal or range literal or rule name or parenthesized expression at line 6 col 1.");
 	}
 	
 	[Test]
@@ -134,8 +134,8 @@ Value := 'x' / 'y' / 'z';
 Value := '(' ExprZ ')';
 ";
 		var parser = new Parser();
-		Grammar grammar = parser.Parse(input);
-		AssertThrows<ParserException>(() => grammar.Validate(), "Undefined nonterminals: ValueX ExprZ");
+		parser.Parse(input);
+		AssertThrows<ParserException>(() => parser.Grammar.Validate(), "Undefined nonterminals: ValueX ExprZ");
 	}
 	
 	[Test]
@@ -153,8 +153,8 @@ Value := '(' Expr ')';
 ValueX := 'x';
 ";
 		var parser = new Parser();
-		Grammar grammar = parser.Parse(input);
-		AssertThrows<ParserException>(() => grammar.Validate(), "Unused nonterminals: ValueX");
+		parser.Parse(input);
+		AssertThrows<ParserException>(() => parser.Grammar.Validate(), "Unused nonterminals: ValueX");
 	}
 	
 	[Test]
@@ -168,7 +168,7 @@ unconsumed = foo
 Expr := 'x'? 'y';
 ";
 		var parser = new Parser();
-		AssertThrows<ParserException>(() => parser.Parse(input), "line 4: Unconsumed value must be 'error', 'expose', or 'ignore'.");
+		AssertThrows<ParserException>(() => parser.Parse(input), "Unconsumed value must be 'error', 'expose', or 'ignore' at line 4 col 1.");
 	}
 	
 	[Test]
@@ -190,8 +190,8 @@ Value := 'x' / 'y' / 'z' / Value 'a';	# left recursive
 Value := '(' Expr ')';
 ";
 		var parser = new Parser();
-		Grammar grammar = parser.Parse(input);
-		AssertThrows<ParserException>(() => grammar.Validate(), "Left recursive rules: Sum Value");
+		parser.Parse(input);
+		AssertThrows<ParserException>(() => parser.Grammar.Validate(), "Left recursive rules: Sum Value");
 	}
 	
 	[Test]
@@ -209,8 +209,8 @@ Value := '(' Expr ')';
 Value := Sum 'k';		# indirect left recursion
 ";
 		var parser = new Parser();
-		Grammar grammar = parser.Parse(input);
-		AssertThrows<ParserException>(() => grammar.Validate(), "Left recursive rules: Sum Product Value");
+		parser.Parse(input);
+		AssertThrows<ParserException>(() => parser.Grammar.Validate(), "Left recursive rules: Sum Product Value");
 	}
 	
 	[Test]
@@ -229,8 +229,8 @@ S := Space* `text = null` `expected = ""unreachable""`
 Space := [ \t\r\n] `;` `expected = ""whitespace""`
 ";
 		var parser = new Parser();
-		Grammar grammar = parser.Parse(input);
-		AssertThrows<ParserException>(() => grammar.Validate(), "Unreachable fail actions: S");
+		parser.Parse(input);
+		AssertThrows<ParserException>(() => parser.Grammar.Validate(), "Unreachable fail actions: S");
 	}
 	
 	[Test]
@@ -250,8 +250,8 @@ Spacer := Space*;
 Space := [ \t\r\n] `;` `expected = ""whitespace""`
 ";
 		var parser = new Parser();
-		Grammar grammar = parser.Parse(input);
-		AssertThrows<ParserException>(() => grammar.Validate(), "Unreachable fail actions: S");
+		parser.Parse(input);
+		AssertThrows<ParserException>(() => parser.Grammar.Validate(), "Unreachable fail actions: S");
 	}
 	
 	[Test]
@@ -269,8 +269,8 @@ Value := '(' Expr ')' S `value = results[1].Value` `expected = ""parenthesized e
 S := . `text = null` `expected = ""unreachable""`
 ";
 		var parser = new Parser();
-		Grammar grammar = parser.Parse(input);
-		AssertThrows<ParserException>(() => grammar.Validate(), "Unreachable fail actions: S");
+		parser.Parse(input);
+		AssertThrows<ParserException>(() => parser.Grammar.Validate(), "Unreachable fail actions: S");
 	}
 	
 	[Test]
@@ -288,8 +288,8 @@ Value := '(' Expr ')' S `value = results[1].Value` `expected = ""parenthesized e
 S := 'y' / 'z' / . `text = null` `expected = ""unreachable""`
 ";
 		var parser = new Parser();
-		Grammar grammar = parser.Parse(input);
-		AssertThrows<ParserException>(() => grammar.Validate(), "Unreachable fail actions: S");
+		parser.Parse(input);
+		AssertThrows<ParserException>(() => parser.Grammar.Validate(), "Unreachable fail actions: S");
 	}
 	
 	[Test]
@@ -307,8 +307,8 @@ Value := '(' Expr ')' S `value = results[1].Value` `expected = ""parenthesized e
 S := 'y' / . / 'z' `text = null` `expected = ""unreachable""`
 ";
 		var parser = new Parser();
-		Grammar grammar = parser.Parse(input);
-		AssertThrows<ParserException>(() => grammar.Validate(), "Unreachable alternative in: S");
+		parser.Parse(input);
+		AssertThrows<ParserException>(() => parser.Grammar.Validate(), "Unreachable alternative in: S");
 	}
 	
 	[Test]
@@ -326,8 +326,8 @@ Value := '(' Expr ')' S `value = results[1].Value` `expected = ""parenthesized e
 S := 'xx' / 'xxY' `text = null` `expected = ""unreachable""`
 ";
 		var parser = new Parser();
-		Grammar grammar = parser.Parse(input);
-		AssertThrows<ParserException>(() => grammar.Validate(), "Unreachable alternative in: S");
+		parser.Parse(input);
+		AssertThrows<ParserException>(() => parser.Grammar.Validate(), "Unreachable alternative in: S");
 	}
 	
 	[Test]
@@ -345,8 +345,8 @@ Value := '(' Expr ')' S `value = results[1].Value` `expected = ""parenthesized e
 S := [abcdXYZ] / [acd] `text = null` `expected = ""unreachable""`
 ";
 		var parser = new Parser();
-		Grammar grammar = parser.Parse(input);
-		AssertThrows<ParserException>(() => grammar.Validate(), "Unreachable alternative in: S");
+		parser.Parse(input);
+		AssertThrows<ParserException>(() => parser.Grammar.Validate(), "Unreachable alternative in: S");
 	}
 	
 	[Test]
@@ -364,8 +364,8 @@ Value := '(' Expr ')' S `value = results[1].Value` `expected = ""parenthesized e
 S := 'a' ([X\cLl] / [a-d]) `text = null` `expected = ""unreachable""`
 ";
 		var parser = new Parser();
-		Grammar grammar = parser.Parse(input);
-		AssertThrows<ParserException>(() => grammar.Validate(), "Unreachable alternative in: S");
+		parser.Parse(input);
+		AssertThrows<ParserException>(() => parser.Grammar.Validate(), "Unreachable alternative in: S");
 	}
 	
 	[Test]
@@ -382,8 +382,8 @@ Value := 'x' / 'y' / 'z' / [abZ-Cd];
 Value := '(' Expr ')';
 ";
 		var parser = new Parser();
-		Grammar grammar = parser.Parse(input);
-		AssertThrows<ParserException>(() => grammar.Validate(), "Backwards range in: Value");
+		parser.Parse(input);
+		AssertThrows<ParserException>(() => parser.Grammar.Validate(), "Backwards range in: Value");
 	}
 	
 	[Test]
@@ -400,7 +400,7 @@ Value := 'x' / 'y' / 'z' / [ab\cXxd];
 Value := '(' Expr ')';
 ";
 		var parser = new Parser();
-		AssertThrows<ParserException>(() => parser.Parse(input), "line 8: Xx is not a valid Unicode character category.");
+		AssertThrows<ParserException>(() => parser.Parse(input), "Xx is not a valid Unicode character category at line 8 col 28.");
 	}
 	
 	[Test]
@@ -417,7 +417,7 @@ Value := 'x' / 'y' / 'z' / [];
 Value := '(' Expr ')';
 ";
 		var parser = new Parser();
-		AssertThrows<ParserException>(() => parser.Parse(input), "line 8: ranges cannot be empty.");
+		AssertThrows<ParserException>(() => parser.Parse(input), "Not all input was consumed starting from 'Value := 'x' / '' at line 8 col 29.");
 	}
 	
 	[Test]
@@ -434,7 +434,7 @@ Value := 'x' / 'y' / 'z' / [^];
 Value := '(' Expr ')';
 ";
 		var parser = new Parser();
-		AssertThrows<ParserException>(() => parser.Parse(input), "line 8: inverted ranges cannot be empty.");
+		AssertThrows<ParserException>(() => parser.Parse(input), "Inverted range cannot be empty at line 8 col 28.");
 	}
 }
 #endif	// TEST

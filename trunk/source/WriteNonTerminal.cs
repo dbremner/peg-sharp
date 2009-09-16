@@ -32,21 +32,21 @@ internal sealed partial class Writer
 		string prolog = string.Format("{0} := {1}", rule.Name, rule.Expression);
 		if (!m_debug)
 			DoWriteLine("// " + prolog);
-		DoWriteLine("private State " + methodName + "(State state, List<Result> outResults)");
+		DoWriteLine("private State " + methodName + "(State _state, List<Result> _outResults)");
 		DoWriteLine("{");
 		if (m_debug)
 		{
-			DoWriteLine("	DoDebugProlog(\"" + prolog + "\", state);");
+			DoWriteLine("	DoDebugProlog(\"" + prolog + "\", _state);");
 			DoWriteLine("	");
 		}
-		DoWriteLine("	State start = state;");
+		DoWriteLine("	State _start = _state;");
 		DoWriteLine("	var results = new List<Result>();");
 		DoWriteLine("	");
 		DoWriteNonTerminalRule(rule);
 		DoWriteLine("	");
-		DoWriteLine("	if (state.Parsed)");
+		DoWriteLine("	if (_state.Parsed)");
 		DoWriteLine("	{");
-		DoWriteLine("		string text = m_input.Substring(start.Index, state.Index - start.Index);");
+		DoWriteLine("		string text = m_input.Substring(_start.Index, _state.Index - _start.Index);");
 		if (m_grammar.Settings["value"] != "void")
 			DoWriteLine("		{0} value = results.Count > 0 ? results[0].Value : default({0});", m_grammar.Settings["value"]);
 		if (rule.PassAction != null)
@@ -62,31 +62,31 @@ internal sealed partial class Writer
 			if (DoReferencesLocal(rule.PassAction, "fatal"))
 			{
 				DoWriteLine("		if (!string.IsNullOrEmpty(fatal))");
-				DoWriteLine("			DoThrow(start.Index, fatal);");
+				DoWriteLine("			DoThrow(_start.Index, fatal);");
 			}
 			
 			if (DoReferencesLocal(rule.PassAction, "text"))
 			{
 				DoWriteLine("		if (text != null)");
 				if (m_grammar.Settings["value"] != "void")
-					DoWriteLine("			outResults.Add(new Result(this, start.Index, text, value));");
+					DoWriteLine("			_outResults.Add(new Result(this, _start.Index, text, value));");
 				else
-					DoWriteLine("			outResults.Add(new Result(this, start.Index, text));");
+					DoWriteLine("			_outResults.Add(new Result(this, _start.Index, text));");
 			}
 			else
 			{
 				if (m_grammar.Settings["value"] != "void")
-					DoWriteLine("		outResults.Add(new Result(this, start.Index, text, value));");
+					DoWriteLine("		_outResults.Add(new Result(this, _start.Index, text, value));");
 				else
-					DoWriteLine("		outResults.Add(new Result(this, start.Index, text));");
+					DoWriteLine("		_outResults.Add(new Result(this, _start.Index, text));");
 			}
 		}
 		else
 		{
 			if (m_grammar.Settings["value"] != "void")
-				DoWriteLine("		outResults.Add(new Result(this, start.Index, text, value));");
+				DoWriteLine("		_outResults.Add(new Result(this, _start.Index, text, value));");
 			else
-				DoWriteLine("		outResults.Add(new Result(this, start.Index, text));");
+				DoWriteLine("		_outResults.Add(new Result(this, _start.Index, text));");
 		}
 		DoWriteLine("	}");
 		if (rule.FailAction != null && DoReferencesLocal(rule.FailAction, "expected"))
@@ -101,16 +101,16 @@ internal sealed partial class Writer
 			DoWriteLine("		" + rule.FailAction + trailer);
 			
 			DoWriteLine("		if (expected != null)");
-			DoWriteLine("			state = new State(start.Index, false, ErrorSet.Combine(start.Errors, new ErrorSet(state.Errors.Index, expected)));");
+			DoWriteLine("			_state = new State(_start.Index, false, ErrorSet.Combine(_start.Errors, new ErrorSet(_state.Errors.Index, expected)));");
 			DoWriteLine("	}");
 		}
 		DoWriteLine("	");
 		if (m_debug)
 		{
-			DoWriteLine("	DoDebugEpilog(\"" + rule.Name + "\", start, state);");
+			DoWriteLine("	DoDebugEpilog(\"" + rule.Name + "\", _start, _state);");
 			DoWriteLine("	");
 		}
-		DoWriteLine("	return state;");
+		DoWriteLine("	return _state;");
 		DoWriteLine("}");
 	}
 	

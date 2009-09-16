@@ -241,7 +241,7 @@ Because the parser may back-track semantic actions should not have side effects.
 \
 
 \b fatal
-\b0  - This is of type System.String. If the semantic action sets this then a ParserException is thrown using fatal for the message. This may be used only within the success case.\
+\b0  - This is of type System.String. If the semantic action sets this to a non-null value then a ParserException is thrown using fatal for the message. This may be used only within the success case.\
 \
 
 \b results 
@@ -262,48 +262,37 @@ Because the parser may back-track semantic actions should not have side effects.
 \b0\fs28 \
 There are a handful of partial methods that you can choose to implement in order to hook into parsing:\
 \
-\pard\tx0\pardeftab360\ql\qnatural\pardirnatural
+\pard\pardeftab360\ql\qnatural\pardirnatural
 
 \b \cf5 partial
-\b0 \cf0  
-\b \cf5 private
 \b0 \cf0  
 \b \cf5 void
 \b0 \cf0  
 \b OnCtorEpilog
 \b0 ();\
-\pard\pardeftab360\ql\qnatural\pardirnatural
-\cf0 This is called at the end of the constructor.\
-\pard\tx0\pardeftab360\ql\qnatural\pardirnatural
+This is called at the end of the constructor.\
 
 \b \cf5 \
 partial
-\b0 \cf0  
-\b \cf5 private
 \b0 \cf0  
 \b \cf5 void
 \b0 \cf0  
 \b OnParseProlog
 \b0 ();\
-\pard\pardeftab360\ql\qnatural\pardirnatural
-\cf0 This is called immediately before the input is parsed.\
-\pard\tx0\pardeftab360\ql\qnatural\pardirnatural
+This is called immediately before the input is parsed.\
 
 \b \cf5 \
-\pard\tx0\pardeftab360\ql\qnatural\pardirnatural
-\cf5 partial
-\b0 \cf0  
-\b \cf5 private
+partial
 \b0 \cf0  
 \b \cf5 void
 \b0 \cf0  
 \b OnParseEpilog
 \b0 (State state);\
-\pard\pardeftab360\ql\qnatural\pardirnatural
-\cf0 This is called immediately after the input is parsed. The state argument has properties to indicate if parsing succeeded, the index of the first unconsumed character, and error messages. \
+This is called after the input is parsed. The state argument has properties to indicate if parsing succeeded, the index of the first unconsumed character, and error messages. \
 \
+\pard\pardeftab360\ql\qnatural\pardirnatural
 
-\b\fs36 Notes\
+\b\fs36 \cf0 Notes\
 
 \b0\fs28 \
 Context Free Grammars (CFGs) have a difficult time encoding whitespace rules and so usually rely on a separate lexer to convert characters into tokens. PEG parsers on the other hand allow whitespace rules to be expressed in a natural way and so allow lexing and parsing to be integrated (see the example above).\
@@ -368,7 +357,7 @@ Rule := Identifier \cf3 ':='\cf0  S Expression (\cf3 ';'\cf0  / Action S Action?
 \
 S := Space*;\
 \
-SequenceExpression := AssertExpression (Space+ AssertExpression)*;\
+SequenceExpression := AssertExpression+;\
 \
 Setting := Identifier \cf3 '='\cf0  S  \cf3 [^\\n\\r]\cf0 + S;\
 \
