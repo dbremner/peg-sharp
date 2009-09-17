@@ -70,7 +70,7 @@ bin/unit-tests.dll: bin/csc_flags $(sources)
 # Misc targets
 gendarme_flags := --severity all --confidence all --ignore gendarme.ignore --quiet
 gendarme: bin/peg-sharp.exe bin/example.exe
-	@-"$(GENDARME)" $(gendarme_flags) bin/peg-sharp.exe bin/example.exe
+	@-"$(GENDARME)" $(gendarme_flags) bin/peg-sharp.exe
 
 clean:
 	-rm -rf bin/*.exe
