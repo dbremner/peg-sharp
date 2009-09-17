@@ -326,11 +326,16 @@ Additive := Multitive ((\cf3 '+'\cf0  / \cf3 ' -'\cf0 ) Multitive)*;\
 \b\fs36 Peg File Grammar\
 
 \b0\fs28 \
-start = PegFile\
+\pard\tx0\pardeftab360\ql\qnatural\pardirnatural
+\cf0 start = PegFile\
 \
-Action := \cf3 '`'\cf0  \cf3 [^`]+\cf0  \cf3 '`'\cf0 ;\
+Action := \cf3 '`'\cf0  \cf3 [^`]\cf0 + \cf3 '`'\cf0 ;\
 \
-AssertExpression := (\cf3 '&'\cf0  / \cf3 '!'\cf0 )? PostfixExpression;\
+Any := \cf3 '.'\cf0  S;\
+\
+AssertExpression := \cf3 '&'\cf0  PostfixExpression;\
+AssertExpression := \cf3 '!'\cf0  PostfixExpression;\
+AssertExpression := PostfixExpression;\
 \
 Comment := \cf3 '#'\cf0  \cf3 [^\\n\\r]\cf0 * S;\
 \
@@ -340,18 +345,20 @@ Identifier := \cf3 [a-zA-Z]\cf0  \cf3 [a-zA-Z0-9_-]\cf0 * S;\
 \
 Integer := \cf3 [0-9]\cf0 + S;\
 \
-Literal := \cf3 '\\''\cf0  ( \cf3 [^']\cf0  / \cf3 '\\\\\\''\cf0 )+ \cf3 '\\''\cf0  S;\
+Literal := \cf3 '\\''\cf0  (\cf3 '\\\\\\''\cf0  / \cf3 [^']\cf0 )+ \cf3 '\\''\cf0  S;\
 \
 PegFile := S (Setting / Comment)+ (Rule / Comment)+;\
 \
-PrimitiveExpression := \cf3 '.'\cf0  / Literal / Range / Identifier / SubExpression;\
-\
-Range := \cf3 '['\cf0  ( \cf3 [^\\]]\cf0  / \cf3 '\\\\]'\cf0 ) \cf3 ']'\cf0  S;\
-\
 PostfixExpression := PrimitiveExpression \cf3 '\{'\cf0  S Integer \cf3 ','\cf0  S Integer \cf3 '\}'\cf0  S;\
 PostfixExpression := PrimitiveExpression \cf3 '\{'\cf0  S Integer \cf3 ','\cf0  S \cf3 '\}'\cf0  S;\
-PostfixExpression := PrimitiveExpression (\cf3 '*'\cf0  / \cf3 '+'\cf0  / \cf3 '?'\cf0 ) S;\
+PostfixExpression := PrimitiveExpression \cf3 '*'\cf0  S;\
+PostfixExpression := PrimitiveExpression \cf3 '+'\cf0  S;\
+PostfixExpression := PrimitiveExpression \cf3 '?'\cf0  S;\
 PostfixExpression := PrimitiveExpression;\
+\
+PrimitiveExpression := Any / Literal / Range / SubRule / SubExpression;\
+\
+Range := \cf3 '['\cf0  (\cf3 '\\\\]'\cf0  / \cf3 [^\\]]\cf0 )+ \cf3 ']'\cf0  S;\
 \
 Rule := Identifier \cf3 ':='\cf0  S Expression (\cf3 ';'\cf0  / Action S Action?) S;\
 \
@@ -359,9 +366,13 @@ S := Space*;\
 \
 SequenceExpression := AssertExpression+;\
 \
-Setting := Identifier \cf3 '='\cf0  S  \cf3 [^\\n\\r]\cf0 + S;\
+Setting := Identifier \cf3 '='\cf0  S Value;\
 \
 Space := \cf3 [ \\t\\r\\n]\cf0 ;\
 \
 SubExpression := \cf3 '('\cf0  S Expression \cf3 ')'\cf0  S;\
+\
+SubRule := Identifier;\
+\
+Value := \cf3 [^\\t\\n\\r]\cf0 + S;\
 }

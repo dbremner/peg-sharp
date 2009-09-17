@@ -22,15 +22,12 @@ T: Parser/CacheValue
 # I don't care about these rule.
 R: Gendarme.Rules.Performance.AvoidReturningArraysOnPropertiesRule
 A: peg-sharp
-A: example
 
 R: Gendarme.Rules.Design.AvoidRefAndOutParametersRule
 A: peg-sharp
-A: example
 
 R: Gendarme.Rules.Correctness.MethodCanBeMadeStaticRule
 A: peg-sharp
-A: example
 
 R: Gendarme.Rules.Naming.AvoidRedundancyInMethodNameRule
 M: System.Void Writer::DoWriteNonTerminalRule(Rule)
@@ -42,7 +39,11 @@ T: Used
 # fires for private types too which is far too picky.
 R: Gendarme.Rules.Maintainability.AvoidUnnecessarySpecializationRule
 A: peg-sharp
-A: example
+
+# We use names like _someLocal to avoid conflicts with locals defined in semantic
+# actions. But, for some reason, UseCorrectCasingRule complains when we do this.
+R: Gendarme.Rules.Naming.UseCorrectCasingRule
+A: peg-sharp
 
 # Not all semantic actions use these.
 R: Gendarme.Rules.Performance.AvoidUncalledPrivateCodeRule
@@ -62,7 +63,6 @@ T: ParserException
 # This rule seems to just suck.
 R: Gendarme.Rules.Maintainability.AvoidLackOfCohesionOfMethodsRule
 A: peg-sharp
-A: example
 
 # Debug code that we can't actually implement.
 R: Gendarme.Rules.Design.Generic.AvoidMethodWithUnusedGenericTypeRule
@@ -75,15 +75,17 @@ T: Unused
 
 R: Gendarme.Rules.Performance.AvoidUnusedParametersRule
 M: System.Void Unused::set_Value(System.Object)
+M: System.Void Parser::OnParseEpilog(Parser/State)
 
 # These are OK.
 R: Gendarme.Rules.Exceptions.DoNotSwallowErrorsCatchingNonSpecificExceptionsRule
-M: Parser/State Parser::DoParseRangeRule(Parser/State,System.Collections.Generic.List`1<Parser/Result>)
-M: System.Void Program::DoEval(System.String)
+M: System.String Parser::DoRange(System.String,Expression&)
 
 R: Gendarme.Rules.Portability.NewLineLiteralRule
-M: Parser/State Parser::DoParseToEol(Parser/State,System.Collections.Generic.List`1<Parser/Result>)
-M: Parser/State Parser::DoParseSpaceRule(Parser/State,System.Collections.Generic.List`1<Parser/Result>)
+M: Parser/State Parser::<DoParseCommentRule>m__69(Parser/State,System.Collections.Generic.List`1<Parser/Result>)
+M: Parser/State Parser::<DoParseCommentRule>m__69(Parser/State,System.Collections.Generic.List`1<Parser/Result>)
+M: Parser/State Parser::<DoParseValueRule>m__73(Parser/State,System.Collections.Generic.List`1<Parser/Result>)
+M: Parser/State Parser::<DoParseValueRule>m__73(Parser/State,System.Collections.Generic.List`1<Parser/Result>)
 M: Parser/State Parser::DoParseSpaceRule(Parser/State,System.Collections.Generic.List`1<Parser/Result>)
 
 R: Gendarme.Rules.Performance.OverrideValueTypeDefaultsRule
@@ -91,6 +93,10 @@ T: Parser/ErrorSet
 T: Parser/State
 T: Parser/Result
 T: Parser/CacheValue
+
+R: Gendarme.Rules.BadPractice#PreferEmptyInstanceOverNullRule
+M: System.String Parser::DoAddSetting(System.Collections.Generic.List`1<Parser/Result>)
+M: System.String Parser::DoRange(System.String,Expression&)
 
 # Debug code.
 R: Gendarme.Rules.Performance.AvoidUninstantiatedInternalClassesRule
