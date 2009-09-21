@@ -52,13 +52,13 @@ internal static class Program
 	{
 		try
 		{
-			parser.Parse("y");
+			parser.Parse("y", "DoBad1");
 			Console.Error.WriteLine("Expected a parse failure.");
 		}
 		catch (ParserException e)
 		{
-			if (e.Message != "Expected a or bA or [cB] or [d\\cPd] or z at line 1 col 1.")
-				Console.Error.WriteLine("Expected 'Expected a or bA or [cB] or [d\\cPd] or z at line 1 col 1.', but got '{0}'", e.Message);
+			if (e.Message != "Expected a or bA or [cB] or [d\\cPd] or z at line 1 col 1 in DoBad1.")
+				Console.Error.WriteLine("Expected 'Expected a or bA or [cB] or [d\\cPd] or z at line 1 col 1 in DoBad1.', but got '{0}'", e.Message);
 		}
 	}
 	

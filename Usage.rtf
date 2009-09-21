@@ -177,7 +177,7 @@ Ordered Choice
 Negative Assert
 \b0  - If e is an expression then 
 \i !e
-\i0  will match if e fails and fail if e matches. In neither case is input consumed. This is usually uses as a look-behind assertion.\
+\i0  will fail if e matches and match if e fails. In neither case is input consumed. This is usually uses as a look-behind assertion.\
 
 \b \
 Optional
@@ -326,8 +326,7 @@ Additive := Multitive ((\cf3 '+'\cf0  / \cf3 ' -'\cf0 ) Multitive)*;\
 \b\fs36 Peg File Grammar\
 
 \b0\fs28 \
-\pard\tx0\pardeftab360\ql\qnatural\pardirnatural
-\cf0 start = PegFile\
+start = PegFile\
 \
 Action := \cf3 '`'\cf0  \cf3 [^`]\cf0 + \cf3 '`'\cf0 ;\
 \
