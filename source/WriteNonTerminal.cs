@@ -47,7 +47,10 @@ internal sealed partial class Writer
 		DoWriteLine("	if (_state.Parsed)");
 		DoWriteLine("	{");
 		DoWriteLine("		string text = m_input.Substring(_start.Index, _state.Index - _start.Index);");
-		if (m_grammar.Settings["value"] != "void")
+		if (m_grammar.Settings.ContainsKey("node"))
+			DoWriteLine("		{0} value = new {1}{2}Text = text, Line = DoGetLine(_start.Index), Col = DoGetCol(_start.Index), NonTerminal = true, Name = \"{3}\", Children = (from r in results where r.Value != null select r.Value).ToArray(){4};",
+				m_grammar.Settings["value"], m_grammar.Settings["node"], "{", rule.Name, "}");
+		else if (m_grammar.Settings["value"] != "void")
 			DoWriteLine("		{0} value = results.Count > 0 ? results[0].Value : default({0});", m_grammar.Settings["value"]);
 		if (rule.PassAction != null)
 		{

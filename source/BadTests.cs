@@ -50,7 +50,13 @@ public sealed class BadTests
 	public void MissingRequiredSettings()
 	{
 		AssertThrows<ParserException>(() => new Parser().Parse("debug = true\nFoo := 'z';"), "Missing required setting 'start'.");
-		AssertThrows<ParserException>(() => new Parser().Parse("start = foo\nFoo := 'z';"), "Missing required setting 'value'.");
+		AssertThrows<ParserException>(() => new Parser().Parse("start = foo\nFoo := 'z';"), "Missing required setting 'value' or 'node'.");
+	}
+	
+	[Test]
+	public void BothValueAndNodeSettings()
+	{
+		AssertThrows<ParserException>(() => new Parser().Parse("value = Foo\nnode = Bar\nstart = Foo\nFoo := 'z';"), "'value' and 'node' settings cannot be used together.");
 	}
 	
 	[Test]
