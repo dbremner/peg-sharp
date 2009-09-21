@@ -56,6 +56,9 @@ internal sealed partial class Writer : IDisposable
 		DoWriteUsing();
 		if (m_grammar.Settings["exclude-exception"] == "false")
 			DoWriteException();
+		if (m_grammar.Settings.ContainsKey("node"))
+			if (m_grammar.Settings["exclude-node"] == "false")
+				DoWriteNode();
 		DoWriteClassHeader();
 		DoWriteCtor(rules);
 		DoWriteParseMethod();
@@ -192,6 +195,41 @@ internal sealed partial class Writer : IDisposable
 		DoWriteLine("	[SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]");
 		DoWriteLine("	private ParserException(SerializationInfo info, StreamingContext context) : base(info, context)");
 		DoWriteLine("	{");
+		DoWriteLine("	}");
+		DoWriteLine("}");
+		DoWriteLine("");
+	}
+	
+	private void DoWriteNode()
+	{
+		DoWriteLine("{0} sealed class {1}", m_grammar.Settings["visibility"], m_grammar.Settings["node"]);
+		DoWriteLine("{");
+		DoWriteLine("	// The text matched by this node.");
+		DoWriteLine("	public string Text {get; set;}");
+		DoWriteLine("	");
+		DoWriteLine("	// 1-based line number associated with the node.");
+		DoWriteLine("	public int Line {get; set;}");
+		DoWriteLine("	");
+		DoWriteLine("	// 1-based column number associated with the node.");
+		DoWriteLine("	public int Col {get; set;}");
+		DoWriteLine("	");
+		DoWriteLine("	// Returns true if the node was derived from a non-terminal.");
+		DoWriteLine("	public bool NonTerminal {get; set;}");
+		DoWriteLine("	");
+		DoWriteLine("	// The name of the non-terminal this node was derived from.");
+		DoWriteLine("	// Valid only if NonTerminal is true.");
+		DoWriteLine("	public string Name {get; set;}");
+		DoWriteLine("	");
+		DoWriteLine("	// Terminals and non-terminals matched by the non-terminal.");
+		DoWriteLine("	// Valid only if NonTerminal is true.");
+		DoWriteLine("	public {0}[] Children {1}get; set;{2}", m_grammar.Settings["node"], "{", "}");
+		DoWriteLine("	");
+		DoWriteLine("	public override string ToString()");
+		DoWriteLine("	{");
+		DoWriteLine("		if (NonTerminal)");
+		DoWriteLine("			return Name;");
+		DoWriteLine("		else");
+		DoWriteLine("			return string.Format(\"'{0}' literal\", Text);");
 		DoWriteLine("	}");
 		DoWriteLine("}");
 		DoWriteLine("");
@@ -391,7 +429,10 @@ internal sealed partial class Writer : IDisposable
 				DoWriteLine("	");
 				DoWriteLine("	int k = j + literal.Length;");
 				DoWriteLine("	");
-				if (m_grammar.Settings["value"] != "void")
+				if (m_grammar.Settings.ContainsKey("node"))
+					DoWriteLine("	results.Add(new Result(this, j, literal, new {0}{1}Text = literal, Line = DoGetLine(j), Col = DoGetCol(j), NonTerminal = false{2}));",
+						m_grammar.Settings["node"], "{", "}");
+				else if (m_grammar.Settings["value"] != "void")
 					DoWriteLine("	results.Add(new Result(this, j, literal, default({0})));", m_grammar.Settings["value"]);
 				else
 					DoWriteLine("	results.Add(new Result(this, j, literal));");
@@ -560,10 +601,14 @@ internal sealed partial class Writer : IDisposable
 			DoWriteLine("	");
 			DoWriteLine("	if (matched)");
 			DoWriteLine("	{");
-			if (m_grammar.Settings["value"] != "void")
-				DoWriteLine("		results.Add(new Result(this, state.Index, m_input.Substring(state.Index, 1), default({0})));", m_grammar.Settings["value"]);
+			DoWriteLine("		string text = m_input.Substring(state.Index, 1);");
+			if (m_grammar.Settings.ContainsKey("node"))
+				DoWriteLine("		results.Add(new Result(this, state.Index, text, new {0}{1}Text = text, Line = DoGetLine(state.Index), Col = DoGetCol(state.Index), NonTerminal = false{2}));",
+					m_grammar.Settings["node"], "{", "}");
+			else if (m_grammar.Settings["value"] != "void")
+				DoWriteLine("		results.Add(new Result(this, state.Index, text, default({0})));", m_grammar.Settings["value"]);
 			else
-				DoWriteLine("		results.Add(new Result(this, state.Index, m_input.Substring(state.Index, 1)));");
+				DoWriteLine("		results.Add(new Result(this, state.Index, text));");
 			DoWriteLine("		return new State(state.Index + 1, true, state.Errors);");
 			DoWriteLine("	}");
 			DoWriteLine("	");

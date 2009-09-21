@@ -13,8 +13,10 @@ internal sealed partial class Parser
 	{
 		if (!m_grammar.Settings.ContainsKey("start"))
 			throw new ParserException("Missing required setting 'start'.");
-		if (!m_grammar.Settings.ContainsKey("value"))
-			throw new ParserException("Missing required setting 'value'.");
+		if (!m_grammar.Settings.ContainsKey("value") && !m_grammar.Settings.ContainsKey("node"))
+			throw new ParserException("Missing required setting 'value' or 'node'.");
+		if (m_grammar.Settings.ContainsKey("value") && m_grammar.Settings.ContainsKey("node"))
+			throw new ParserException("'value' and 'node' settings cannot be used together.");
 		if (!m_grammar.Rules.Exists(r => r.Name == m_grammar.Settings["start"]))
 			throw new ParserException(string.Format("Missing the start rule '{0}'.", m_grammar.Settings["start"]));
 	}
@@ -22,7 +24,7 @@ internal sealed partial class Parser
 	private string DoAddSetting(List<Result> results)
 	{
 		string name = results[0].Text.Trim();
-		if (name != "comment" && name != "debug" && name != "exclude-exception" && name != "exclude-methods" && name != "ignore-case" && name != "namespace" && name != "start" && name != "unconsumed" && name != "using" && name != "value" && name != "visibility")
+		if (name != "comment" && name != "debug" && name != "exclude-exception" && name != "exclude-methods" && name != "exclude-node" && name != "ignore-case" && name != "namespace" && name != "node" && name != "start" && name != "unconsumed" && name != "using" && name != "value" && name != "visibility")
 			return string.Format("Setting '{0}' is not a valid name", name);
 		
 		string temp = results[2].Text.Trim();
