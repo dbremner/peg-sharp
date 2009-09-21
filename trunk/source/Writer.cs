@@ -177,15 +177,15 @@ internal sealed partial class Writer : IDisposable
 		DoWriteLine("	{");
 		DoWriteLine("	}");
 		DoWriteLine("	");
-		DoWriteLine("	public ParserException(int line, int col, string message) : base(string.Format(\"{0} at line {1} col {2}.\", message, line, col))");
+		DoWriteLine("	public ParserException(int line, int col, string file, string message) : base(string.Format(\"{0} at line {1} col {2}{3}.\", message, line, col, file != null ? (\" in \" + file) : string.Empty))");
 		DoWriteLine("	{");
 		DoWriteLine("	}");
 		DoWriteLine("	");
-		DoWriteLine("	public ParserException(int line, int col, string format, params object[] args) : this(line, col, string.Format(format, args))");
+		DoWriteLine("	public ParserException(int line, int col, string file, string format, params object[] args) : this(line, col, file, string.Format(format, args))");
 		DoWriteLine("	{");
 		DoWriteLine("	}");
 		DoWriteLine("	");
-		DoWriteLine("	public ParserException(int line, int col, string message, Exception inner) : base(string.Format(\"{0} at line {1} col {2}.\", message, line, col), inner)");
+		DoWriteLine("	public ParserException(int line, int col, string file, string message, Exception inner) : base(string.Format(\"{0} at line {1} col {2}{3}.\", message, line, col, file != null ? (\" in \" + file) : string.Empty), inner)");
 		DoWriteLine("	{");
 		DoWriteLine("	}");
 		DoWriteLine("	");
@@ -201,6 +201,7 @@ internal sealed partial class Writer : IDisposable
 	{
 		DoWriteLine("#region Fields");
 		DoWriteLine("private string m_input;");
+		DoWriteLine("private string m_file;");
 		DoWriteLine("private Dictionary<string, ParseMethod[]> m_nonterminals = new Dictionary<string, ParseMethod[]>();");
 		DoWriteLine("private Dictionary<CacheKey, CacheValue> m_cache = new Dictionary<CacheKey, CacheValue>();");
 		if (m_grammar.Settings["unconsumed"] == "expose")
@@ -355,9 +356,9 @@ internal sealed partial class Writer : IDisposable
 				DoWriteLine("	// We need this retarded if or string.Format will throw an error if it");
 				DoWriteLine("	// gets a format string like \"Expected { or something\".");
 				DoWriteLine("	if (args != null && args.Length > 0)");
-				DoWriteLine("		throw new ParserException(line, col, DoEscapeAll(string.Format(format, args)));");
+				DoWriteLine("		throw new ParserException(line, col, m_file, DoEscapeAll(string.Format(format, args)));");
 				DoWriteLine("	else");
-				DoWriteLine("		throw new ParserException(line, col, DoEscapeAll(format));");
+				DoWriteLine("		throw new ParserException(line, col, m_file, DoEscapeAll(format));");
 				DoWriteLine("}");
 				DoWriteLine("");
 			}
@@ -629,6 +630,13 @@ internal sealed partial class Writer : IDisposable
 		string value = m_grammar.Settings["value"];
 		DoWriteLine("public {0} Parse(string input)", value == "void" ? "int" : value);
 		DoWriteLine("{");
+		DoWriteLine("	return Parse(input, null);");
+		DoWriteLine("}");
+		DoWriteLine();
+
+		DoWriteLine("// File is used for error reporting.");
+		DoWriteLine("public {0} Parse(string input, string file)", value == "void" ? "int" : value);
+		DoWriteLine("{");
 		++m_indent;
 		
 		if (m_debug)
@@ -638,7 +646,9 @@ internal sealed partial class Writer : IDisposable
 			DoWriteLine();
 		}
 		
-		DoWriteLine("m_input = input + \"\\x0\";		// add a sentinel so we can avoid range checks");
+		DoWriteLine("m_file = file;");
+		DoWriteLine("m_input = m_file;				// we need to ensure that m_file is used or we will (in some cases) get a compiler warning");
+		DoWriteLine("m_input = input + \"\\x0\";	// add a sentinel so we can avoid range checks");
 		DoWriteLine("m_cache.Clear();");
 		if (m_grammar.Settings["unconsumed"] == "expose")
 			DoWriteLine("m_consumed = 0;");
