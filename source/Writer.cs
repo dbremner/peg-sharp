@@ -180,7 +180,7 @@ internal sealed partial class Writer : IDisposable
 		DoWriteLine("	{");
 		DoWriteLine("	}");
 		DoWriteLine("	");
-		DoWriteLine("	public ParserException(int line, int col, string file, string message) : base(string.Format(\"{0} at line {1} col {2}{3}.\", message, line, col, file != null ? (\" in \" + file) : string.Empty))");
+		DoWriteLine("	public ParserException(int line, int col, string file, string message) : base(string.Format(\"{0} at line {1} col {2}{3}\", message, line, col, file != null ? (\" in \" + file) : \".\"))");
 		DoWriteLine("	{");
 		DoWriteLine("	}");
 		DoWriteLine("	");
@@ -188,7 +188,7 @@ internal sealed partial class Writer : IDisposable
 		DoWriteLine("	{");
 		DoWriteLine("	}");
 		DoWriteLine("	");
-		DoWriteLine("	public ParserException(int line, int col, string file, string message, Exception inner) : base(string.Format(\"{0} at line {1} col {2}{3}.\", message, line, col, file != null ? (\" in \" + file) : string.Empty), inner)");
+		DoWriteLine("	public ParserException(int line, int col, string file, string message, Exception inner) : base(string.Format(\"{0} at line {1} col {2}{3}\", message, line, col, file != null ? (\" in \" + file) : \".\"), inner)");
 		DoWriteLine("	{");
 		DoWriteLine("	}");
 		DoWriteLine("	");
