@@ -46,16 +46,17 @@ internal sealed partial class Writer
 		DoWriteLine("	");
 		DoWriteLine("	if (_state.Parsed)");
 		DoWriteLine("	{");
-		DoWriteLine("		string text = m_input.Substring(_start.Index, _state.Index - _start.Index);");
-		if (m_grammar.Settings.ContainsKey("node"))
-			DoWriteLine("		{0} value = new {1}{2}Text = text, Line = DoGetLine(_start.Index), Col = DoGetCol(_start.Index), NonTerminal = true, Name = \"{3}\", Children = (from r in results where r.Value != null select r.Value).ToArray(){4};",
-				m_grammar.Settings["value"], m_grammar.Settings["node"], "{", rule.Name, "}");
+		if (m_grammar.Settings["value"] == "XmlNode")
+			DoWriteLine("		{0} value = DoCreateElementNode(\"{1}\", _start.Index, _state.Index - _start.Index, DoGetLine(_start.Index), DoGetCol(_start.Index), (from r in results where r.Value != null select r.Value).ToArray());",
+				m_grammar.Settings["value"], rule.Name);
 		else if (m_grammar.Settings["value"] != "void")
 			DoWriteLine("		{0} value = results.Count > 0 ? results[0].Value : default({0});", m_grammar.Settings["value"]);
 		if (rule.PassAction != null)
 		{
 			if (DoReferencesLocal(rule.PassAction, "fatal"))
 				DoWriteLine("		string fatal = null;");
+			if (DoReferencesLocal(rule.PassAction, "text"))
+				DoWriteLine("		string text = m_input.Substring(_start.Index, _state.Index - _start.Index);");
 			
 			string trailer = string.Empty;
 			if (rule.PassAction[rule.PassAction.Length - 1] != ';' && rule.PassAction[rule.PassAction.Length - 1] != '}')
@@ -72,24 +73,24 @@ internal sealed partial class Writer
 			{
 				DoWriteLine("		if (text != null)");
 				if (m_grammar.Settings["value"] != "void")
-					DoWriteLine("			_outResults.Add(new Result(this, _start.Index, text, value));");
+					DoWriteLine("			_outResults.Add(new Result(this, _start.Index, _state.Index - _start.Index, m_input, value));");
 				else
-					DoWriteLine("			_outResults.Add(new Result(this, _start.Index, text));");
+					DoWriteLine("			_outResults.Add(new Result(this, _start.Index, _state.Index - _start.Index, m_input));");
 			}
 			else
 			{
 				if (m_grammar.Settings["value"] != "void")
-					DoWriteLine("		_outResults.Add(new Result(this, _start.Index, text, value));");
+					DoWriteLine("		_outResults.Add(new Result(this, _start.Index, _state.Index - _start.Index, m_input, value));");
 				else
-					DoWriteLine("		_outResults.Add(new Result(this, _start.Index, text));");
+					DoWriteLine("		_outResults.Add(new Result(this, _start.Index, _state.Index - _start.Index, m_input));");
 			}
 		}
 		else
 		{
 			if (m_grammar.Settings["value"] != "void")
-				DoWriteLine("		_outResults.Add(new Result(this, _start.Index, text, value));");
+				DoWriteLine("		_outResults.Add(new Result(this, _start.Index, _state.Index - _start.Index, m_input, value));");
 			else
-				DoWriteLine("		_outResults.Add(new Result(this, _start.Index, text));");
+				DoWriteLine("		_outResults.Add(new Result(this, _start.Index, _state.Index - _start.Index, m_input));");
 		}
 		DoWriteLine("	}");
 		if (rule.FailAction != null && DoReferencesLocal(rule.FailAction, "expected"))
@@ -140,6 +141,15 @@ internal sealed partial class Writer
 			return true;
 			
 		else if (text.Contains(local + "="))
+			return true;
+			
+		else if (text.Contains(local + "."))
+			return true;
+			
+		else if (text.Contains(local + ";"))
+			return true;
+			
+		else if (text.EndsWith(local))
 			return true;
 			
 		else if (text.Contains(local + ","))		// these last two are for wacky actions that do things like `DoSet(out text)`

@@ -84,19 +84,11 @@ Peg files consist of two or more settings and one or more non-terminal definitio
 \b exclude-methods
 \b0  - Space separated list of parser method names to not generate. Note that these must still be defined (in a partial class).\
 \'95\'a0
-\b exclude-node
-\b0  - If 
-\i true 
-\i0 then the node setting class will not be generated. Defaults to false.\
-\'95\'a0
 \b ignore-case
 \b0  - If true terminals are lower cased before they are compared. Defaults to false.\
 \'95\'a0
 \b namespace
 \b0  - Name of the namespace to put the parser within. Defaults to the global namespace.\
-\'95\'a0
-\b node
-\b0  - The name of the generated type used for the result of non-terminal parses.\
 \'95\'a0
 \b start
 \b0  - The name of the non-terminal with which parsing starts. If 
@@ -125,7 +117,7 @@ Peg files consist of two or more settings and one or more non-terminal definitio
 \b visibility
 \b0  - The visibility of the generated types. Defaults to "internal".\
 \
-Start is a required setting. One of value or node is also required.\
+Start and value are required settings.\
 \
 
 \b Non-terminals
@@ -254,7 +246,7 @@ Because the parser may back-track semantic actions should not have side effects.
 
 \b results 
 \b0 - This of type List<Result>. Terminals and non-terminals parsed by the rule will add new results to the list. For terminals Value will be set to the default value for the result type. For non-terminals it will be set using the value variable from the rule. The Result type looks something like this:\
-\pard\tx0\pardeftab360\ql\qnatural\pardirnatural
+\pard\pardeftab360\ql\qnatural\pardirnatural
 
 \b \cf5 private
 \b0 \cf0  
@@ -263,7 +255,8 @@ Because the parser may back-track semantic actions should not have side effects.
 \b\fs36 \shad\shadx21\shady-22\shadr0\shado85 \shadc0 Result
 \b0\fs28 \shad0 \
 \{\
-\cb6 	
+\pard\pardeftab360\ql\qnatural\pardirnatural
+\cf0 \cb6 	
 \i \cf2 \cb1 // The text which was parsed by the terminal or non-terminal.
 \i0 \cf0 \
 \cb6 	
@@ -317,8 +310,7 @@ Because the parser may back-track semantic actions should not have side effects.
 \b \cf5 get
 \b0 \cf0 ;\}\
 \}\
-\pard\pardeftab360\ql\qnatural\pardirnatural
-\cf0 \
+\
 \pard\pardeftab360\ql\qnatural\pardirnatural
 
 \b \cf0 text
@@ -326,115 +318,13 @@ Because the parser may back-track semantic actions should not have side effects.
 \
 
 \b value
-\b0  - The type is determined by the value setting. If the node setting is used then this will be automatically initialized to a valid node object, otherwise it will default to results[0].Value. Semantic actions may change a node property or set the value using the results local variable. This may be used only within the success case.\
+\b0  - The type is determined by the value setting. If the value setting is XmlNode then the value will be set to an XmlElement for non-terminals and an XmlText for terminals, otherwise it will default to results[0].Value. Semantic actions may mutate the node or set the value using the results local variable. The value local may be used only within the success case.\
 \
-If the node setting is used then the value type will be a generated type which looks something like this:\
-\pard\pardeftab360\ql\qnatural\pardirnatural
-
-\b \cf5 internal
-\b0 \cf0  
-\b \cf5 sealed
-\b0 \cf0  
-\b \cf5 class
-\b0 \cf0  
-\b\fs36 \shad\shadx21\shady-22\shadr0\shado85 \shadc0 Node
-\b0\fs28 \shad0 \
-\{\
-\pard\pardeftab360\ql\qnatural\pardirnatural
-\cf0 \cb6 	
-\i \cf2 \cb1 // The text matched by this node.
-\i0 \cf0 \
-\cb6 	
-\b \cf5 \cb1 public
-\b0 \cf0  
-\b \cf5 string
-\b0 \cf0  
-\b Text
-\b0  \{
-\b \cf5 get
-\b0 \cf0 ; 
-\b \cf5 set
-\b0 \cf0 ;\}\
-\cb6 	\cb1 \
-\cb6 	
-\i \cf2 \cb1 // 1-based line number associated with the node.
-\i0 \cf0 \
-\cb6 	
-\b \cf5 \cb1 public
-\b0 \cf0  
-\b \cf5 int
-\b0 \cf0  
-\b Line
-\b0  \{
-\b \cf5 get
-\b0 \cf0 ; 
-\b \cf5 set
-\b0 \cf0 ;\}\
-\cb6 	\cb1 \
-\cb6 	
-\i \cf2 \cb1 // 1-based column number associated with the node.
-\i0 \cf0 \
-\cb6 	
-\b \cf5 \cb1 public
-\b0 \cf0  
-\b \cf5 int
-\b0 \cf0  
-\b Col
-\b0  \{
-\b \cf5 get
-\b0 \cf0 ; 
-\b \cf5 set
-\b0 \cf0 ;\}\
-\cb6 	\cb1 \
-\cb6 	
-\i \cf2 \cb1 // Returns true if the node was derived from a non-terminal.
-\i0 \cf0 \
-\cb6 	
-\b \cf5 \cb1 public
-\b0 \cf0  
-\b \cf5 bool
-\b0 \cf0  
-\b NonTerminal
-\b0  \{
-\b \cf5 get
-\b0 \cf0 ; 
-\b \cf5 set
-\b0 \cf0 ;\}\
-\cb6 	\cb1 \
-\cb6 	
-\i \cf2 \cb1 // The name of the non-terminal this node was derived from.
-\i0 \cf0 \
-\cb6 	
-\i \cf2 \cb1 // Valid only if NonTerminal is true.
-\i0 \cf0 \
-\cb6 	
-\b \cf5 \cb1 public
-\b0 \cf0  
-\b \cf5 string
-\b0 \cf0  
-\b Name
-\b0  \{
-\b \cf5 get
-\b0 \cf0 ; 
-\b \cf5 set
-\b0 \cf0 ;\}\
-\cb6 	\cb1 \
-\cb6 	
-\i \cf2 \cb1 // Terminals and non-terminals matched by the non-terminal.
-\i0 \cf0 \
-\cb6 	
-\i \cf2 \cb1 // Valid only if NonTerminal is true.
-\i0 \cf0 \
-\cb6 	
-\b \cf5 \cb1 public
-\b0 \cf0  Node[] 
-\b Children
-\b0  \{
-\b \cf5 get
-\b0 \cf0 ; 
-\b \cf5 set
-\b0 \cf0 ;\}\
-\}\
+For XmlText the Data and Value properties will be the text which was matched. For XmlElement the Name property will be the non-terminal name and line, col, offset, and length attributes may be used. (Note that it's usually easier to use a semantic action like 
+\b \cf4 `value.InnerText = text.Trim()` 
+\b0 \cf0 for those non-terminals for which you want the matching text).
+\b \cf4  
+\b0 \cf0 \
 \
 \pard\pardeftab360\ql\qnatural\pardirnatural
 

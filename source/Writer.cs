@@ -56,9 +56,6 @@ internal sealed partial class Writer : IDisposable
 		DoWriteUsing();
 		if (m_grammar.Settings["exclude-exception"] == "false")
 			DoWriteException();
-		if (m_grammar.Settings.ContainsKey("node"))
-			if (m_grammar.Settings["exclude-node"] == "false")
-				DoWriteNode();
 		DoWriteClassHeader();
 		DoWriteCtor(rules);
 		DoWriteParseMethod();
@@ -200,41 +197,6 @@ internal sealed partial class Writer : IDisposable
 		DoWriteLine("");
 	}
 	
-	private void DoWriteNode()
-	{
-		DoWriteLine("{0} sealed class {1}", m_grammar.Settings["visibility"], m_grammar.Settings["node"]);
-		DoWriteLine("{");
-		DoWriteLine("	// The text matched by this node.");
-		DoWriteLine("	public string Text {get; set;}");
-		DoWriteLine("	");
-		DoWriteLine("	// 1-based line number associated with the node.");
-		DoWriteLine("	public int Line {get; set;}");
-		DoWriteLine("	");
-		DoWriteLine("	// 1-based column number associated with the node.");
-		DoWriteLine("	public int Col {get; set;}");
-		DoWriteLine("	");
-		DoWriteLine("	// Returns true if the node was derived from a non-terminal.");
-		DoWriteLine("	public bool NonTerminal {get; set;}");
-		DoWriteLine("	");
-		DoWriteLine("	// The name of the non-terminal this node was derived from.");
-		DoWriteLine("	// Valid only if NonTerminal is true.");
-		DoWriteLine("	public string Name {get; set;}");
-		DoWriteLine("	");
-		DoWriteLine("	// Terminals and non-terminals matched by the non-terminal.");
-		DoWriteLine("	// Valid only if NonTerminal is true.");
-		DoWriteLine("	public {0}[] Children {1}get; set;{2}", m_grammar.Settings["node"], "{", "}");
-		DoWriteLine("	");
-		DoWriteLine("	public override string ToString()");
-		DoWriteLine("	{");
-		DoWriteLine("		if (NonTerminal)");
-		DoWriteLine("			return Name;");
-		DoWriteLine("		else");
-		DoWriteLine("			return string.Format(\"'{0}' literal\", Text);");
-		DoWriteLine("	}");
-		DoWriteLine("}");
-		DoWriteLine("");
-	}
-	
 	private void DoWriteFields()
 	{
 		DoWriteLine("#region Fields");
@@ -246,6 +208,8 @@ internal sealed partial class Writer : IDisposable
 			DoWriteLine("private int m_consumed;");
 		if (m_debug)
 			DoWriteLine("private int m_debugLevel;");
+		if (m_grammar.Settings["value"] == "XmlNode")
+			DoWriteLine("private XmlDocument m_doc;");
 		DoWriteLine("#endregion");
 	}
 	
@@ -401,6 +365,31 @@ internal sealed partial class Writer : IDisposable
 				DoWriteLine("");
 			}
 		}
+		if (m_grammar.Settings["value"] == "XmlNode")
+		{
+			DoWriteLine("private XmlText DoCreateTextNode(string data, int line, int col)");
+			DoWriteLine("{");
+			DoWriteLine("	XmlText node = m_doc.CreateTextNode(data);");
+			DoWriteLine("	");
+			DoWriteLine("	return node;");
+			DoWriteLine("}");
+			DoWriteLine("");
+			DoWriteLine("private XmlElement DoCreateElementNode(string name, int offset, int length, int line, int col, XmlNode[] children)");
+			DoWriteLine("{");
+			DoWriteLine("	XmlElement node = m_doc.CreateElement(name);");
+			DoWriteLine("	");
+			DoWriteLine("	node.SetAttribute(\"offset\", offset.ToString());");
+			DoWriteLine("	node.SetAttribute(\"length\", length.ToString());");
+			DoWriteLine("	node.SetAttribute(\"line\", line.ToString());");
+			DoWriteLine("	node.SetAttribute(\"col\", col.ToString());");
+			DoWriteLine("	");
+			DoWriteLine("	foreach (XmlNode child in children)");
+			DoWriteLine("		node.AppendChild(child);");
+			DoWriteLine("	");
+			DoWriteLine("	return node;");
+			DoWriteLine("}");
+			DoWriteLine("");
+		}
 		if ((m_used & Used.Literal) != 0)
 		{
 			if (!m_grammar.Settings["exclude-methods"].Contains("DoParseLiteral "))
@@ -429,13 +418,12 @@ internal sealed partial class Writer : IDisposable
 				DoWriteLine("	");
 				DoWriteLine("	int k = j + literal.Length;");
 				DoWriteLine("	");
-				if (m_grammar.Settings.ContainsKey("node"))
-					DoWriteLine("	results.Add(new Result(this, j, literal, new {0}{1}Text = literal, Line = DoGetLine(j), Col = DoGetCol(j), NonTerminal = false{2}));",
-						m_grammar.Settings["node"], "{", "}");
+				if (m_grammar.Settings["value"] == "XmlNode")
+					DoWriteLine("	results.Add(new Result(this, j, literal.Length, m_input, DoCreateTextNode(literal, DoGetLine(j), DoGetCol(j))));");
 				else if (m_grammar.Settings["value"] != "void")
-					DoWriteLine("	results.Add(new Result(this, j, literal, default({0})));", m_grammar.Settings["value"]);
+					DoWriteLine("	results.Add(new Result(this, j, literal.Length, m_input, default({0})));", m_grammar.Settings["value"]);
 				else
-					DoWriteLine("	results.Add(new Result(this, j, literal));");
+					DoWriteLine("	results.Add(new Result(this, j, literal.Length, m_input));");
 				DoWriteLine("	state = new State(k, true, state.Errors);");
 				DoWriteLine("	");
 				if (m_debug)
@@ -482,9 +470,9 @@ internal sealed partial class Writer : IDisposable
 			}
 			DoWriteLine("		if (cache.HasResult)");
 			if (m_grammar.Settings["value"] != "void")
-				DoWriteLine("			results.Add(new Result(this, start.Index, m_input.Substring(start.Index, cache.State.Index - start.Index), cache.Value));");
+				DoWriteLine("			results.Add(new Result(this, start.Index, cache.State.Index - start.Index, m_input, cache.Value));");
 			else
-				DoWriteLine("			results.Add(new Result(this, start.Index, m_input.Substring(start.Index, cache.State.Index - start.Index)));");
+				DoWriteLine("			results.Add(new Result(this, start.Index, cache.State.Index - start.Index, m_input));");
 			if (m_debug)
 			{
 				DoWriteLine("		");
@@ -601,14 +589,12 @@ internal sealed partial class Writer : IDisposable
 			DoWriteLine("	");
 			DoWriteLine("	if (matched)");
 			DoWriteLine("	{");
-			DoWriteLine("		string text = m_input.Substring(state.Index, 1);");
-			if (m_grammar.Settings.ContainsKey("node"))
-				DoWriteLine("		results.Add(new Result(this, state.Index, text, new {0}{1}Text = text, Line = DoGetLine(state.Index), Col = DoGetCol(state.Index), NonTerminal = false{2}));",
-					m_grammar.Settings["node"], "{", "}");
+			if (m_grammar.Settings["value"] == "XmlNode")
+				DoWriteLine("		results.Add(new Result(this, state.Index, 1, m_input, DoCreateTextNode(m_input.Substring(state.Index, 1), DoGetLine(state.Index), DoGetCol(state.Index))));");
 			else if (m_grammar.Settings["value"] != "void")
-				DoWriteLine("		results.Add(new Result(this, state.Index, text, default({0})));", m_grammar.Settings["value"]);
+				DoWriteLine("		results.Add(new Result(this, state.Index, 1, m_input, default({0})));", m_grammar.Settings["value"]);
 			else
-				DoWriteLine("		results.Add(new Result(this, state.Index, text));");
+				DoWriteLine("		results.Add(new Result(this, state.Index, 1, m_input));");
 			DoWriteLine("		return new State(state.Index + 1, true, state.Errors);");
 			DoWriteLine("	}");
 			DoWriteLine("	");
@@ -691,6 +677,8 @@ internal sealed partial class Writer : IDisposable
 			DoWriteLine();
 		}
 		
+		if (value == "XmlNode")
+			DoWriteLine("m_doc = new XmlDocument();");
 		DoWriteLine("m_file = file;");
 		DoWriteLine("m_input = m_file;				// we need to ensure that m_file is used or we will (in some cases) get a compiler warning");
 		DoWriteLine("m_input = input + \"\\x0\";	// add a sentinel so we can avoid range checks");
@@ -717,11 +705,19 @@ internal sealed partial class Writer : IDisposable
 			DoWriteLine("else if (i < input.Length)");
 			DoWriteLine("	DoThrow(state.Errors.Index, \"Not all input was consumed starting from '\" + input.Substring(i, Math.Min(16, input.Length - i)) + \"'\");");
 		}
+		
+		if (value == "XmlNode")
+		{
+			DoWriteLine("");
+			DoWriteLine("m_doc.AppendChild(results[0].Value);");
+		}
 		DoWriteLine("OnParseEpilog(state);");
 		
 		DoWriteLine();
 		if (value == "void")
 			DoWriteLine("return state.Index;");
+		else if (value == "XmlNode")
+			DoWriteLine("return m_doc;");
 		else
 			DoWriteLine("return results[0].Value;");
 		
@@ -913,19 +909,20 @@ internal sealed partial class Writer : IDisposable
 		DoWriteLine("private struct Result");
 		DoWriteLine("{");
 		if (m_grammar.Settings["value"] != "void")
-			DoWriteLine("	public Result({0} parser, int index, string text, {1} value)", m_className, m_grammar.Settings["value"]);
+			DoWriteLine("	public Result({0} parser, int index, int length, string input, {1} value)", m_className, m_grammar.Settings["value"]);
 		else
-			DoWriteLine("	public Result({0} parser, int index, string text)", m_className);
+			DoWriteLine("	public Result({0} parser, int index, int length, string input)", m_className);
 		DoWriteLine("	{");
 		DoWriteLine("		m_parser = parser;");
 		DoWriteLine("		m_index = index;");
-		DoWriteLine("		m_text = text;");
+		DoWriteLine("		m_length = length;");
+		DoWriteLine("		m_input = input;");
 		if (m_grammar.Settings["value"] != "void")
 			DoWriteLine("		Value = value;");
 		DoWriteLine("	}");
 		DoWriteLine("	");
 		DoWriteLine("	// The text which was parsed by the terminal or non-terminal.");
-		DoWriteLine("	public string Text {get {return m_text;}}");
+		DoWriteLine("	public string Text {get {return m_input.Substring(m_index, m_length);}}");
 		DoWriteLine("	");
 		DoWriteLine("	// The 1-based line number the (non)terminal started on.");
 		DoWriteLine("	public int Line {get {return m_parser.DoGetLine(m_index);}}");
@@ -942,7 +939,8 @@ internal sealed partial class Writer : IDisposable
 		DoWriteLine("	");
 		DoWriteLine("	private {0} m_parser;", m_className);
 		DoWriteLine("	private int m_index;");
-		DoWriteLine("	private string m_text;");
+		DoWriteLine("	private int m_length;");
+		DoWriteLine("	private string m_input;");
 		DoWriteLine("}");
 		DoWriteLine("");
 		DoWriteLine("#endregion");
@@ -969,6 +967,8 @@ internal sealed partial class Writer : IDisposable
 		{
 			DoWriteLine("using {0};", name);
 		}
+		if (m_grammar.Settings["value"] == "XmlNode")
+			DoWriteLine("using System.Xml;");
 		DoWriteLine();
 		
 		if (m_grammar.Settings.ContainsKey("namespace"))

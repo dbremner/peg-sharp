@@ -20,6 +20,7 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using System;
+using System.Xml;
 
 internal static class Program
 {
@@ -30,47 +31,48 @@ internal static class Program
 	}
 	
 	#region Private Methods
-	private static double DoEvaluate(Node node)
+	private static double DoEvaluate(XmlNode node)
 	{
 		double result;
+//		Console.WriteLine("{0} with {1} children and value {2}", node.Name, node.ChildNodes.Count, node.Value);
 		
 		switch (node.Name)
 		{
 			case "Expr":
-				result = DoEvaluate(node.Children[0]);
+				result = DoEvaluate(node.ChildNodes[0]);
 				break;
 			
 			case "Sum":
-				result = DoEvaluate(node.Children[0]);
-				for (int i = 1; i < node.Children.Length; i += 2)
+				result = DoEvaluate(node.ChildNodes[0]);
+				for (int i = 1; i < node.ChildNodes.Count; i += 2)
 				{
-					if (node.Children[i].Text == "+")
-						result += DoEvaluate(node.Children[i + 1]);
+					if (node.ChildNodes[i].Value == "+")
+						result += DoEvaluate(node.ChildNodes[i + 1]);
 					else
-						result -= DoEvaluate(node.Children[i + 1]);
+						result -= DoEvaluate(node.ChildNodes[i + 1]);
 				}
 				break;
 			
 			case "Product":
-				result = DoEvaluate(node.Children[0]);
-				for (int i = 1; i < node.Children.Length; i += 2)
+				result = DoEvaluate(node.ChildNodes[0]);
+				for (int i = 1; i < node.ChildNodes.Count; i += 2)
 				{
-					if (node.Children[i].Text == "*")
-						result *= DoEvaluate(node.Children[i + 1]);
+					if (node.ChildNodes[i].Value == "*")
+						result *= DoEvaluate(node.ChildNodes[i + 1]);
 					else
-						result /= DoEvaluate(node.Children[i + 1]);
+						result /= DoEvaluate(node.ChildNodes[i + 1]);
 				}
 				break;
 			
 			case "Value":
-				if (node.Children[0].Text == "(")
-					result = DoEvaluate(node.Children[1]);
+				if (node.ChildNodes[0].Value == "(")
+					result = DoEvaluate(node.ChildNodes[1]);
 				else
-					result = double.Parse(node.Text.Trim());
+					result = double.Parse(node.InnerText.Trim());
 				break;
 			
 			default:
-				throw new Exception("Unexpected node: " + node);
+				throw new Exception("Unexpected node: " + node.Name);
 		}
 		
 		return result;
@@ -78,8 +80,8 @@ internal static class Program
 	
 	private static void DoCheck(Test16 parser, string expr, double expected)
 	{
-		Node node = parser.Parse(expr);
-		double actual = DoEvaluate(node);
+		XmlNode node = parser.Parse(expr);
+		double actual = DoEvaluate(node.ChildNodes[0]);
 		if (Math.Abs(expected - actual) > 0.01)
 			throw new Exception(string.Format("Expected {0} for \"{1}\" but got {2}", expected, expr, actual));
 	}
