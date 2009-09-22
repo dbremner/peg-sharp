@@ -43,9 +43,6 @@ internal sealed class Grammar
 	
 	public void Validate()
 	{
-		if (!Settings.ContainsKey("value"))
-			Settings.Add("value", Settings["node"]);
-			
 		if (!Settings.ContainsKey("unconsumed"))
 			if (Settings["value"] == "void")
 				Settings.Add("unconsumed", "expose");
@@ -63,9 +60,6 @@ internal sealed class Grammar
 			
 		if (!Settings.ContainsKey("exclude-methods"))
 			Settings.Add("exclude-methods", string.Empty);
-			
-		if (!Settings.ContainsKey("exclude-node"))
-			Settings.Add("exclude-node", "false");
 			
 		var used =
 			from r in Rules
