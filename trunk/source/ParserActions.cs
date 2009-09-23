@@ -22,7 +22,7 @@ internal sealed partial class Parser
 	private string DoAddSetting(List<Result> results)
 	{
 		string name = results[0].Text.Trim();
-		if (name != "comment" && name != "debug" && name != "exclude-exception" && name != "exclude-methods" && name != "ignore-case" && name != "namespace" && name != "start" && name != "unconsumed" && name != "using" && name != "value" && name != "visibility")
+		if (name != "comment" && name != "debug" && name != "debug-file" && name != "exclude-exception" && name != "exclude-methods" && name != "ignore-case" && name != "namespace" && name != "start" && name != "unconsumed" && name != "using" && name != "value" && name != "visibility")
 			return string.Format("Setting '{0}' is not a valid name", name);
 		
 		string temp = results[2].Text.Trim();

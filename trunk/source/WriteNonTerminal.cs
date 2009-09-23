@@ -30,13 +30,24 @@ internal sealed partial class Writer
 			return;
 			
 		string prolog = string.Format("{0} := {1}", rule.Name, rule.Expression);
-		if (!m_debug)
-			DoWriteLine("// " + prolog);
+		DoWriteLine("// " + prolog);
 		DoWriteLine("private State " + methodName + "(State _state, List<Result> _outResults)");
 		DoWriteLine("{");
-		if (m_debug)
+		if (Array.IndexOf(m_debug, rule.Name) >= 0)
 		{
-			DoWriteLine("	DoDebugProlog(\"" + prolog + "\", _state);");
+			if (m_grammar.Settings["debug-file"].Length > 0)
+			{
+				DoWriteLine("	if (m_file == m_debugFile)");
+				DoWriteLine("	{");
+				DoWriteLine("		DoDebugWrite(\"" + rule.Name + "\");");
+				DoWriteLine("		++m_debugLevel;");
+				DoWriteLine("	}");
+			}
+			else
+			{
+				DoWriteLine("	DoDebugWrite(\"" + rule.Name + "\");");
+				DoWriteLine("	++m_debugLevel;");
+			}
 			DoWriteLine("	");
 		}
 		DoWriteLine("	State _start = _state;");
@@ -108,12 +119,30 @@ internal sealed partial class Writer
 			DoWriteLine("			_state = new State(_start.Index, false, ErrorSet.Combine(_start.Errors, new ErrorSet(_state.Errors.Index, expected)));");
 			DoWriteLine("	}");
 		}
-		DoWriteLine("	");
-		if (m_debug)
+		if (Array.IndexOf(m_debug, rule.Name) >= 0)
 		{
-			DoWriteLine("	DoDebugEpilog(\"" + rule.Name + "\", _start, _state);");
 			DoWriteLine("	");
+			if (m_grammar.Settings["debug-file"].Length > 0)
+			{
+				DoWriteLine("	if (m_file == m_debugFile)");
+				DoWriteLine("	{");
+				DoWriteLine("		if (_state.Parsed)");
+				DoWriteLine("			DoDebugWrite(\"" + rule.Name + " parsed: {0}\", DoTruncateString(m_input.Substring(_start.Index, _state.Index - _start.Index)));");
+				DoWriteLine("		else");
+				DoWriteLine("			DoDebugWrite(\"" + rule.Name + " failed: {0} at line {1} col {2}\", _state.Errors, DoGetLine(_state.Errors.Index), DoGetCol(_state.Errors.Index));");
+				DoWriteLine("		--m_debugLevel;");
+				DoWriteLine("	}");
+			}
+			else
+			{
+				DoWriteLine("	if (_state.Parsed)");
+				DoWriteLine("		DoDebugWrite(\"" + rule.Name + " parsed: {0}\", DoTruncateString(m_input.Substring(_start.Index, _state.Index - _start.Index)));");
+				DoWriteLine("	else");
+				DoWriteLine("		DoDebugWrite(\"" + rule.Name + " failed: {0} at line {1} col {2}\", _state.Errors, DoGetLine(_state.Errors.Index), DoGetCol(_state.Errors.Index));");
+				DoWriteLine("	--m_debugLevel;");
+			}
 		}
+		DoWriteLine("	");
 		DoWriteLine("	return _state;");
 		DoWriteLine("}");
 	}

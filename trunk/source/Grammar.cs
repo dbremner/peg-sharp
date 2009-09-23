@@ -61,6 +61,12 @@ internal sealed class Grammar
 		if (!Settings.ContainsKey("exclude-methods"))
 			Settings.Add("exclude-methods", string.Empty);
 			
+		if (!Settings.ContainsKey("debug"))
+			Settings.Add("debug", string.Empty);
+			
+		if (!Settings.ContainsKey("debug-file"))
+			Settings.Add("debug-file", string.Empty);
+			
 		var used =
 			from r in Rules
 				from e in r.Expression.Select(f => f is RuleExpression)
