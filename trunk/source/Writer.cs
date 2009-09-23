@@ -703,7 +703,10 @@ internal sealed partial class Writer : IDisposable
 			DoWriteLine("if (!state.Parsed)");
 			DoWriteLine("	DoThrow(state.Errors.Index, state.Errors.ToString());");
 			DoWriteLine("else if (i < input.Length)");
-			DoWriteLine("	DoThrow(state.Errors.Index, \"Not all input was consumed starting from '\" + input.Substring(i, Math.Min(16, input.Length - i)) + \"'\");");
+			DoWriteLine("	if (state.Errors.Expected.Length > 0)");
+			DoWriteLine("		DoThrow(state.Errors.Index, state.Errors.ToString());");
+			DoWriteLine("	else");
+			DoWriteLine("		DoThrow(state.Errors.Index, \"Not all input was consumed starting from '\" + input.Substring(i, Math.Min(16, input.Length - i)) + \"'\");");
 		}
 		
 		if (value == "XmlNode")

@@ -320,7 +320,7 @@ Because the parser may back-track semantic actions should not have side effects.
 \b value
 \b0  - The type is determined by the value setting. If the value setting is XmlNode then the value will be set to an XmlElement for non-terminals and an XmlText for terminals, otherwise it will default to results[0].Value. Semantic actions may mutate the node or set the value using the results local variable. The value local may be used only within the success case.\
 \
-For XmlText the Data and Value properties will be the text which was matched. For XmlElement the Name property will be the non-terminal name and line, col, offset, and length attributes may be used. (Note that it's usually easier to use a semantic action like 
+For XmlText the Value and Data properties will be the text which was matched. For XmlElement the Name property will be the non-terminal name and line, col, offset, and length attributes may be used. (Note that it's usually easier to use a semantic action like 
 \b \cf4 `value.InnerText = text.Trim()` 
 \b0 \cf0 for those non-terminals for which you want the matching text).
 \b \cf4  
