@@ -33,18 +33,33 @@ using System.Runtime.InteropServices;
 
 internal static class Program
 {
-	public static void Main(string[] args)
+	public static int Main(string[] args)
 	{
-		Stopwatch timer = Stopwatch.StartNew();
+		int result = 0;
 		
-		string pegFile = DoProcessCommandLine(args);
-		DoGenerate(pegFile);
-		
-		if (Program.Verbosity > 0)
-			if (timer.ElapsedMilliseconds > 60*1000)
-				Console.WriteLine("finished in {0:0.000} mins", timer.ElapsedMilliseconds/(60*1000.0));
+		try
+		{
+			Stopwatch timer = Stopwatch.StartNew();
+			
+			string pegFile = DoProcessCommandLine(args);
+			DoGenerate(pegFile);
+			
+			if (Program.Verbosity > 0)
+				if (timer.ElapsedMilliseconds > 60*1000)
+					Console.WriteLine("finished in {0:0.000} mins", timer.ElapsedMilliseconds/(60*1000.0));
+				else
+					Console.WriteLine("finished in {0:0.000} secs", timer.ElapsedMilliseconds/1000.0);
+		}
+		catch (ParserException e)
+		{
+			if (ms_verbosity == 0)
+				Console.Error.WriteLine(e.Message);
 			else
-				Console.WriteLine("finished in {0:0.000} secs", timer.ElapsedMilliseconds/1000.0);
+				throw;
+			result = 2;
+		}
+		
+		return result;
 	}
 	
 	public static int Verbosity
