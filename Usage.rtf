@@ -72,9 +72,10 @@ Peg files consist of two or more settings and one or more non-terminal definitio
 \b0  - Custom class comment. This may appear multiple times for multiple line comments and '// ' will be added to the start if it does not begin with '//'.\
 \'95\'a0
 \b debug
-\b0  - If value is 
-\i true
-\i0  then the parser will write progress information to stdout.\
+\b0  - Space separated list of non-terminal names for which progress information will be written to stdout. May be empty.\
+\'95\'a0
+\b debug-file
+\b0  - Name of the file for which to print debug information..\
 \'95\'a0
 \b exclude-exception
 \b0  - If 

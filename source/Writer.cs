@@ -22,6 +22,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Linq;
 
 // Writes the parser file.
 internal sealed partial class Writer : IDisposable
@@ -30,7 +31,10 @@ internal sealed partial class Writer : IDisposable
 	{
 		m_writer = writer;
 		m_grammar = grammar;
-		m_debug = m_grammar.Settings.ContainsKey("debug") && m_grammar.Settings["debug"] == "true";
+		if (m_grammar.Settings.ContainsKey("debug"))
+			m_debug = m_grammar.Settings["debug"].Split(new char[]{' '}, StringSplitOptions.RemoveEmptyEntries);
+		else
+			m_debug = new string[0];
 	}
 	
 	public void Write(string pegFile)
@@ -206,8 +210,14 @@ internal sealed partial class Writer : IDisposable
 		DoWriteLine("private Dictionary<CacheKey, CacheValue> m_cache = new Dictionary<CacheKey, CacheValue>();");
 		if (m_grammar.Settings["unconsumed"] == "expose")
 			DoWriteLine("private int m_consumed;");
-		if (m_debug)
+		if (m_debug.Length > 0)
+		{
 			DoWriteLine("private int m_debugLevel;");
+			string[] names = (from n in m_debug select '"' + n + '"').ToArray();
+			DoWriteLine("private string[] m_debug = new string[]{" + string.Join(", ", names) + "};");
+			if (m_grammar.Settings["debug-file"].Length > 0)
+				DoWriteLine("private string m_debugFile = \"" + m_grammar.Settings["debug-file"] + "\";");
+		}
 		if (m_grammar.Settings["value"] == "XmlNode")
 			DoWriteLine("private XmlDocument m_doc;");
 		DoWriteLine("#endregion");
@@ -249,7 +259,7 @@ internal sealed partial class Writer : IDisposable
 			DoWriteLine("}");
 			DoWriteLine("");
 		}
-		if (m_debug)
+		if (m_debug.Length > 0)
 		{
 			if (!m_grammar.Settings["exclude-methods"].Contains("DoDebugWrite "))
 			{
@@ -270,30 +280,6 @@ internal sealed partial class Writer : IDisposable
 				DoWriteLine("		return str.Substring(0, str.Length - 1);");
 				DoWriteLine("	else");
 				DoWriteLine("		return str;");
-				DoWriteLine("}");
-				DoWriteLine("");
-			}
-			if (!m_grammar.Settings["exclude-methods"].Contains("DoDebugProlog "))
-			{
-				DoWriteLine("private void DoDebugProlog(string rule, State start)");
-				DoWriteLine("{");
-				DoWriteLine("	if (rule.Length > 0)");
-				DoWriteLine("		DoDebugWrite(rule);");
-				DoWriteLine("	++m_debugLevel;");
-				DoWriteLine("}");
-				DoWriteLine("");
-			}
-			if (!m_grammar.Settings["exclude-methods"].Contains("DoDebugEpilog "))
-			{
-				DoWriteLine("private void DoDebugEpilog(string name, State start, State stop)");
-				DoWriteLine("{");
-				DoWriteLine("	if (stop.Parsed)");
-				DoWriteLine("		DoDebugWrite(\"{0} on line {1} consumed {2}\", name, DoGetLine(start.Index), DoTruncateString(m_input.Substring(start.Index, stop.Index - start.Index)));");
-				DoWriteLine("	else if (start.Index >= m_input.Length - 1)");
-				DoWriteLine("		DoDebugWrite(\"{0} on line {1} failed on EOT\", name, DoGetLine(start.Index));");
-				DoWriteLine("	else");
-				DoWriteLine("		DoDebugWrite(\"{0} on line {1} failed on {2}\", name, DoGetLine(start.Index), DoTruncateString(m_input.Substring(start.Index)));");
-				DoWriteLine("	--m_debugLevel;");
 				DoWriteLine("}");
 				DoWriteLine("");
 			}
@@ -396,11 +382,6 @@ internal sealed partial class Writer : IDisposable
 			{
 				DoWriteLine("private State DoParseLiteral(State state, List<Result> results, string literal)");
 				DoWriteLine("{");
-				if (m_debug)
-				{
-					DoWriteLine("	State start = state;");
-					DoWriteLine("	DoDebugProlog(string.Empty, state);");
-				}
 				DoWriteLine("	int j = state.Index;");
 				DoWriteLine("	");
 				DoWriteLine("	for (int i = 0; i < literal.Length; ++i)");
@@ -410,8 +391,6 @@ internal sealed partial class Writer : IDisposable
 				else
 					DoWriteLine("		if (m_input[j + i] != literal[i])");
 				DoWriteLine("		{");
-				if (m_debug)
-					DoWriteLine("			--m_debugLevel;");
 				DoWriteLine("			return new State(state.Index, false, new ErrorSet(state.Index, literal));");
 				DoWriteLine("		}");
 				DoWriteLine("	}");
@@ -426,8 +405,6 @@ internal sealed partial class Writer : IDisposable
 					DoWriteLine("	results.Add(new Result(this, j, literal.Length, m_input));");
 				DoWriteLine("	state = new State(k, true, state.Errors);");
 				DoWriteLine("	");
-				if (m_debug)
-					DoWriteLine("	DoDebugEpilog(\"literal\", start, state);");
 				DoWriteLine("	return state;");
 				DoWriteLine("}");
 				DoWriteLine("");
@@ -463,9 +440,21 @@ internal sealed partial class Writer : IDisposable
 			DoWriteLine("	}");
 			DoWriteLine("	else");
 			DoWriteLine("	{");
-			if (m_debug)
+			if (m_debug.Length > 0)
 			{
-				DoWriteLine("		DoDebugProlog(\"cached \" + nonterminal, start);");
+				if (m_grammar.Settings["debug-file"].Length > 0)
+					DoWriteLine("		if (m_file == m_debugFile && Array.IndexOf(m_debug, nonterminal) >= 0)");
+				else
+					DoWriteLine("		if (Array.IndexOf(m_debug, nonterminal) >= 0)");
+				DoWriteLine("		{");
+				DoWriteLine("			DoDebugWrite(\"cached {0}\", nonterminal);");
+				DoWriteLine("			++m_debugLevel;");
+				DoWriteLine("			if (cache.State.Parsed)");
+				DoWriteLine("				DoDebugWrite(\"{0} parsed: {1}\", nonterminal, DoTruncateString(m_input.Substring(start.Index, cache.State.Index - start.Index)));");
+				DoWriteLine("			else");
+				DoWriteLine("				DoDebugWrite(\"{0} failed: {1} at line {2} col {3}\", nonterminal, cache.State.Errors, DoGetLine(cache.State.Errors.Index), DoGetCol(cache.State.Errors.Index));");
+				DoWriteLine("			--m_debugLevel;");
+				DoWriteLine("		}");
 				DoWriteLine("		");
 			}
 			DoWriteLine("		if (cache.HasResult)");
@@ -473,11 +462,6 @@ internal sealed partial class Writer : IDisposable
 				DoWriteLine("			results.Add(new Result(this, start.Index, cache.State.Index - start.Index, m_input, cache.Value));");
 			else
 				DoWriteLine("			results.Add(new Result(this, start.Index, cache.State.Index - start.Index, m_input));");
-			if (m_debug)
-			{
-				DoWriteLine("		");
-				DoWriteLine("		DoDebugEpilog(\"cached \" + nonterminal, start, cache.State);");
-			}
 			DoWriteLine("	}");
 			DoWriteLine("	");
 			DoWriteLine("	return cache.State;");
@@ -670,10 +654,23 @@ internal sealed partial class Writer : IDisposable
 		DoWriteLine("{");
 		++m_indent;
 		
-		if (m_debug)
+		if (m_debug.Length > 0)
 		{
-			DoWriteLine("DoDebugWrite(new string('-', 32));");
-			DoWriteLine("DoDebugWrite(\"input: {0}\", DoTruncateString(input));");
+			if (m_grammar.Settings["debug-file"].Length > 0)
+			{
+				DoWriteLine("if (m_file == m_debugFile)");
+				DoWriteLine("{");
+				DoWriteLine("	DoDebugWrite(new string('-', 32));");
+				DoWriteLine("	if (!string.IsNullOrEmpty(file))");
+				DoWriteLine("		DoDebugWrite(file);");
+				DoWriteLine("}");
+			}
+			else
+			{
+				DoWriteLine("DoDebugWrite(new string('-', 32));");
+				DoWriteLine("if (!string.IsNullOrEmpty(file))");
+				DoWriteLine("	DoDebugWrite(file);");
+			}
 			DoWriteLine();
 		}
 		
@@ -1006,7 +1003,7 @@ internal sealed partial class Writer : IDisposable
 	private TextWriter m_writer;
 	private Grammar m_grammar;
 	private int m_indent;
-	private bool m_debug;
+	private string[] m_debug;
 	private Used m_used;
 	private string m_className;
 	private bool m_disposed;
