@@ -24,10 +24,14 @@ using System.Collections.Generic;
 
 internal sealed partial class Writer
 {
-	private void DoWriteNonTerminal(string methodName, Rule rule)
+	private void DoWriteNonTerminal(string methodName, Rule rule, int i, int maxIndex)
 	{
 		if (m_grammar.Settings["exclude-methods"].Contains(methodName + ' '))
 			return;
+			
+		string debugName = rule.Name;
+		if (maxIndex > 1)
+			debugName += i + 1;
 			
 		string prolog = string.Format("{0} := {1}", rule.Name, rule.Expression);
 		DoWriteLine("// " + prolog);
@@ -39,13 +43,13 @@ internal sealed partial class Writer
 			{
 				DoWriteLine("	if (m_file == m_debugFile)");
 				DoWriteLine("	{");
-				DoWriteLine("		DoDebugWrite(\"" + rule.Name + "\");");
+				DoWriteLine("		DoDebugWrite(\"" + debugName + "\");");
 				DoWriteLine("		++m_debugLevel;");
 				DoWriteLine("	}");
 			}
 			else
 			{
-				DoWriteLine("	DoDebugWrite(\"" + rule.Name + "\");");
+				DoWriteLine("	DoDebugWrite(\"" + debugName + "\");");
 				DoWriteLine("	++m_debugLevel;");
 			}
 			DoWriteLine("	");
@@ -58,8 +62,12 @@ internal sealed partial class Writer
 		DoWriteLine("	if (_state.Parsed)");
 		DoWriteLine("	{");
 		if (m_grammar.Settings["value"] == "XmlNode")
-			DoWriteLine("		{0} value = DoCreateElementNode(\"{1}\", _start.Index, _state.Index - _start.Index, DoGetLine(_start.Index), DoGetCol(_start.Index), (from r in results where r.Value != null select r.Value).ToArray());",
-				m_grammar.Settings["value"], rule.Name);
+		{
+			DoWriteLine("		XmlElement _node = DoCreateElementNode(\"{0}\", _start.Index, _state.Index - _start.Index, DoGetLine(_start.Index), DoGetCol(_start.Index), (from r in results where r.Value != null select r.Value).ToArray());", rule.Name);
+			if (maxIndex > 1)
+				DoWriteLine("		_node.SetAttribute(\"alternative\", \"{0}\");", i + 1);
+			DoWriteLine("		{0} value = _node;", m_grammar.Settings["value"]);
+		}
 		else if (m_grammar.Settings["value"] != "void")
 			DoWriteLine("		{0} value = results.Count > 0 ? results[0].Value : default({0});", m_grammar.Settings["value"]);
 		if (rule.PassAction != null)
@@ -127,18 +135,18 @@ internal sealed partial class Writer
 				DoWriteLine("	if (m_file == m_debugFile)");
 				DoWriteLine("	{");
 				DoWriteLine("		if (_state.Parsed)");
-				DoWriteLine("			DoDebugWrite(\"" + rule.Name + " parsed: {0}\", DoTruncateString(m_input.Substring(_start.Index, _state.Index - _start.Index)));");
+				DoWriteLine("			DoDebugWrite(\"" + debugName + " parsed: {0}\", DoTruncateString(m_input.Substring(_start.Index, _state.Index - _start.Index)));");
 				DoWriteLine("		else");
-				DoWriteLine("			DoDebugWrite(\"" + rule.Name + " failed: {0} at line {1} col {2}\", _state.Errors, DoGetLine(_state.Errors.Index), DoGetCol(_state.Errors.Index));");
+				DoWriteLine("			DoDebugWrite(\"" + debugName + " failed: {0} at line {1} col {2}\", _state.Errors, DoGetLine(_state.Errors.Index), DoGetCol(_state.Errors.Index));");
 				DoWriteLine("		--m_debugLevel;");
 				DoWriteLine("	}");
 			}
 			else
 			{
 				DoWriteLine("	if (_state.Parsed)");
-				DoWriteLine("		DoDebugWrite(\"" + rule.Name + " parsed: {0}\", DoTruncateString(m_input.Substring(_start.Index, _state.Index - _start.Index)));");
+				DoWriteLine("		DoDebugWrite(\"" + debugName + " parsed: {0}\", DoTruncateString(m_input.Substring(_start.Index, _state.Index - _start.Index)));");
 				DoWriteLine("	else");
-				DoWriteLine("		DoDebugWrite(\"" + rule.Name + " failed: {0} at line {1} col {2}\", _state.Errors, DoGetLine(_state.Errors.Index), DoGetCol(_state.Errors.Index));");
+				DoWriteLine("		DoDebugWrite(\"" + debugName + " failed: {0} at line {1} col {2}\", _state.Errors, DoGetLine(_state.Errors.Index), DoGetCol(_state.Errors.Index));");
 				DoWriteLine("	--m_debugLevel;");
 			}
 		}

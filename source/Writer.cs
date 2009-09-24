@@ -621,7 +621,7 @@ internal sealed partial class Writer : IDisposable
 			for (int i = 0; i < entry.Value.Count; ++i)
 			{
 				string name = DoGetNonterminalMethodName(entry.Value, i);
-				DoWriteNonTerminal(name, entry.Value[i]);
+				DoWriteNonTerminal(name, entry.Value[i], i, entry.Value.Count);
 				m_used |= entry.Value[i].Expression.FindUsed();
 				
 				if (i + 1 < entry.Value.Count)

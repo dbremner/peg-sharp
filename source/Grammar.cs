@@ -175,6 +175,13 @@ internal sealed class Grammar
 				break;
 			}
 			
+			SequenceExpression seq = expr as SequenceExpression;
+			if (seq != null)
+			{
+				succeeds = seq.Expressions.All(e => DoAlwaysSucceeds(ruleName, e));
+				break;
+			}
+			
 			RuleExpression rule2 = expr as RuleExpression;
 			if (rule2 != null && rule2.Name != ruleName)
 			{

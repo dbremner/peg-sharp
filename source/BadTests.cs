@@ -369,6 +369,26 @@ S := 'a' ([X\cLl] / [a-d]) `text = null` `expected = ""unreachable""`
 	}
 	
 	[Test]
+	public void UnreachableAlternative5()
+	{
+		string input = @"
+start = Top
+value = void
+
+Top := Bad / 'x';
+
+Bad := Alpha* Beta;
+
+Alpha := 'a';
+
+Beta := 'b'*;
+";
+		var parser = new Parser();
+		parser.Parse(input);
+		AssertThrows<ParserException>(() => parser.Grammar.Validate(), "Unreachable alternative in: Top");
+	}
+	
+	[Test]
 	public void BackwardsRange()
 	{
 		string input = @"
