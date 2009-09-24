@@ -3,5 +3,6 @@
 	<comment>\x23 .* $</comment>
 	<other1>` [^`]+ `</other1>
 	<string>&apos; (?: [^&apos;\r\n\\] | \\.)* &apos;</string>
+	<string>&quot; (?: [^&quot;\r\n\\] | \\.)* &quot;</string>
 	<string>\[ (?: [^\]\r\n\\] | \\.)* \]</string>
 </Language>

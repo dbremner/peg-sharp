@@ -33,7 +33,7 @@ internal sealed partial class Writer
 		DoWriteLine("// " + prolog);
 		DoWriteLine("private State " + methodName + "(State _state, List<Result> _outResults)");
 		DoWriteLine("{");
-		if (Array.IndexOf(m_debug, rule.Name) >= 0)
+		if (m_debug.Length > 0 && (m_debug[0] == "*" || Array.IndexOf(m_debug, rule.Name) >= 0))
 		{
 			if (m_grammar.Settings["debug-file"].Length > 0)
 			{
@@ -119,7 +119,7 @@ internal sealed partial class Writer
 			DoWriteLine("			_state = new State(_start.Index, false, ErrorSet.Combine(_start.Errors, new ErrorSet(_state.Errors.Index, expected)));");
 			DoWriteLine("	}");
 		}
-		if (Array.IndexOf(m_debug, rule.Name) >= 0)
+		if (m_debug.Length > 0 && (m_debug[0] == "*" || Array.IndexOf(m_debug, rule.Name) >= 0))
 		{
 			DoWriteLine("	");
 			if (m_grammar.Settings["debug-file"].Length > 0)

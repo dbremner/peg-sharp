@@ -37,6 +37,7 @@ internal static class Program
 		parser.Parse("x");
 		parser.Parse("\\");
 		parser.Parse("\"C\"");
+		parser.Parse("'D'");
 	}
 	
 	private static void DoBad1(Test1 parser)
@@ -48,8 +49,8 @@ internal static class Program
 		}
 		catch (ParserException e)
 		{
-			if (e.Message != "Expected x or \\ or \"C\" at line 1 col 1.")
-				Console.Error.WriteLine("Expected 'Expected x or \\ or \"C\" at line 1 col 1.', but got '{0}'", e.Message);
+			if (e.Message != "Expected x or \\ or \"C\" or 'D' at line 1 col 1.")
+				Console.Error.WriteLine("Expected 'Expected x or \\ or \"C\" or 'D' at line 1 col 1.', but got '{0}'", e.Message);
 		}
 	}
 	#endregion
