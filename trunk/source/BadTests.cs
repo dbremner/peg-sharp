@@ -43,13 +43,13 @@ public sealed class BadTests
 	[Test]
 	public void Empty()
 	{
-		AssertThrows<ParserException>(() => new Parser().Parse(""), "Expected whitespace or identifier or comment at line 1 col 1.");
+		AssertThrows<ParserException>(() => new Parser().Parse(""), "Expected whitespace or setting or comment at line 1 col 1.");
 	}
 	
 	[Test]
 	public void MissingRequiredSettings()
 	{
-		AssertThrows<ParserException>(() => new Parser().Parse("debug = true\nFoo := 'z';"), "Missing required setting 'start'.");
+		AssertThrows<ParserException>(() => new Parser().Parse("debug = Foo\nFoo := 'z';"), "Missing required setting 'start'.");
 		AssertThrows<ParserException>(() => new Parser().Parse("start = foo\nFoo := 'z';"), "Missing required setting 'value'.");
 	}
 	
@@ -89,7 +89,7 @@ some bogus text
 ";
 		
 		var parser = new Parser();
-		AssertThrows<ParserException>(() => parser.Parse(input), "Expected = or comment or := at line 4 col 6.");
+		AssertThrows<ParserException>(() => parser.Parse(input), "Expected setting or comment or whitespace or := at line 4 col 6.");
 	}
 	
 	[Test]
@@ -417,7 +417,7 @@ Value := 'x' / 'y' / 'z' / [];
 Value := '(' Expr ')';
 ";
 		var parser = new Parser();
-		AssertThrows<ParserException>(() => parser.Parse(input), "Not all input was consumed starting from 'Value := 'x' / '' at line 8 col 29.");
+		AssertThrows<ParserException>(() => parser.Parse(input), "Expected range literal or rule name or parenthesized expression or comment at line 8 col 29.");
 	}
 	
 	[Test]
