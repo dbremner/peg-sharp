@@ -1,1 +1,1 @@
-start = Exprvalue = doubledebug = falseExpr := 'a' . / 'b\x41' / [c\x42] / [d\cPd] / 'z';
+start = Exprvalue = doubledebug = false# 0x41 = 'A'# 0x42 = 'B'# \cPd = Punctuation, Dash (i.e. -)# 0x0043F = 'CF' (hex literals don't match more than 4 digits)Expr := 'a' . / 'b\x41' / [c\x42] / [d\cPd] / 'z' / '\x0043F';

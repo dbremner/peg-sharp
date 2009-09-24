@@ -54,6 +54,8 @@ internal static class Program
 		parser.Parse("A");
 		parser.Parse("D");
 		parser.Parse("*");
+
+		parser.Parse("ABBIE");
 	}
 	
 	private static void DoBad(Test8 parser, string input)

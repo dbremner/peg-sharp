@@ -206,14 +206,14 @@ internal sealed class LiteralExpression : Expression
 	{
 		if (depth == 0)
 		{
-			line.AppendFormat("_state = DoParseLiteral(_state, results, \"{0}\")", Literal);
+			line.AppendFormat("_state = DoParseLiteral(_state, results, \"{0}\")", Literal.Replace("\"", "\\\""));
 		}
 		else
 		{
 			string s = depth == 1 ? "s" : ("s" + depth);
 			string r = depth == 1 ? "r" : ("r" + depth);
 			string t = new string('\t', 2 + depth);
-			line.AppendFormat("{0}{1}({2}, {3}) => DoParseLiteral({2}, {3}, \"{4}\")", Environment.NewLine, t, s, r, Literal);
+			line.AppendFormat("{0}{1}({2}, {3}) => DoParseLiteral({2}, {3}, \"{4}\")", Environment.NewLine, t, s, r, Literal.Replace("\"", "\\\""));
 		}
 	}
 	
@@ -373,7 +373,7 @@ internal sealed class RangeExpression : Expression
 	
 	public override void Write(StringBuilder line, int depth)
 	{
-		string chars = Chars.Length > 0 ? "\"" + Chars.EscapeAll().Replace("\\]", "]") + "\"" : "string.Empty";
+		string chars = Chars.Length > 0 ? "\"" + Chars.EscapeAll().Replace("\\]", "]").Replace("\"", "\\\"") + "\"" : "string.Empty";
 		string ranges = Ranges.Length > 0 ? "\"" + DoEscape(Ranges) + "\"" : "string.Empty";
 		
 		if (depth == 0)
