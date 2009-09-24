@@ -325,9 +325,9 @@ Because the parser may back-track semantic actions should not have side effects.
 \
 For XmlText the Value and Data properties will be the text which was matched. For XmlElement the Name property will be the non-terminal name and line, col, offset, and length attributes may be used. (Note that it's usually easier to use a semantic action like 
 \b \cf4 `value.InnerText = text.Trim()` 
-\b0 \cf0 for those non-terminals for which you want the matching text).
+\b0 \cf0 instead of offset and length).
 \b \cf4  
-\b0 \cf0 \
+\b0 \cf0 If a non-terminal has multiple definitions then the corresponding XmlElement will have an alternative attribute with a one based integer value indicating which definition was matched.\
 \
 \pard\pardeftab360\ql\qnatural\pardirnatural
 
