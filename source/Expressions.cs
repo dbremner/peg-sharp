@@ -374,7 +374,7 @@ internal sealed class RangeExpression : Expression
 	public override void Write(StringBuilder line, int depth)
 	{
 		string chars = Chars.Length > 0 ? "\"" + Chars.EscapeAll().Replace("\\]", "]").Replace("\"", "\\\"") + "\"" : "string.Empty";
-		string ranges = Ranges.Length > 0 ? "\"" + DoEscape(Ranges) + "\"" : "string.Empty";
+		string ranges = Ranges.Length > 0 ? "\"" + DoEscape(Ranges).Replace("\"", "\\\"") + "\"" : "string.Empty";
 		
 		if (depth == 0)
 		{
@@ -428,7 +428,7 @@ internal sealed class RangeExpression : Expression
 			builder.Append(']');
 		}
 		
-		return builder.ToString();
+		return builder.ToString().Replace("\"", "\\\"");
 	}
 	
 	private string DoEscape(string s)

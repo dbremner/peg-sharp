@@ -72,7 +72,7 @@ Peg files consist of two or more settings and one or more non-terminal definitio
 \b0  - Custom class comment. This may appear multiple times for multiple line comments and '// ' will be added to the start if it does not begin with '//'.\
 \'95\'a0
 \b debug
-\b0  - Space separated list of non-terminal names for which progress information will be written to stdout. May be empty.\
+\b0  - Space separated list of non-terminal names for which progress information will be written to stdout. May be empty or * (to match everything).\
 \'95\'a0
 \b debug-file
 \b0  - Name of the file for which to print debug information..\
@@ -210,6 +210,8 @@ Subexpressions
 Terminal
 \b0  - 
 \i 'foo' 
+\i0 or 
+\i "foo" 
 \i0 will attempt to match the characters within the quotes against the input. 
 \i [ab0-9] 
 \i0 will attempt to match one character from the input aganst any character in the square brackets. A dash which is not the first or last character is interpreted as an inclusive character range. A ^ as the first character matches any character not in the range.\

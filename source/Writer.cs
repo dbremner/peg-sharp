@@ -274,7 +274,7 @@ internal sealed partial class Writer : IDisposable
 				DoWriteLine("private string DoTruncateString(string str)");
 				DoWriteLine("{");
 				DoWriteLine("	if (str.Length > 48)");
-				DoWriteLine("		return str.Substring(0, 48) + \"...\";");
+				DoWriteLine("		return str.Substring(0, 24) + \"...\" + str.Substring(str.Length - 24);");
 				DoWriteLine("	else if (str.Length > 0 && str[str.Length - 1] == '\\x0')");
 				DoWriteLine("		return str.Substring(0, str.Length - 1);");
 				DoWriteLine("	else");
@@ -442,9 +442,9 @@ internal sealed partial class Writer : IDisposable
 			if (m_debug.Length > 0)
 			{
 				if (m_grammar.Settings["debug-file"].Length > 0)
-					DoWriteLine("		if (m_file == m_debugFile && Array.IndexOf(m_debug, nonterminal) >= 0)");
+					DoWriteLine("		if (m_file == m_debugFile && (m_debug[0] == \"*\" || Array.IndexOf(m_debug, nonterminal) >= 0))");
 				else
-					DoWriteLine("		if (Array.IndexOf(m_debug, nonterminal) >= 0)");
+					DoWriteLine("		if (m_debug[0] == \"*\" || Array.IndexOf(m_debug, nonterminal) >= 0)");
 				DoWriteLine("		{");
 				DoWriteLine("			DoDebugWrite(\"cached {0}\", nonterminal);");
 				DoWriteLine("			++m_debugLevel;");
