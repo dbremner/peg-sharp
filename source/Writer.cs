@@ -250,7 +250,6 @@ internal sealed partial class Writer : IDisposable
 			DoWriteLine("		else if (ch < ' ')");
 			DoWriteLine("			builder.AppendFormat(\"\\\\x{0:X2}\", (int) ch);");
 			DoWriteLine("		");
-			DoWriteLine("		");
 			DoWriteLine("		else");
 			DoWriteLine("			builder.Append(ch);");
 			DoWriteLine("	}");
@@ -569,7 +568,7 @@ internal sealed partial class Writer : IDisposable
 			DoWriteLine("	}");
 			DoWriteLine("	");
 			DoWriteLine("	if (inverted)");
-			DoWriteLine("		matched = !matched;");
+			DoWriteLine("		matched = !matched && ch != '\\x0';");
 			DoWriteLine("	");
 			DoWriteLine("	if (matched)");
 			DoWriteLine("	{");

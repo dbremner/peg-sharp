@@ -46,6 +46,7 @@ internal static class Program
 		parser.Parse("-");
 		
 		parser.Parse("z");
+		parser.Parse("CF");
 	}
 	
 	private static void DoBad1(Test15 parser)
@@ -57,8 +58,8 @@ internal static class Program
 		}
 		catch (ParserException e)
 		{
-			if (e.Message != "Expected a or bA or [cB] or [d\\cPd] or z at line 1 col 1 in DoBad1")
-				Console.Error.WriteLine("Expected 'Expected a or bA or [cB] or [d\\cPd] or z at line 1 col 1 in DoBad1', but got '{0}'", e.Message);
+			if (e.Message != "Expected a or bA or [cB] or [d\\cPd] or z or CF at line 1 col 1 in DoBad1")
+				Console.Error.WriteLine("Expected 'Expected a or bA or [cB] or [d\\cPd] or z or CF at line 1 col 1 in DoBad1', but got '{0}'", e.Message);
 		}
 	}
 	
