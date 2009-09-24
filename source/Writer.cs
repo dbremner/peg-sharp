@@ -391,7 +391,7 @@ internal sealed partial class Writer : IDisposable
 				else
 					DoWriteLine("		if (m_input[j + i] != literal[i])");
 				DoWriteLine("		{");
-				DoWriteLine("			return new State(state.Index, false, new ErrorSet(state.Index, literal));");
+				DoWriteLine("			return new State(state.Index, false, ErrorSet.Combine(state.Errors, new ErrorSet(state.Index, literal)));");
 				DoWriteLine("		}");
 				DoWriteLine("	}");
 				DoWriteLine("	");
@@ -582,7 +582,7 @@ internal sealed partial class Writer : IDisposable
 			DoWriteLine("		return new State(state.Index + 1, true, state.Errors);");
 			DoWriteLine("	}");
 			DoWriteLine("	");
-			DoWriteLine("	return new State(state.Index, false, new ErrorSet(state.Index, label));");
+			DoWriteLine("	return new State(state.Index, false, ErrorSet.Combine(state.Errors, new ErrorSet(state.Index, label)));");
 			DoWriteLine("}");
 		}
 		if ((m_used & Used.Assert) != 0 && !m_grammar.Settings["exclude-methods"].Contains("DoAssert "))

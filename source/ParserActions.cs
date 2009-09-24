@@ -21,20 +21,23 @@ internal sealed partial class Parser
 	
 	private string DoAddSetting(List<Result> results)
 	{
-		string name = results[0].Text.Trim();
+		return DoAddSetting(results[0].Text.Trim(), results[2].Text.Trim());
+	}
+	
+	private string DoAddSetting(string name, string value)
+	{
 		if (name != "comment" && name != "debug" && name != "debug-file" && name != "exclude-exception" && name != "exclude-methods" && name != "ignore-case" && name != "namespace" && name != "start" && name != "unconsumed" && name != "using" && name != "value" && name != "visibility")
 			return string.Format("Setting '{0}' is not a valid name", name);
 		
-		string temp = results[2].Text.Trim();
 		if (name == "comment")
 		{
-			if (!temp.StartsWith("//"))
-				temp = "// " + temp;
+			if (!value.StartsWith("//"))
+				value = "// " + value;
 				
 			if (m_grammar.Settings["comment"].Length == 0)
-				m_grammar.Settings["comment"] = temp;
+				m_grammar.Settings["comment"] = value;
 			else
-				m_grammar.Settings["comment"] += '\n' + temp;
+				m_grammar.Settings["comment"] += '\n' + value;
 		}
 		else
 		{
@@ -42,13 +45,13 @@ internal sealed partial class Parser
 				return string.Format("Setting '{0}' is already defined", name);
 			
 			if (name == "unconsumed")
-				if (temp != "error" && temp != "expose" && temp != "ignore")
+				if (value != "error" && value != "expose" && value != "ignore")
 					return "Unconsumed value must be 'error', 'expose', or 'ignore'";
 			
 			if (name == "exclude-methods")
-				temp += ' ';		// ensure a trailing space so we can search for 'name '
+				value += ' ';		// ensure a trailing space so we can search for 'name '
 			
-			m_grammar.Settings.Add(name, temp);
+			m_grammar.Settings.Add(name, value);
 		}
 		
 		return null;
