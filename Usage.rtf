@@ -12,7 +12,7 @@ Typical usage looks like this:
 \i peg-sharp --out=FooParser.cs Foo.peg
 \i0 . Foo.peg is a Parsing Expression Grammer which defines the grammar of the language using a syntax which resembles Extended Backus\'96Naur Form (EBNF) augmented with custom code to execute when non-terminals are parsed.\
 \
-FooParser.cs will be created (or over-written) with a back-tracking recursive descent parser using memoization to store intermediate results. The memoization allows the parser to operate in linear time. The parser is thread safe as long as each parser instance is used by a single thread (and assuming that the semantic actions are thread safe as well).\
+FooParser.cs will be created (or over-written) with a back-tracking recursive descent parser using memoization to store intermediate results (i.e. a packrat parser). The memoization allows the parser to operate in linear time. The parser is thread safe as long as each parser instance is used by a single thread (and assuming that the semantic actions are thread safe as well).\
 \
 
 \b\fs36 Peg Files\
@@ -122,9 +122,9 @@ Start and value are required settings.\
 \
 
 \b Non-terminals
-\b0  are used to define the grammar of the language the parser will parse. They consist of a name, a ':=' symbol and a rule. 
-\b Rules
-\b0  consist of a parse expression and an optional semantic action. Multiple definitions of a non-terminal may appear. These are interpreted as an ordered choice (see below) with the earlier definitions having precedence over the later ones.\
+\b0  are used to define the grammar of the language the parser will parse. Each non-terminal is defined by one or more 
+\b rules
+\b0 . Rules consist of the non-terminal name, a ':=' symbol, a parse expression, and optional semantic actions executed when the rule succeeds or fails. A non-terminal with multiple rules is interpreted as an ordered choice (see below) with the earlier definitions having precedence over the later ones.\
 \
 
 \b Parse expressions
@@ -178,7 +178,7 @@ Ordered Choice
 Negative Assert
 \b0  - If e is an expression then 
 \i !e
-\i0  will fail if e matches and match if e fails. In neither case is input consumed. This is usually uses as a look-behind assertion.\
+\i0  will fail if e matches and match if e fails. In neither case is input consumed.\
 
 \b \
 Optional
@@ -194,7 +194,7 @@ Positive Assert
 \i &e
 \i0  will work exactly like 
 \i e
-\i0  except that input is not consumed if e matches. This is usually uses as a look-ahead assertion.\
+\i0  except that input is not consumed if e matches.\
 
 \b \
 Sequence
@@ -366,25 +366,57 @@ This is called after the input is parsed. The state argument has properties to i
 \
 \pard\pardeftab360\ql\qnatural\pardirnatural
 
-\b\fs36 \cf0 Notes\
-
-\b0\fs28 \
-Context Free Grammars (CFGs) have a difficult time encoding whitespace rules and so usually rely on a separate lexer to convert characters into tokens. PEG parsers on the other hand allow whitespace rules to be expressed in a natural way and so allow lexing and parsing to be integrated (see the example above).\
+\b\fs36 \cf0 Techniques and Pitfalls\
 \
-Reserved words are also a difficulty for CFGs and another reason they rely on a lexer. They are however rather easy to encode in a PEG parser:\
+
+\b0\fs28 Unlike most other parsers packrat parsers typically integrate lexing and parsing. This is a nice simplification since there is there is no need for a separate tokenization phase. However it does mean that the grammar needs to explicitly specify 
+\b whitespace
+\b0  handling. Normally this is done by inserting a whitespace non-terminal immediately after every terminal (see the example above).\
+\
+Because packrat parsers operate on the text instead of tokens they also often must deal with 
+\b reserved words
+\b0 . This can be done using rules like the below:\
 \
 Identifier := !ReservedWord Letter AlphaNum* Space*;\
-ReservedWord := \cf3 'if'\cf0  / \cf3 'else'\cf0  / \cf3 'while'\cf0  
-\i \cf2 # etc
+ReservedWord := (\cf3 'if'\cf0  / \cf3 'else'\cf0  / \cf3 'while')\cf0  !AlphaNum;\
+\
+By default peg-sharp will find only a single parse error. So, if you want to find multiple parse errors or try to extract as much information as you can from input which may not be valid you'll have to implement some form of 
+\b error recovery
+\b0 . This can be done by augmenting selected non-terminals with an expression which will eat characters until something parseable is found. For example, something like the below can be used to recover from parser errors within method bodies:\
+\pard\tx0\pardeftab360\ql\qnatural\pardirnatural
+\cf0 \
+CompilationUnit := Class*;\
+\
+Class := ClassSignature \cf3 '\{'\cf0  Method* \cf3 '\}'\cf0 ;\
+\
+ClassSignature := Visibility? \cf3 'class'\cf0  Identifier Bases?;\
+\
+Method := MethodSignature MethodBody;\
+\
+MethodSignature := Access? Type Identifier Args;\
+\
+
+\i \cf2 # If we can't parse a method body then we'll eat tokens until we
 \i0 \cf0 \
+
+\i \cf2 # find something that looks like a method or class.
+\i0 \cf0 \
+MethodBody := \cf3 '\{'\cf0  Statement+ \cf3 '\}'\cf0  / RecoverMethod+;\
 \
-A third problem with CFGs are expressions with a dangling tail that may apply to an inner or outer expression. The classic example is 
-\i if (e) if (f) else s;
-\i0  which in a CFG grammar is normally ambiguous: the else may refer to the inner or outer if. PEG parsers on the other hand will greedily match expressions so the inner if is used which is nearly always what is wanted.\
+RecoverMethod := !MethodOrClassSig .;\
 \
-CFGs are often written using 
-\b left recursive
-\b0  expressions. For example, a rule for addition might look like this:\
+MethodOrClassSig := MethodSignature / \cf3 '\}'\cf0  ClassSignature;\
+\
+Access := \cf3 'public'\cf0  / \cf3 'private'\cf0  / \cf3 'protected'\cf0  / \cf3 'internal'\cf0 ;\
+\
+Visibility := \cf3 'public'\cf0  / \cf3 'internal'\cf0 ;\
+\pard\pardeftab360\ql\qnatural\pardirnatural
+\cf0 \
+Note that this technique needs to be used carefully however because it interferes with the normal backtracking behavior of the parser. The above, for example, is OK only if the only input which can match MethodSignature is a method.\
+\
+Many parsers support 
+\b left recursion
+\b0  and grammars often make use of it. However peg-sharp will error our if it is used because it leads to infinite recursion. It's usually easy to rewrite left recursive rules however. For example, instead of:\
 \
 Additive := Additive \cf3 '+'\cf0  Multitive;	
 \i \cf2 # illegal left recursion
@@ -392,7 +424,7 @@ Additive := Additive \cf3 '+'\cf0  Multitive;
 Additive := Additive \cf3 '-'\cf0  Multitive;\
 Additive := Multitive;\
 \
-This is illegal in peg-sharp because it causes the parser to fall into an infinite loop. It should instead be rewritten to look something like this:\
+You can write:\
 \
 Additive := Multitive ((\cf3 '+'\cf0  / \cf3 ' -'\cf0 ) Multitive)*;\
 \
