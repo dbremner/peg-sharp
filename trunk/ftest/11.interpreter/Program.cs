@@ -71,6 +71,15 @@ while x > 1 do
 end
 result
 ", 4*3*2*1);
+		DoCheck(parser, @"
+doX = 4
+result = 1
+while doX > 1 do
+	result = result*doX
+	doX = doX - 1
+end
+result
+", 4*3*2*1);
 	}
 	
 	private static void DoBad1(Test11 parser)

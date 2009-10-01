@@ -411,5 +411,26 @@ Expr := ..;
 		var e = parser.Grammar.Rules[0].Expression;
 		Assert.AreEqual(". .", e.ToString());
 	}
+	
+	[Test]
+	public void Escape()
+	{
+		string input = @"
+start = Expr
+value = double
+
+Expr := [^\n\r\\]* Beta;
+Beta := 'b';
+";
+		var parser = new Parser();
+		parser.Parse(input);
+		parser.Grammar.Validate();
+		
+		Assert.AreEqual(2, parser.Grammar.Rules.Count);
+		Assert.AreEqual("Expr", parser.Grammar.Rules[0].Name);
+		
+		var e = parser.Grammar.Rules[0].Expression;
+		Assert.AreEqual("[^\\n\\r\\\\]* Beta", e.ToString());
+	}
 }
 #endif	// TEST
