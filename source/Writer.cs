@@ -230,6 +230,84 @@ internal sealed partial class Writer : IDisposable
 		DoWriteLine("partial void OnParseProlog();");
 		DoWriteLine("partial void OnParseEpilog(State state);");
 		DoWriteLine();
+		if (!m_grammar.Settings["exclude-methods"].Contains("DoParseFile "))
+		{
+			string value = m_grammar.Settings["value"];
+			DoWriteLine("private {0} DoParseFile(string input, string file)", value == "void" ? "int" : value);
+			DoWriteLine("{");
+			++m_indent;
+			
+			if (m_debug.Length > 0)
+			{
+				if (m_grammar.Settings["debug-file"].Length > 0)
+				{
+					DoWriteLine("if (m_file == m_debugFile)");
+					DoWriteLine("{");
+					DoWriteLine("	DoDebugWrite(new string('-', 32));");
+					DoWriteLine("	if (!string.IsNullOrEmpty(file))");
+					DoWriteLine("		DoDebugWrite(file);");
+					DoWriteLine("}");
+				}
+				else
+				{
+					DoWriteLine("DoDebugWrite(new string('-', 32));");
+					DoWriteLine("if (!string.IsNullOrEmpty(file))");
+					DoWriteLine("	DoDebugWrite(file);");
+				}
+				DoWriteLine();
+			}
+			
+			if (value == "XmlNode")
+				DoWriteLine("m_doc = new XmlDocument();");
+			DoWriteLine("m_file = file;");
+			DoWriteLine("m_input = m_file;				// we need to ensure that m_file is used or we will (in some cases) get a compiler warning");
+			DoWriteLine("m_input = input + \"\\x0\";	// add a sentinel so we can avoid range checks");
+			DoWriteLine("m_cache.Clear();");
+			if (m_grammar.Settings["unconsumed"] == "expose")
+				DoWriteLine("m_consumed = 0;");
+			DoWriteLine();
+			DoWriteLine("State state = new State(0, true);");
+			DoWriteLine("var results = new List<Result>();");
+			DoWriteLine();
+			DoWriteLine("OnParseProlog();");
+			DoWriteLine("state = DoParse(state, results, \"{0}\");", m_grammar.Settings["start"]);
+			DoWriteLine();
+			
+			if (m_grammar.Settings["unconsumed"] == "expose")
+			{
+				DoWriteLine("m_consumed = state.Index;");
+			}
+			else if (m_grammar.Settings["unconsumed"] == "error")
+			{
+				DoWriteLine("int i = state.Index;");
+				DoWriteLine("if (!state.Parsed)");
+				DoWriteLine("	DoThrow(state.Errors.Index, state.Errors.ToString());");
+				DoWriteLine("else if (i < input.Length)");
+				DoWriteLine("	if (state.Errors.Expected.Length > 0)");
+				DoWriteLine("		DoThrow(state.Errors.Index, state.Errors.ToString());");
+				DoWriteLine("	else");
+				DoWriteLine("		DoThrow(state.Errors.Index, \"Not all input was consumed starting from '\" + input.Substring(i, Math.Min(16, input.Length - i)) + \"'\");");
+			}
+			
+			if (value == "XmlNode")
+			{
+				DoWriteLine("");
+				DoWriteLine("m_doc.AppendChild(results[0].Value);");
+			}
+			DoWriteLine("OnParseEpilog(state);");
+			
+			DoWriteLine();
+			if (value == "void")
+				DoWriteLine("return state.Index;");
+			else if (value == "XmlNode")
+				DoWriteLine("return m_doc;");
+			else
+				DoWriteLine("return results[0].Value;");
+			
+			--m_indent;
+			DoWriteLine("}");
+			DoWriteLine();
+		}
 		if (!m_grammar.Settings["exclude-methods"].Contains("DoEscapeAll "))
 		{
 			DoWriteLine("public string DoEscapeAll(string s)");
@@ -644,83 +722,13 @@ internal sealed partial class Writer : IDisposable
 		string value = m_grammar.Settings["value"];
 		DoWriteLine("public {0} Parse(string input)", value == "void" ? "int" : value);
 		DoWriteLine("{");
-		DoWriteLine("	return Parse(input, null);");
+		DoWriteLine("	return DoParseFile(input, null);");
 		DoWriteLine("}");
 		DoWriteLine();
-
 		DoWriteLine("// File is used for error reporting.");
 		DoWriteLine("public {0} Parse(string input, string file)", value == "void" ? "int" : value);
 		DoWriteLine("{");
-		++m_indent;
-		
-		if (m_debug.Length > 0)
-		{
-			if (m_grammar.Settings["debug-file"].Length > 0)
-			{
-				DoWriteLine("if (m_file == m_debugFile)");
-				DoWriteLine("{");
-				DoWriteLine("	DoDebugWrite(new string('-', 32));");
-				DoWriteLine("	if (!string.IsNullOrEmpty(file))");
-				DoWriteLine("		DoDebugWrite(file);");
-				DoWriteLine("}");
-			}
-			else
-			{
-				DoWriteLine("DoDebugWrite(new string('-', 32));");
-				DoWriteLine("if (!string.IsNullOrEmpty(file))");
-				DoWriteLine("	DoDebugWrite(file);");
-			}
-			DoWriteLine();
-		}
-		
-		if (value == "XmlNode")
-			DoWriteLine("m_doc = new XmlDocument();");
-		DoWriteLine("m_file = file;");
-		DoWriteLine("m_input = m_file;				// we need to ensure that m_file is used or we will (in some cases) get a compiler warning");
-		DoWriteLine("m_input = input + \"\\x0\";	// add a sentinel so we can avoid range checks");
-		DoWriteLine("m_cache.Clear();");
-		if (m_grammar.Settings["unconsumed"] == "expose")
-			DoWriteLine("m_consumed = 0;");
-		DoWriteLine();
-		DoWriteLine("State state = new State(0, true);");
-		DoWriteLine("var results = new List<Result>();");
-		DoWriteLine();
-		DoWriteLine("OnParseProlog();");
-		DoWriteLine("state = DoParse(state, results, \"{0}\");", m_grammar.Settings["start"]);
-		DoWriteLine();
-		
-		if (m_grammar.Settings["unconsumed"] == "expose")
-		{
-			DoWriteLine("m_consumed = state.Index;");
-		}
-		else if (m_grammar.Settings["unconsumed"] == "error")
-		{
-			DoWriteLine("int i = state.Index;");
-			DoWriteLine("if (!state.Parsed)");
-			DoWriteLine("	DoThrow(state.Errors.Index, state.Errors.ToString());");
-			DoWriteLine("else if (i < input.Length)");
-			DoWriteLine("	if (state.Errors.Expected.Length > 0)");
-			DoWriteLine("		DoThrow(state.Errors.Index, state.Errors.ToString());");
-			DoWriteLine("	else");
-			DoWriteLine("		DoThrow(state.Errors.Index, \"Not all input was consumed starting from '\" + input.Substring(i, Math.Min(16, input.Length - i)) + \"'\");");
-		}
-		
-		if (value == "XmlNode")
-		{
-			DoWriteLine("");
-			DoWriteLine("m_doc.AppendChild(results[0].Value);");
-		}
-		DoWriteLine("OnParseEpilog(state);");
-		
-		DoWriteLine();
-		if (value == "void")
-			DoWriteLine("return state.Index;");
-		else if (value == "XmlNode")
-			DoWriteLine("return m_doc;");
-		else
-			DoWriteLine("return results[0].Value;");
-		
-		--m_indent;
+		DoWriteLine("	return DoParseFile(input, file);");
 		DoWriteLine("}");
 		DoWriteLine();
 	}

@@ -317,7 +317,7 @@ Because the parser may back-track semantic actions should not have side effects.
 \pard\pardeftab360\ql\qnatural\pardirnatural
 
 \b \cf0 text
-\b0  - This is of type System.String and contains all of the text consumed by the rule. If a semantic action sets this to null then the rule will not append a result onto results. This may be used only within the success case.\
+\b0  - This is of type System.String and contains all of the text consumed by the rule. If a semantic action sets this to null then the rule will not append a result onto results (setting it to any other value has no effect on the returned Result). This may be used only within the success case.\
 \
 
 \b value
@@ -380,11 +380,59 @@ Because packrat parsers operate on the text instead of tokens they also often mu
 Identifier := !ReservedWord Letter AlphaNum* Space*;\
 ReservedWord := (\cf3 'if'\cf0  / \cf3 'else'\cf0  / \cf3 'while')\cf0  !AlphaNum;\
 \
+\pard\pardeftab360\ql\qnatural\pardirnatural
+
+\b \cf0 Typing
+\b0  can be a problem because the parser expects that each parse function returns a single type. But it's quite common to want to parse languages which have distinct types for things like statements and expressions. The best way to handle this seems to be to define a union-like class. For example,\
+\pard\pardeftab360\ql\qnatural\pardirnatural
+
+\b \cf5 private
+\b0 \cf0  
+\b \cf5 struct
+\b0 \cf0  Union\
+\{\
+	
+\b \cf5 public
+\b0 \cf0  Union(Statement s)\
+	\{\
+		S = s;\
+		E = 
+\b \cf5 default
+\b0 \cf0 (Expression);\
+	\}\
+	\
+	
+\b \cf5 public
+\b0 \cf0  Union(Expression e)\
+	\{\
+		S = 
+\b \cf5 default
+\b0 \cf0 (Statement);\
+		E = E;\
+	\}\
+	\
+	
+\b \cf5 public
+\b0 \cf0  Statement S \{
+\b \cf5 get
+\b0 \cf0 ; 
+\b \cf5 set
+\b0 \cf0 ;\}\
+	\
+	
+\b \cf5 public
+\b0 \cf0  Expression E \{
+\b \cf5 get
+\b0 \cf0 ; 
+\b \cf5 set
+\b0 \cf0 ;\}\
+\}\
+Note that you'll probably also want to use the exclude-methods setting so that you can replace Parse with one that returns a non-Union type.\
+\
 By default peg-sharp will find only a single parse error. So, if you want to find multiple parse errors or try to extract as much information as you can from input which may not be valid you'll have to implement some form of 
 \b error recovery
 \b0 . This can be done by augmenting selected non-terminals with an expression which will eat characters until something parseable is found. For example, something like the below can be used to recover from parser errors within method bodies:\
-\pard\tx0\pardeftab360\ql\qnatural\pardirnatural
-\cf0 \
+\
 CompilationUnit := Class*;\
 \
 Class := ClassSignature \cf3 '\{'\cf0  Method* \cf3 '\}'\cf0 ;\
@@ -395,6 +443,7 @@ Method := MethodSignature MethodBody;\
 \
 MethodSignature := Access? Type Identifier Args;\
 \
+\pard\pardeftab360\ql\qnatural\pardirnatural
 
 \i \cf2 # If we can't parse a method body then we'll eat tokens until we
 \i0 \cf0 \
@@ -410,8 +459,7 @@ MethodOrClassSig := MethodSignature / \cf3 '\}'\cf0  ClassSignature;\
 Access := \cf3 'public'\cf0  / \cf3 'private'\cf0  / \cf3 'protected'\cf0  / \cf3 'internal'\cf0 ;\
 \
 Visibility := \cf3 'public'\cf0  / \cf3 'internal'\cf0 ;\
-\pard\pardeftab360\ql\qnatural\pardirnatural
-\cf0 \
+\
 Note that this technique needs to be used carefully however because it interferes with the normal backtracking behavior of the parser. The above, for example, is OK only if the only input which can match MethodSignature is a method.\
 \
 Many parsers support 
@@ -428,8 +476,9 @@ You can write:\
 \
 Additive := Multitive ((\cf3 '+'\cf0  / \cf3 ' -'\cf0 ) Multitive)*;\
 \
+\pard\pardeftab360\ql\qnatural\pardirnatural
 
-\b\fs36 Peg File Grammar\
+\b\fs36 \cf0 Peg File Grammar\
 
 \b0\fs28 \
 start = PegFile\
