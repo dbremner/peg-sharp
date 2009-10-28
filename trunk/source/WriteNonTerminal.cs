@@ -55,7 +55,7 @@ internal sealed partial class Writer
 			DoWriteLine("	");
 		}
 		DoWriteLine("	State _start = _state;");
-		DoWriteLine("	var results = new List<Result>();");
+		DoWriteLine("	List<Result> results = new List<Result>();");
 		DoWriteLine("	");
 		DoWriteNonTerminalRule(rule);
 		DoWriteLine("	");
