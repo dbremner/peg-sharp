@@ -75,9 +75,13 @@ internal sealed class AssertExpression : Expression
 			string s = depth == 1 ? "s" : ("s" + depth);
 			string r = depth == 1 ? "r" : ("r" + depth);
 			string t = new string('\t', 2 + depth);
-			line.AppendFormat("{0}{1}({2}, {3}) => DoAssert({2}, {3},", Environment.NewLine, t, s, r);
+			line.AppendLine();
+			line.Append(t);				// TODO: use lambdas once we drop .NET 2.0 support
+			line.AppendFormat("delegate (State {0}, List<Result> {1}) {{return DoAssert({0}, {1},", s, r);
+//			line.AppendFormat("({0}, {1}) => DoAssert({0}, {1},", s, r);
 			Expression.Write(line, depth + 1);
-			line.Append(")");
+//			line.Append(")");
+			line.Append(";)}");
 		}
 	}
 	
@@ -153,7 +157,10 @@ internal sealed class ChoiceExpression : Expression
 			string s = depth == 1 ? "s" : ("s" + depth);
 			string r = depth == 1 ? "r" : ("r" + depth);
 			string t = new string('\t', 2 + depth);
-			line.AppendFormat("{0}{1}({2}, {3}) => DoChoice({2}, {3}{4})", Environment.NewLine, t, s, r, args);
+			line.AppendLine();
+			line.Append(t);
+			line.AppendFormat("delegate (State {0}, List<Result> {1}) {{return DoChoice({0}, {1}{2});}}", s, r, args);
+//			line.AppendFormat("({0}, {1}) => DoChoice({0}, {1}{2})", s, r, args);
 		}
 	}
 	
@@ -213,7 +220,10 @@ internal sealed class LiteralExpression : Expression
 			string s = depth == 1 ? "s" : ("s" + depth);
 			string r = depth == 1 ? "r" : ("r" + depth);
 			string t = new string('\t', 2 + depth);
-			line.AppendFormat("{0}{1}({2}, {3}) => DoParseLiteral({2}, {3}, \"{4}\")", Environment.NewLine, t, s, r, Literal.Replace("\"", "\\\""));
+			line.AppendLine();
+			line.Append(t);
+			line.AppendFormat("delegate (State {0}, List<Result> {1}) {{return DoParseLiteral({0}, {1}, \"{2}\");}}", s, r, Literal.Replace("\"", "\\\""));
+//			line.AppendFormat("({0}, {1}) => DoParseLiteral({0}, {1}, \"{2}\")", s, r, Literal.Replace("\"", "\\\""));
 		}
 	}
 	
@@ -288,9 +298,13 @@ internal sealed class NAssertExpression : Expression
 			string s = depth == 1 ? "s" : ("s" + depth);
 			string r = depth == 1 ? "r" : ("r" + depth);
 			string t = new string('\t', 2 + depth);
-			line.AppendFormat("{0}{1}({2}, {3}) => DoNAssert({2}, {3},", Environment.NewLine, t, s, r);
+			line.AppendLine();
+			line.Append(t);
+			line.AppendFormat("delegate (State {0}, List<Result> {1}) {{return DoNAssert({0}, {1},", s, r);
+//			line.AppendFormat("({0}, {1}) => DoNAssert({0}, {1},", s, r);
 			Expression.Write(line, depth + 1);
-			line.Append(")");
+			line.Append(");}");
+//			line.Append(")");
 		}
 	}
 	
@@ -386,9 +400,13 @@ internal sealed class RangeExpression : Expression
 			string s = depth == 1 ? "s" : ("s" + depth);
 			string r = depth == 1 ? "r" : ("r" + depth);
 			string t = new string('\t', 2 + depth);
+			line.AppendLine();
+			line.Append(t);
 			
-			line.AppendFormat("{0}{1}({2}, {3}) => DoParseRange({2}, {3}, {4}, {5}, {6}, {7}, \"{8}\")",
-				Environment.NewLine, t, s, r, Inverted ? "true" : "false", chars, ranges, Categories, this);
+			line.AppendFormat("delegate (State {0}, List<Result> {1}) {{return DoParseRange({0}, {1}, {2}, {3}, {4}, {5}, \"{6}\");}}",
+				s, r, Inverted ? "true" : "false", chars, ranges, Categories, this);
+//			line.AppendFormat("({0}, {1}) => DoParseRange({0}, {1}, {2}, {3}, {4}, {5}, \"{6}\")",
+//				s, r, Inverted ? "true" : "false", chars, ranges, Categories, this);
 		}
 	}
 	
@@ -627,9 +645,13 @@ internal sealed class RepetitionExpression : Expression
 			string s = depth == 1 ? "s" : ("s" + depth);
 			string r = depth == 1 ? "r" : ("r" + depth);
 			string t = new string('\t', 2 + depth);
-			line.AppendFormat("{0}{1}({2}, {3}) => DoRepetition({2}, {3}, {4}, {5},", Environment.NewLine, t, s, r, Min, Max);
+			line.AppendLine();
+			line.Append(t);
+			line.AppendFormat("delegate (State {0}, List<Result> {1}) {{return DoRepetition({0}, {1}, {2}, {3},", s, r, Min, Max);
+//			line.AppendFormat("({0}, {1}) => DoRepetition({0}, {1}, {2}, {3},", s, r, Min, Max);
 			Expression.Write(line, depth + 1);
-			line.Append(")");
+			line.Append(");}");
+//			line.Append(")");
 		}
 	}
 	
@@ -711,9 +733,13 @@ internal sealed class RuleExpression : Expression
 			string s = depth == 1 ? "s" : ("s" + depth);
 			string r = depth == 1 ? "r" : ("r" + depth);
 			string t = new string('\t', 2 + depth);
-			line.AppendFormat("{0}{1}({2}, {3}) => DoParse({2}, {3}, \"", Environment.NewLine, t, s, r);
+			line.AppendLine();
+			line.Append(t);
+			line.AppendFormat("delegate (State {0}, List<Result> {1}) {{return DoParse({0}, {1}, \"", s, r);
+//			line.AppendFormat("({0}, {1}) => DoParse({0}, {1}, \"", s, r);
 			line.Append(Name);
-			line.Append("\")");
+			line.Append("\");}");
+//			line.Append("\")");
 		}
 	}
 	
@@ -790,7 +816,10 @@ internal sealed class SequenceExpression : Expression
 			string s = depth == 1 ? "s" : ("s" + depth);
 			string r = depth == 1 ? "r" : ("r" + depth);
 			string t = new string('\t', 2 + depth);
-			line.AppendFormat("{0}{1}({2}, {3}) => DoSequence({2}, {3}{4})", Environment.NewLine, t, s, r, args);
+			line.AppendLine();
+			line.Append(t);
+			line.AppendFormat("delegate (State {0}, List<Result> {1}) {{return DoSequence({0}, {1}{2});}}", s, r, args);
+//			line.AppendFormat("({0}, {1}) => DoSequence({0}, {1}{2})", s, r, args);
 		}
 	}
 	

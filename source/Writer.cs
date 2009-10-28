@@ -267,7 +267,7 @@ internal sealed partial class Writer : IDisposable
 				DoWriteLine("m_consumed = 0;");
 			DoWriteLine();
 			DoWriteLine("State state = new State(0, true);");
-			DoWriteLine("var results = new List<Result>();");
+			DoWriteLine("List<Result> results = new List<Result>();");
 			DoWriteLine();
 			DoWriteLine("OnParseProlog();");
 			DoWriteLine("state = DoParse(state, results, \"{0}\");", m_grammar.Settings["start"]);
@@ -312,7 +312,7 @@ internal sealed partial class Writer : IDisposable
 		{
 			DoWriteLine("public string DoEscapeAll(string s)");
 			DoWriteLine("{");
-			DoWriteLine("	var builder = new System.Text.StringBuilder(s.Length);");
+			DoWriteLine("	System.Text.StringBuilder builder = new System.Text.StringBuilder(s.Length);");
 			DoWriteLine("	");
 			DoWriteLine("	foreach (char ch in s)");
 			DoWriteLine("	{");
@@ -817,14 +817,17 @@ internal sealed partial class Writer : IDisposable
 		DoWriteLine("		HasResult = hasResult;");
 		DoWriteLine("	}");
 		DoWriteLine("	");
-		DoWriteLine("	public State State {get; private set;}");
+		DoWriteLine("	public State State;");
+//		DoWriteLine("	public State State {get; private set;}");
 		if (m_grammar.Settings["value"] != "void")
 		{
 			DoWriteLine("	");
-			DoWriteLine("	public {0} Value {1}get; private set;{2}", m_grammar.Settings["value"], "{", "}");
+			DoWriteLine("	public {0} Value;", m_grammar.Settings["value"]);
+//			DoWriteLine("	public {0} Value {{get; private set;}}", m_grammar.Settings["value"]);
 		}
 		DoWriteLine("	");
-		DoWriteLine("	public bool HasResult {get; private set;}");
+		DoWriteLine("	public bool HasResult;");
+//		DoWriteLine("	public bool HasResult {get; private set;}");
 		DoWriteLine("}");
 		DoWriteLine("");
 		DoWriteLine("private delegate State ParseMethod(State state, List<Result> results);");
@@ -847,10 +850,12 @@ internal sealed partial class Writer : IDisposable
 		DoWriteLine("	");
 		DoWriteLine("	// The location associated with the errors. For a failed parse this will be the");
 		DoWriteLine("	// same as State.Index. For a successful parse it will be State.Index or later.");
-		DoWriteLine("	public int Index {get; private set;}");
+		DoWriteLine("	public int Index;");
+//		DoWriteLine("	public int Index {get; private set;}");
 		DoWriteLine("	");
 		DoWriteLine("	// This will be the name of something which was expected, but not found.");
-		DoWriteLine("	public string[] Expected {get; private set;}");
+		DoWriteLine("	public string[] Expected;");
+//		DoWriteLine("	public string[] Expected {get; private set;}");
 		DoWriteLine("	");
 		DoWriteLine("	public static ErrorSet Combine(ErrorSet lhs, ErrorSet rhs)");
 		DoWriteLine("	{");
@@ -864,7 +869,7 @@ internal sealed partial class Writer : IDisposable
 		DoWriteLine("		}");
 		DoWriteLine("		else");
 		DoWriteLine("		{");
-		DoWriteLine("			var errors = new List<string>(lhs.Expected.Length + rhs.Expected.Length);");
+		DoWriteLine("			List<string> errors = new List<string>(lhs.Expected.Length + rhs.Expected.Length);");
 		DoWriteLine("			errors.AddRange(lhs.Expected);");
 		DoWriteLine("			foreach (string err in rhs.Expected)");
 		DoWriteLine("			{");
@@ -902,14 +907,17 @@ internal sealed partial class Writer : IDisposable
 		DoWriteLine("	}");
 		DoWriteLine("	");
 		DoWriteLine("	// Index of the first unconsumed character.");
-		DoWriteLine("	public int Index {get; private set;}");
+		DoWriteLine("	public int Index;");
+//		DoWriteLine("	public int Index {get; private set;}");
 		DoWriteLine("	");
 		DoWriteLine("	// True if the expression associated with the state successfully parsed.");
-		DoWriteLine("	public bool Parsed {get; private set;}");
+		DoWriteLine("	public bool Parsed;");
+//		DoWriteLine("	public bool Parsed {get; private set;}");
 		DoWriteLine("	");
 		DoWriteLine("	// If Parsed is false then this will explain why. If Parsed is true it will");
 		DoWriteLine("	// say why the parse stopped.");
-		DoWriteLine("	public ErrorSet Errors {get; private set;}");
+		DoWriteLine("	public ErrorSet Errors;");
+//		DoWriteLine("	public ErrorSet Errors {get; private set;}");
 		DoWriteLine("}");
 		DoWriteLine("");
 		DoWriteLine("// The result of parsing a literal or non-terminal.");
@@ -941,7 +949,8 @@ internal sealed partial class Writer : IDisposable
 			DoWriteLine("	");
 			DoWriteLine("	// For non-terminals this will be the result of the semantic action, ");
 			DoWriteLine("	// otherwise it will be the default value.");
-			DoWriteLine("	public {0} Value {1}get; private set;{2}", m_grammar.Settings["value"], "{", "}");
+			DoWriteLine("	public {0} Value;", m_grammar.Settings["value"]);
+//			DoWriteLine("	public {0} Value {{get; private set;}}", m_grammar.Settings["value"]);
 		}
 		DoWriteLine("	");
 		DoWriteLine("	private {0} m_parser;", m_className);
@@ -960,7 +969,7 @@ internal sealed partial class Writer : IDisposable
 			"System",
 			"System.Collections.Generic",
 			"System.Globalization",
-			"System.Linq",
+//			"System.Linq",								// TODO: this is handy enough that we'd like to include it by default, but we want the generated parsers to work with .NET 2.0 for now
 			"System.Runtime.Serialization",
 			"System.Security.Permissions",
 		};
