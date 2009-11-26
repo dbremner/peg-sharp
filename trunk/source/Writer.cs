@@ -163,7 +163,8 @@ internal sealed partial class Writer : IDisposable
 			DoWriteLine(line.ToString());
 		}
 		
-		DoWriteLine("\tOnCtorEpilog();");
+		if (!m_grammar.Settings["exclude-methods"].Contains("OnCtorEpilog "))
+			DoWriteLine("\tOnCtorEpilog();");
 		DoWriteLine("}");
 		DoWriteLine();
 	}
@@ -226,9 +227,12 @@ internal sealed partial class Writer : IDisposable
 	private void DoWriteHelpers()
 	{
 		DoWriteLine("#region Private Helper Methods");
-		DoWriteLine("partial void OnCtorEpilog();");
-		DoWriteLine("partial void OnParseProlog();");
-		DoWriteLine("partial void OnParseEpilog(State state);");
+		if (!m_grammar.Settings["exclude-methods"].Contains("OnCtorEpilog "))
+			DoWriteLine("partial void OnCtorEpilog();");
+		if (!m_grammar.Settings["exclude-methods"].Contains("OnParseProlog "))
+			DoWriteLine("partial void OnParseProlog();");
+		if (!m_grammar.Settings["exclude-methods"].Contains("OnParseEpilog "))
+			DoWriteLine("partial void OnParseEpilog(State state);");
 		DoWriteLine();
 		if (!m_grammar.Settings["exclude-methods"].Contains("DoParseFile "))
 		{
@@ -269,7 +273,8 @@ internal sealed partial class Writer : IDisposable
 			DoWriteLine("State state = new State(0, true);");
 			DoWriteLine("List<Result> results = new List<Result>();");
 			DoWriteLine();
-			DoWriteLine("OnParseProlog();");
+			if (!m_grammar.Settings["exclude-methods"].Contains("OnParseProlog "))
+				DoWriteLine("OnParseProlog();");
 			DoWriteLine("state = DoParse(state, results, \"{0}\");", m_grammar.Settings["start"]);
 			DoWriteLine();
 			
@@ -294,7 +299,8 @@ internal sealed partial class Writer : IDisposable
 				DoWriteLine("");
 				DoWriteLine("m_doc.AppendChild(results[0].Value);");
 			}
-			DoWriteLine("OnParseEpilog(state);");
+			if (!m_grammar.Settings["exclude-methods"].Contains("OnParseEpilog "))
+				DoWriteLine("OnParseEpilog(state);");
 			
 			DoWriteLine();
 			if (value == "void")
