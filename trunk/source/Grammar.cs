@@ -73,6 +73,7 @@ internal sealed class Grammar
 				let re = e as RuleExpression
 					select re.Name;
 		
+		DoCheckForBadDebugSetting();
 		DoCheckForMissingNonterminals(used);
 		DoCheckForUnusedNonterminals(used);
 		DoCheckForLeftRecursion();
@@ -82,9 +83,23 @@ internal sealed class Grammar
 	}
 	
 	#region Private Methods
+	private void DoCheckForBadDebugSetting()
+	{
+		string[] names = Settings["debug"].Split(new char[]{' '}, StringSplitOptions.RemoveEmptyEntries);
+		foreach (string name in names)
+		{
+			if (!m_rules.Any(r => r.Name == name))
+			{
+				string mesg = string.Format("Debug setting has a value which is not the name of a non-terminal: {0}.", name);
+				throw new ParserException(mesg);
+			}
+		}
+	}
+	
 	private void DoCheckForMissingNonterminals(IEnumerable<string> used)
 	{
 		var missing = from name in used where !Rules.Exists(r => r.Name == name) select name;
+		missing = missing.Distinct();
 		
 		if (missing.Any())
 		{
