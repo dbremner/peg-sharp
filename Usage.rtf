@@ -1,4 +1,4 @@
-{\rtf1\ansi\ansicpg1252\cocoartf949\cocoasubrtf460
+{\rtf1\ansi\ansicpg1252\cocoartf949\cocoasubrtf540
 {\fonttbl\f0\fnil\fcharset0 Verdana;}
 {\colortbl;\red255\green255\blue255;\red242\green0\blue43;\red176\green45\blue127;\red43\green96\blue67;
 \red0\green91\blue255;\red226\green255\blue255;}
@@ -481,7 +481,8 @@ Additive := Multitive ((\cf3 '+'\cf0  / \cf3 ' -'\cf0 ) Multitive)*;\
 \b\fs36 \cf0 Peg File Grammar\
 
 \b0\fs28 \
-start = PegFile\
+\pard\tx0\pardeftab360\ql\qnatural\pardirnatural
+\cf0 start = PegFile\
 \
 Action := \cf3 '`'\cf0  \cf3 [^`]\cf0 + \cf3 '`'\cf0 ;\
 \
@@ -499,7 +500,8 @@ Identifier := \cf3 [a-zA-Z]\cf0  \cf3 [a-zA-Z0-9_-]\cf0 * S;\
 \
 Integer := \cf3 [0-9]\cf0 + S;\
 \
-Literal := \cf3 '\\''\cf0  (\cf3 '\\\\\\''\cf0  / \cf3 [^']\cf0 )+ \cf3 '\\''\cf0  S;\
+Literal := \cf3 '\\''\cf0  (\cf3 '\\\\\\''\cf0  / \cf3 '\\x5c\\x5c'\cf0  / \cf3 [^']\cf0 )+ \cf3 '\\''\cf0  S;\
+Literal := \cf3 '"'\cf0  (\cf3 '\\\\"'\cf0  / \cf3 '\\x5c\\x5c'\cf0  / \cf3 [^"]\cf0 )+ \cf3 '"'\cf0  S;\
 \
 PegFile := S (Setting / Comment)+ (Rule / Comment)+;\
 \
@@ -512,7 +514,7 @@ PostfixExpression := PrimitiveExpression;\
 \
 PrimitiveExpression := Any / Literal / Range / SubRule / SubExpression;\
 \
-Range := \cf3 '['\cf0  (\cf3 '\\\\]'\cf0  / \cf3 [^\\]]\cf0 )+ \cf3 ']'\cf0  S;\
+Range := \cf3 '['\cf0  (\cf3 '\\\\]'\cf0  / \cf3 '\\\\\\\\'\cf0  / \cf3 [^\\]]\cf0 )+ \cf3 ']'\cf0  S;\
 \
 Rule := Identifier \cf3 ':='\cf0  S Expression (\cf3 ';'\cf0  / Action S Action?) S;\
 \
@@ -520,7 +522,8 @@ S := Space*;\
 \
 SequenceExpression := AssertExpression+;\
 \
-Setting := Identifier \cf3 '='\cf0  S Value;\
+Setting := Identifier \cf3 '='\cf0  \cf3 [ ]\cf0 * (\cf3 '\\n'\cf0  / \cf3 '\\r'\cf0  / \cf3 '\\t'\cf0 ) S;\
+Setting := Identifier \cf3 '='\cf0  S Value (\cf3 '\\n'\cf0  / \cf3 '\\r'\cf0  / \cf3 '\\t'\cf0 ) S;\
 \
 Space := \cf3 [ \\t\\r\\n]\cf0 ;\
 \
@@ -528,5 +531,5 @@ SubExpression := \cf3 '('\cf0  S Expression \cf3 ')'\cf0  S;\
 \
 SubRule := Identifier;\
 \
-Value := \cf3 [^\\t\\n\\r]\cf0 + S;\
+Value := \cf3 [^\\t\\n\\r]\cf0 +;\
 }
