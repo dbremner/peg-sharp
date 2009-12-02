@@ -82,10 +82,15 @@ R: Gendarme.Rules.Exceptions.DoNotSwallowErrorsCatchingNonSpecificExceptionsRule
 M: System.String Parser::DoRange(System.String,Expression&)
 
 R: Gendarme.Rules.Portability.NewLineLiteralRule
-M: Parser/State Parser::<DoParseCommentRule>m__69(Parser/State,System.Collections.Generic.List`1<Parser/Result>)
-M: Parser/State Parser::<DoParseCommentRule>m__69(Parser/State,System.Collections.Generic.List`1<Parser/Result>)
-M: Parser/State Parser::<DoParseValueRule>m__73(Parser/State,System.Collections.Generic.List`1<Parser/Result>)
-M: Parser/State Parser::<DoParseValueRule>m__73(Parser/State,System.Collections.Generic.List`1<Parser/Result>)
+M: Parser/State Parser::<DoParseValueRule>m__6E(Parser/State,System.Collections.Generic.List`1<Parser/Result>)
+M: Parser/State Parser::<DoParseValueRule>m__6E(Parser/State,System.Collections.Generic.List`1<Parser/Result>)
+M: Parser/State Parser::<DoParseCommentRule>m__75(Parser/State,System.Collections.Generic.List`1<Parser/Result>)
+M: Parser/State Parser::<DoParseCommentRule>m__75(Parser/State,System.Collections.Generic.List`1<Parser/Result>)
+M: Parser/State Parser::<DoParseSetting1Rule>m__81(Parser/State,System.Collections.Generic.List`1<Parser/Result>)
+M: Parser/State Parser::<DoParseSetting1Rule>m__82(Parser/State,System.Collections.Generic.List`1<Parser/Result>)
+M: Parser/State Parser::<DoParseSetting2Rule>m__84(Parser/State,System.Collections.Generic.List`1<Parser/Result>)
+M: Parser/State Parser::<DoParseSetting2Rule>m__85(Parser/State,System.Collections.Generic.List`1<Parser/Result>)
+M: Parser/State Parser::DoParseSpaceRule(Parser/State,System.Collections.Generic.List`1<Parser/Result>)
 M: Parser/State Parser::DoParseSpaceRule(Parser/State,System.Collections.Generic.List`1<Parser/Result>)
 
 R: Gendarme.Rules.Performance.OverrideValueTypeDefaultsRule
@@ -96,6 +101,8 @@ T: Parser/CacheValue
 
 R: Gendarme.Rules.BadPractice#PreferEmptyInstanceOverNullRule
 M: System.String Parser::DoAddSetting(System.Collections.Generic.List`1<Parser/Result>)
+M: System.String Parser::DoRange(System.String,Expression&)
+M: System.String Parser::DoAddSetting(System.String,System.String)
 M: System.String Parser::DoRange(System.String,Expression&)
 
 # Debug code.

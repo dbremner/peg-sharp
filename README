@@ -1,0 +1,1 @@
+peg-sharp is a tool which is used to generate C# code for arbitrary Parsing Expression Grammars (PEGs). The generated code implementsa packrat parser so it is reasonably efficient. See <http://code.google.com/p/peg-sharp/>for more details.Currently building is done via the Makefile, but it's trivial to setupa Visual Studio solution to build it. -- jesjones@mindspring.com
