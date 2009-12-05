@@ -21,7 +21,7 @@ endif
 dummy1 := $(shell mkdir bin 2> /dev/null)
 dummy2 := $(shell if [[ "$(CSC_FLAGS)" != `cat bin/csc_flags 2> /dev/null` ]]; then echo "$(CSC_FLAGS)" > bin/csc_flags; fi)
 
-base_version := 0.3.xxx.0										# major.minor.build.revision
+base_version := 0.4.xxx.0										# major.minor.build.revision
 version := $(shell ./get_version.sh $(base_version) build_num)	# this will increment the build number stored in build_num
 version := $(strip $(version))
 export version
@@ -92,6 +92,14 @@ uninstall:
 	-rm "$(INSTALL_DIR)/peg-sharp"
 	-rm "$(INSTALL_DIR)/peg-sharp.exe"
 	-rm "$(INSTALL_DIR)/peg-sharp.exe.mdb"
+	
+dist:
+	tar --create --compress --exclude \*/.svn --exclude \*/.svn/\* --file=peg-sharp-src-$(version).tar.gz \
+		MIT.X11 Makefile README Usage.rtf example ftest gen_version.sh gendarme.ignore get_version.sh source
+	
+dist-bin:
+	tar --create --compress --exclude \*/.svn --exclude \*/.svn/\* --file=peg-sharp-bin-$(version).tar.gz \
+		README Usage.rtf bin/peg-sharp.exe example
 
 help:
 	@echo "peg-sharp version $(version)"
