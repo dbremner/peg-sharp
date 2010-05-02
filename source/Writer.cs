@@ -182,15 +182,7 @@ internal sealed partial class Writer : IDisposable
 		DoWriteLine("	{");
 		DoWriteLine("	}");
 		DoWriteLine("	");
-		DoWriteLine("	public ParserException(int line, int col, string file, string message) : base(string.Format(\"{0} at line {1} col {2}{3}\", message, line, col, file != null ? (\" in \" + file) : \".\"))");
-		DoWriteLine("	{");
-		DoWriteLine("	}");
-		DoWriteLine("	");
-		DoWriteLine("	public ParserException(int line, int col, string file, string format, params object[] args) : this(line, col, file, string.Format(format, args))");
-		DoWriteLine("	{");
-		DoWriteLine("	}");
-		DoWriteLine("	");
-		DoWriteLine("	public ParserException(int line, int col, string file, string message, Exception inner) : base(string.Format(\"{0} at line {1} col {2}{3}\", message, line, col, file != null ? (\" in \" + file) : \".\"), inner)");
+		DoWriteLine("	public ParserException(int line, int col, string file, string input, string message) : base(string.Format(\"{0} at line {1} col {2}{3}\", message, line, col, file != null ? (\" in \" + file) : \".\"))");
 		DoWriteLine("	{");
 		DoWriteLine("	}");
 		DoWriteLine("	");
@@ -427,9 +419,9 @@ internal sealed partial class Writer : IDisposable
 				DoWriteLine("	// We need this retarded if or string.Format will throw an error if it");
 				DoWriteLine("	// gets a format string like \"Expected { or something\".");
 				DoWriteLine("	if (args != null && args.Length > 0)");
-				DoWriteLine("		throw new ParserException(line, col, m_file, DoEscapeAll(string.Format(format, args)));");
+				DoWriteLine("		throw new ParserException(line, col, m_file, m_input, DoEscapeAll(string.Format(format, args)));");
 				DoWriteLine("	else");
-				DoWriteLine("		throw new ParserException(line, col, m_file, DoEscapeAll(format));");
+				DoWriteLine("		throw new ParserException(line, col, m_file, m_input, DoEscapeAll(format));");
 				DoWriteLine("}");
 				DoWriteLine("");
 			}
