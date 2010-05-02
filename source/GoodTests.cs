@@ -38,7 +38,7 @@ Expr := 'x';";
 		var parser = new Parser();
 		parser.Parse(input);
 		
-		Assert.NotNull(parser.Grammar);
+		Assert.IsTrue(parser.Grammar != null);
 		parser.Grammar.Validate();
 		
 		Assert.AreEqual("Expr", parser.Grammar.Settings["start"]);
