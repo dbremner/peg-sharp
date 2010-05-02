@@ -180,6 +180,9 @@ internal sealed partial class Writer
 		else if (text.Contains(local + "="))
 			return true;
 			
+		else if (text.Contains(local + "["))
+			return true;
+			
 		else if (text.Contains(local + "."))
 			return true;
 			
