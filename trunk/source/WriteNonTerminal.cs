@@ -28,7 +28,7 @@ internal sealed partial class Writer
 	{
 		if (m_grammar.Settings["exclude-methods"].Contains(methodName + ' '))
 			return;
-			
+			 
 		string debugName = rule.Name;
 		if (maxIndex > 1)
 			debugName += i + 1;
