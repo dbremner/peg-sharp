@@ -78,6 +78,7 @@ clean:
 	-rm -rf bin/unit-tests.dll
 	-rm -rf bin/unit-tests.dll.mdb
 	-rm -rf bin/ftest
+	-rm  -f bin/csc_flags
 
 install: app
 	install "bin/peg-sharp.exe" "$(INSTALL_DIR)"
