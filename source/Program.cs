@@ -101,7 +101,7 @@ internal static class Program
 	
 	private static string DoProcessCommandLine(string[] args)
 	{
-		List<string> fixedArgs = ms_options.Parse(args);
+		var fixedArgs = ms_options.Parse(args);
 		
 		var bad = from f in fixedArgs where f.StartsWith("-") select f;
 		if (bad.Any())
@@ -113,6 +113,12 @@ internal static class Program
 		if (fixedArgs.Count != 1)
 		{
 			Console.Error.WriteLine("One peg file must be specified.");
+			Environment.Exit(1);
+		}
+		
+		if (!File.Exists(fixedArgs[0]))
+		{
+			Console.Error.WriteLine("Can't find '{0}'.", fixedArgs[0]);
 			Environment.Exit(1);
 		}
 		
