@@ -53,7 +53,7 @@ internal static class Program
 		catch (ParserException e)
 		{
 			if (ms_verbosity == 0)
-				Console.Error.WriteLine(e.Message);
+				DoWriteError(e);
 			else
 				throw;
 			result = 2;
@@ -68,6 +68,16 @@ internal static class Program
 	}
 	
 	#region Private Methods
+	private static void DoWriteError(ParserException e)
+	{
+		Console.Error.WriteLine(e.Message);
+		if (e.Context != null)
+		{
+			Console.Error.WriteLine(e.Context);
+			Console.Error.WriteLine("{0}^", new string(' ', e.Col - 1));
+		}
+	}
+	
 	private static void DoGenerate(string pegFile)
 	{
 		// Parse the file.

@@ -58,8 +58,8 @@ internal static class Program
 		}
 		catch (ParserException e)
 		{
-			if (e.Message != "Expected a or bA or [cB] or [d\\cPd] or z or CF at line 1 col 1 in DoBad1")
-				Console.Error.WriteLine("Expected 'Expected a or bA or [cB] or [d\\cPd] or z or CF at line 1 col 1 in DoBad1', but got '{0}'", e.Message);
+			if (e.Message != "Expected a or bA or [cB] or [d\\cPd] or z or CF at line 1 col 2 in DoBad1")
+				Console.Error.WriteLine("Expected 'Expected a or bA or [cB] or [d\\cPd] or z or CF at line 1 col 2 in DoBad1', but got '{0}'", e.Message);
 		}
 	}
 	
@@ -72,8 +72,8 @@ internal static class Program
 		}
 		catch (ParserException e)
 		{
-			if (e.Message != "Expected . at line 1 col 2.")
-				Console.Error.WriteLine("Expected 'Expected . at line 1 col 2.', but got '{0}'", e.Message);
+			if (e.Message != "Expected . at line 1 col 3.")
+				Console.Error.WriteLine("Expected 'Expected . at line 1 col 3.', but got '{0}'", e.Message);
 		}
 	}
 	#endregion

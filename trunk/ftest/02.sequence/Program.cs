@@ -48,8 +48,8 @@ internal static class Program
 		}
 		catch (ParserException e)
 		{
-			if (e.Message != "Expected y at line 1 col 2.")
-				Console.Error.WriteLine("Expected 'Expected y at line 1 col 2.', but got '{0}'", e.Message);
+			if (e.Message != "Expected y at line 1 col 3.")
+				Console.Error.WriteLine("Expected 'Expected y at line 1 col 3.', but got '{0}'", e.Message);
 		}
 	}
 	
@@ -62,8 +62,8 @@ internal static class Program
 		}
 		catch (ParserException e)
 		{
-			if (e.Message != "Expected x at line 1 col 1.")
-				Console.Error.WriteLine("Expected 'Expected x at line 1 col 1.', but got '{0}'", e.Message);
+			if (e.Message != "Expected x at line 1 col 2.")
+				Console.Error.WriteLine("Expected 'Expected x at line 1 col 2.', but got '{0}'", e.Message);
 		}
 	}
 	
@@ -76,8 +76,8 @@ internal static class Program
 		}
 		catch (ParserException e)
 		{
-			if (e.Message != "Not all input was consumed starting from 'xy' at line 1 col 1.")
-				Console.Error.WriteLine("Expected 'Not all input was consumed starting from 'xy' at line 1 col 1.', but got '{0}'", e.Message);
+			if (e.Message != "Not all input was consumed starting from 'xy' at line 1 col 2.")
+				Console.Error.WriteLine("Expected 'Not all input was consumed starting from 'xy' at line 1 col 2.', but got '{0}'", e.Message);
 		}
 	}
 	#endregion
