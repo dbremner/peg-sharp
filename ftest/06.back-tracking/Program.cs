@@ -48,8 +48,8 @@ internal static class Program
 		}
 		catch (ParserException e)
 		{
-			if (e.Message != "Expected z or w at line 1 col 3.")
-				Console.Error.WriteLine("Expected 'Expected z or w at line 1 col 3.', but got '{0}'", e.Message);
+			if (e.Message != "Expected z or w at line 1 col 4.")
+				Console.Error.WriteLine("Expected 'Expected z or w at line 1 col 4.', but got '{0}'", e.Message);
 		}
 	}
 	
@@ -62,8 +62,8 @@ internal static class Program
 		}
 		catch (ParserException e)
 		{
-			if (e.Message != "Not all input was consumed starting from 'w' at line 1 col 1.")
-				Console.Error.WriteLine("Expected 'Not all input was consumed starting from 'w' at line 1 col 1.', but got '{0}'", e.Message);
+			if (e.Message != "Not all input was consumed starting from 'w' at line 1 col 2.")
+				Console.Error.WriteLine("Expected 'Not all input was consumed starting from 'w' at line 1 col 2.', but got '{0}'", e.Message);
 		}
 	}
 	#endregion
