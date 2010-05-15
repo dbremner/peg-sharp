@@ -31,18 +31,24 @@ internal sealed class ParserException : Exception
 	{
 	}
 	
-	private string DoGetContext(int index, string input)
+	private string DoGetContext(int offset, string input)
 	{
-		int begin = index;
+		int begin = offset;
 		while (begin > 0 && input[begin] != '\n' && input[begin] != '\r')
 			--begin;
-		
-		int end = index;
-		while (end + 1 < input.Length && input[end + 1] != '\n' && input[end + 1] != '\r')
+	
+		while (begin < input.Length && (input[begin] == '\n' || input[begin] == '\r'))	// offset may start off at a new line
+			++begin;
+	
+		int end = offset;
+		while (end < input.Length && input[end] != '\n' && input[end] != '\r')
 			++end;
-		
-		int len = Math.Min(end - begin, 60);
-		return input.Substring(begin, len);
+	
+		int len = end - begin;
+		if (len < 57)
+			return input.Substring(begin, len);
+		else
+			return input.Substring(begin, 57).TrimEnd() + "...";
 	}
 	#endregion
 }
