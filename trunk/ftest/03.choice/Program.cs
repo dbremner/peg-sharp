@@ -47,8 +47,8 @@ internal static class Program
 		}
 		catch (ParserException e)
 		{
-			if (e.Message != "Expected x or y at line 1 col 2.")
-				Console.Error.WriteLine("Expected 'Expected x or y at line 1 col 2.', but got '{0}'", e.Message);
+			if (e.Message != "Expected x or y at line 1 col 1.")
+				Console.Error.WriteLine("Expected 'Expected x or y at line 1 col 1.', but got '{0}'", e.Message);
 		}
 	}
 	
@@ -61,8 +61,8 @@ internal static class Program
 		}
 		catch (ParserException e)
 		{
-			if (e.Message != "Expected x at line 1 col 2.")
-				Console.Error.WriteLine("Expected 'Expected x at line 1 col 2.', but got '{0}'", e.Message);
+			if (e.Message != "Expected x at line 1 col 1.")
+				Console.Error.WriteLine("Expected 'Expected x at line 1 col 1.', but got '{0}'", e.Message);
 		}
 	}
 	#endregion

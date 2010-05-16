@@ -67,6 +67,9 @@ internal sealed class Grammar
 		if (!Settings.ContainsKey("debug-file"))
 			Settings.Add("debug-file", string.Empty);
 			
+		if (!Settings.ContainsKey("used"))
+			Settings.Add("used", string.Empty);
+			
 		var used =
 			from r in Rules
 				from e in r.Expression.Select(f => f is RuleExpression)
@@ -110,9 +113,11 @@ internal sealed class Grammar
 	
 	private void DoCheckForUnusedNonterminals(IEnumerable<string> used)
 	{
+		string[] forceUsed = Settings["used"].Split(new char[]{' '}, StringSplitOptions.RemoveEmptyEntries);
+		
 		var names = from r in Rules select r.Name;
 		string start = Settings["start"];
-		var unused = from n in names where !used.Contains(n) && n != start select n;
+		var unused = from n in names where !used.Contains(n) && n != start && Array.IndexOf(forceUsed, n) < 0 select n;
 		
 		if (unused.Any())
 		{

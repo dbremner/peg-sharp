@@ -25,32 +25,41 @@ internal static class Program
 {
 	public static void Main(string[] args)
 	{
-		var parser = new Test1();
+		var parser = new Test17();
 		DoGood1(parser);
 		DoBad1(parser);
 	}
 	
 	#region Private Methods
-	// We don't have any semantic actions so all we can check is parsed or not.
-	private static void DoGood1(Test1 parser)
+	private static void DoCheck(Test17 parser, string expr, double expected)
 	{
-		parser.Parse("x");
-		parser.Parse("\\");
-		parser.Parse("\"C\"");
-		parser.Parse("'D'");
+		double actual = parser.Parse(expr);
+		if (Math.Abs(expected - actual) > 0.01)
+			throw new Exception(string.Format("Expected {0} for \"{1}\" but got {2}", expected, expr, actual));
 	}
 	
-	private static void DoBad1(Test1 parser)
+	private static void DoGood1(Test17 parser)
+	{
+		DoCheck(parser, "5", 5.0);
+		DoCheck(parser, "5", 5.0);
+		DoCheck(parser, "100", 100.0);
+		DoCheck(parser, "2 + 3", 5.0);
+		DoCheck(parser, "2 + 3 * 5", 17.0);
+		DoCheck(parser, "(2 + 3) * 5", 25.0);
+		DoCheck(parser, "2 + 3 -   1", 4.0);
+	}
+	
+	private static void DoBad1(Test17 parser)
 	{
 		try
 		{
-			parser.Parse("y");
+			DoCheck(parser, "xxx", 5.0);
 			Console.Error.WriteLine("Expected a parse failure.");
 		}
 		catch (ParserException e)
 		{
-			if (e.Message != "Expected x or \\ or \"C\" or 'D' at line 1 col 1.")
-				Console.Error.WriteLine("Expected 'Expected x or \\ or \"C\" or 'D' at line 1 col 1.', but got '{0}'", e.Message);
+			if (e.Message != "Expected whitespace or number or parenthesized expression at line 1 col 1.")
+				Console.Error.WriteLine("Expected 'Expected whitespace or number or parenthesized expression at line 1 col 1.', but got '{0}'", e.Message);
 		}
 	}
 	#endregion

@@ -34,16 +34,13 @@ internal sealed class ParserException : Exception
 	private string DoGetContext(int offset, string input)
 	{
 		int begin = offset;
-		while (begin > 0 && input[begin] != '\n' && input[begin] != '\r')
+		while (begin > 0 && input[begin - 1] != '\n' && input[begin - 1] != '\r')
 			--begin;
-	
-		while (begin < input.Length && (input[begin] == '\n' || input[begin] == '\r'))	// offset may start off at a new line
-			++begin;
-	
-		int end = offset;
+		
+		int end = Math.Max(offset, begin);
 		while (end < input.Length && input[end] != '\n' && input[end] != '\r')
 			++end;
-	
+		
 		int len = end - begin;
 		if (len < 57)
 			return input.Substring(begin, len);

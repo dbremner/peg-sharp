@@ -1,9 +1,9 @@
 {\rtf1\ansi\ansicpg1252\cocoartf1038\cocoasubrtf250
 {\fonttbl\f0\fnil\fcharset0 Verdana;}
 {\colortbl;\red255\green255\blue255;\red242\green0\blue43;\red176\green45\blue127;\red43\green96\blue67;
-\red0\green91\blue255;\red226\green255\blue255;}
-\deftab360
-\pard\pardeftab360\ql\qnatural\pardirnatural
+\red0\green91\blue255;\red226\green255\blue255;\red161\green33\blue108;\red32\green78\blue51;}
+\deftab480
+\pard\pardeftab480\ql\qnatural\pardirnatural
 
 \f0\b\fs36 \cf0 Operation\
 
@@ -20,7 +20,6 @@ FooParser.cs will be created (or over-written) with a back-tracking recursive de
 \b0\fs28 \
 Here's an example of a peg file:\
 \
-\pard\pardeftab360\ql\qnatural\pardirnatural
 
 \i \cf2 # 
 \i0 Simple grammer used to evaluate arithmetic expressions such as `3 + 4*5`.
@@ -59,11 +58,10 @@ Space := \cf3 [ \\t\\r\\n]\cf0
 \b \cf4 `expected = "whitespace"`
 \b0 \cf0 \
 \
-Peg files consist of two or more settings and one or more non-terminal definitions. Comments may appear at the start or end of lines, start with a '#', and extend to the end of the line.\
+Peg files consist of two or more settings, optional includes, and one or more non-terminal definitions. Comments may appear at the start or end of lines, start with a '#', and extend to the end of the line.\
 \
-\pard\pardeftab360\ql\qnatural\pardirnatural
 
-\b \cf0 Settings
+\b Settings
 \b0  must appear before the non-terminal definitions. The syntax is 
 \i name = value
 \i0 . These are used to configure the generation of the parser. The supported settings are:\
@@ -72,7 +70,11 @@ Peg files consist of two or more settings and one or more non-terminal definitio
 \b0  - Custom class comment. This may appear multiple times for multiple line comments and '// ' will be added to the start if it does not begin with '//'.\
 \'95\'a0
 \b debug
-\b0  - Space separated list of non-terminal names for which progress information will be written to stdout. May be empty or * (to match everything).\
+\b0  - Space separated list of non-terminal names for which progress information will be written to stdout. May be 
+\i none
+\i0  or 
+\i *
+\i0  (to match everything).\
 \'95\'a0
 \b debug-file
 \b0  - Name of the file for which to print debug information..\
@@ -109,6 +111,9 @@ Peg files consist of two or more settings and one or more non-terminal definitio
 \i ignore
 \i0  then unconsumed input is completely ignored.\
 \'95\'a0
+\b used
+\b0  - Space separated list of rule names to consider as used even if they are not referenced.\
+\'95\'a0
 \b using
 \b0  - Space separated list of custom namespace names to include.\
 \'95\'a0
@@ -121,7 +126,13 @@ Peg files consist of two or more settings and one or more non-terminal definitio
 Start and value are required settings.\
 \
 
-\b Non-terminals
+\b Includes
+\b0  can be used to break a peg file into different pieces. The systax is 
+\i include path
+\i0  where the path is relative to the peg file doing the include. The included file should not have any settings, but may include other files.\
+
+\b \
+Non-terminals
 \b0  are used to define the grammar of the language the parser will parse. Each non-terminal is defined by one or more 
 \b rules
 \b0 . Rules consist of the non-terminal name, a ':=' symbol, a parse expression, and optional semantic actions executed when the rule succeeds or fails. A non-terminal with multiple rules is interpreted as an ordered choice (see below) with the earlier definitions having precedence over the later ones.\
@@ -228,18 +239,16 @@ The precedence is as follows (from highest to lowest):\
  				sequence\
 /				ordered choice\
 \
-\pard\pardeftab360\ql\qnatural\pardirnatural
 
-\b\fs36 \cf0 Semantic Actions\
+\b\fs36 Semantic Actions\
 
 \b0\fs28 \
 Semantic actions appear at the end of rules enclosed in backticks and are used to execute custom code when a non-terminal is parsed. They may contain arbitrary C# code and if the code does not end with a semi-colon or curly brace then a semi-colon will be added. The parser class is a partial class to allow custom helper methods to be defined. The first semantic action is executed if the rule succeeded, the second if it failed.\
 \
 Because the parser may back-track semantic actions should not have side effects. Semantic actions may use the following local variables from the generated code:\
 \
-\pard\pardeftab360\ql\qnatural\pardirnatural
 
-\b \cf0 expected
+\b expected
 \b0  - This is of type System.String. If the semantic action sets this then errors that occur because the parser expected a terminal use this text instead of the terminal text. This may be used only within the failure case.\
 \
 
@@ -249,7 +258,6 @@ Because the parser may back-track semantic actions should not have side effects.
 
 \b results 
 \b0 - This of type List<Result>. Terminals and non-terminals parsed by the rule will add new results to the list. For terminals Value will be set to the default value for the result type. For non-terminals it will be set using the value variable from the rule. The Result type looks something like this:\
-\pard\pardeftab360\ql\qnatural\pardirnatural
 
 \b \cf5 private
 \b0 \cf0  
@@ -258,8 +266,7 @@ Because the parser may back-track semantic actions should not have side effects.
 \b\fs36 \shad\shadx21\shady-22\shadr0\shado85 \shadc0 Result
 \b0\fs28 \shad0 \
 \{\
-\pard\pardeftab360\ql\qnatural\pardirnatural
-\cf0 \cb6 	
+\cb6 	
 \i \cf2 \cb1 // The text which was parsed by the terminal or non-terminal.
 \i0 \cf0 \
 \cb6 	
@@ -314,9 +321,8 @@ Because the parser may back-track semantic actions should not have side effects.
 \b0 \cf0 ;\}\
 \}\
 \
-\pard\pardeftab360\ql\qnatural\pardirnatural
 
-\b \cf0 text
+\b text
 \b0  - This is of type System.String and contains all of the text consumed by the rule. If a semantic action sets this to null then the rule will not append a result onto results (setting it to any other value has no effect on the returned Result). This may be used only within the success case.\
 \
 
@@ -329,14 +335,12 @@ For XmlText the Value and Data properties will be the text which was matched. Fo
 \b \cf4  
 \b0 \cf0 If a non-terminal has multiple definitions then the corresponding XmlElement will have an alternative attribute with a one based integer value indicating which definition was matched.\
 \
-\pard\pardeftab360\ql\qnatural\pardirnatural
 
-\b\fs36 \cf0 Partial Methods\
+\b\fs36 Partial Methods\
 
 \b0\fs28 \
 There are a handful of partial methods that you can choose to implement in order to hook into parsing:\
 \
-\pard\pardeftab360\ql\qnatural\pardirnatural
 
 \b \cf5 partial
 \b0 \cf0  
@@ -364,9 +368,8 @@ partial
 \b0 (State state);\
 This is called after the input is parsed. The state argument has properties to indicate if parsing succeeded, the index of the first unconsumed character, and error messages. \
 \
-\pard\pardeftab360\ql\qnatural\pardirnatural
 
-\b\fs36 \cf0 Techniques and Pitfalls\
+\b\fs36 Techniques and Pitfalls\
 \
 
 \b0\fs28 Unlike most other parsers packrat parsers typically integrate lexing and parsing. This is a nice simplification since there is there is no need for a separate tokenization phase. However it does mean that the grammar needs to explicitly specify 
@@ -380,11 +383,9 @@ Because packrat parsers operate on the text instead of tokens they also often mu
 Identifier := !ReservedWord Letter AlphaNum* Space*;\
 ReservedWord := (\cf3 'if'\cf0  / \cf3 'else'\cf0  / \cf3 'while')\cf0  !AlphaNum;\
 \
-\pard\pardeftab360\ql\qnatural\pardirnatural
 
-\b \cf0 Typing
+\b Typing
 \b0  can be a problem because the parser expects that each parse function returns a single type. But it's quite common to want to parse languages which have distinct types for things like statements and expressions. The best way to handle this seems to be to define a union-like class. For example,\
-\pard\pardeftab360\ql\qnatural\pardirnatural
 
 \b \cf5 internal
 \b0 \cf0  
@@ -462,7 +463,6 @@ Method := MethodSignature MethodBody;\
 \
 MethodSignature := Access? Type Identifier Args;\
 \
-\pard\pardeftab360\ql\qnatural\pardirnatural
 
 \i \cf2 # If we can't parse a method body then we'll eat tokens until we
 \i0 \cf0 \
@@ -495,12 +495,12 @@ You can write:\
 \
 Additive := Multitive ((\cf3 '+'\cf0  / \cf3 ' -'\cf0 ) Multitive)*;\
 \
-\pard\pardeftab360\ql\qnatural\pardirnatural
 
-\b\fs36 \cf0 Peg File Grammar\
+\b\fs36 Peg File Grammar\
 
 \b0\fs28 \
 start = PegFile\
+used = IncludedFile\
 \
 Action := \cf3 '`'\cf0  \cf3 [^`]\cf0 + \cf3 '`'\cf0 ;\
 \
@@ -516,12 +516,26 @@ Expression := SequenceExpression (\cf3 '/'\cf0  S SequenceExpression)*;\
 \
 Identifier := \cf3 [a-zA-Z]\cf0  \cf3 [a-zA-Z0-9_-]\cf0 * S;\
 \
+Include := \cf7 'include'\cf0  S Path;\
+\
+IncludedFile := S Comment* (Include / Rule / Comment)+;\
+\
 Integer := \cf3 [0-9]\cf0 + S;\
 \
 Literal := \cf3 '\\''\cf0  (\cf3 '\\\\\\''\cf0  / \cf3 '\\x5c\\x5c'\cf0  / \cf3 [^']\cf0 )+ \cf3 '\\''\cf0  S;\
 Literal := \cf3 '"'\cf0  (\cf3 '\\\\"'\cf0  / \cf3 '\\x5c\\x5c'\cf0  / \cf3 [^"]\cf0 )+ \cf3 '"'\cf0  S;\
 \
-PegFile := S (Setting / Comment)+ (Rule / Comment)+;\
+Path := PathComponent (\cf7 '/'\cf0  PathComponent)* (\cf7 '.'\cf0  PathName)* S
+\b \cf8 ;
+\b0 \cf0 \
+\
+PathComponent := \cf7 '..'\cf0 ;\
+PathComponent := \cf7 '.'\cf0 ;\
+PathComponent := PathName;\
+\
+PathName := \cf7 [a-zA-Z0-9_-]\cf0 +;\
+\
+PegFile := S (Setting / Comment)+ (Include / Rule / Comment)+;\
 \
 PostfixExpression := PrimitiveExpression \cf3 '\{'\cf0  S Integer \cf3 ','\cf0  S Integer \cf3 '\}'\cf0  S;\
 PostfixExpression := PrimitiveExpression \cf3 '\{'\cf0  S Integer \cf3 ','\cf0  S \cf3 '\}'\cf0  S;\
@@ -540,9 +554,15 @@ S := Space*;\
 \
 SequenceExpression := AssertExpression+;\
 \
-Setting := Identifier \cf3 '='\cf0  \cf3 [ ]\cf0 * (\cf3 '\\n'\cf0  / \cf3 '\\r'\cf0  / \cf3 '\\t'\cf0 ) S;\
-Setting := Identifier \cf3 '='\cf0  S Value (\cf3 '\\n'\cf0  / \cf3 '\\r'\cf0  / \cf3 '\\t'\cf0 ) S;\
-\
+\pard\tx0\pardeftab480\ql\qnatural\pardirnatural
+\cf0 Setting := Identifier \cf7 '='\cf0  S \cf7 'none'\cf0  S
+\b \cf8 ;
+\b0 \cf0 \
+Setting := Identifier \cf7 '='\cf0  S Value S
+\b \cf8 ;
+\b0 \cf0 \
+\pard\pardeftab480\ql\qnatural\pardirnatural
+\cf0 \
 Space := \cf3 [ \\t\\r\\n]\cf0 ;\
 \
 SubExpression := \cf3 '('\cf0  S Expression \cf3 ')'\cf0  S;\
