@@ -43,7 +43,7 @@ public sealed class BadTests
 	[Test]
 	public void Empty()
 	{
-		AssertThrows<ParserException>(() => new Parser().Parse(""), "Expected whitespace or setting or comment at line 1 col 2.");
+		AssertThrows<ParserException>(() => new Parser().Parse(""), "Expected whitespace or setting or comment at line 1 col 1.");
 	}
 	
 	[Test]
@@ -63,7 +63,7 @@ start = Expr
 ";
 		
 		var parser = new Parser();
-		AssertThrows<ParserException>(() => parser.Parse(input), "Setting 'start' is already defined at line 4 col 2.");
+		AssertThrows<ParserException>(() => parser.Parse(input), "Setting 'start' is already defined at line 4 col 1.");
 	}
 	
 	[Test]
@@ -76,7 +76,7 @@ foo = Expr
 ";
 		
 		var parser = new Parser();
-		AssertThrows<ParserException>(() => parser.Parse(input), "Setting 'foo' is not a valid name at line 4 col 2.");
+		AssertThrows<ParserException>(() => parser.Parse(input), "Setting 'foo' is not a valid name at line 4 col 1.");
 	}
 	
 	[Test]
@@ -89,7 +89,7 @@ some bogus text
 ";
 		
 		var parser = new Parser();
-		AssertThrows<ParserException>(() => parser.Parse(input), "Expected setting or comment or whitespace or := at line 4 col 7.");
+		AssertThrows<ParserException>(() => parser.Parse(input), "Expected setting or comment or include or rule at line 4 col 6.");
 	}
 	
 	[Test]
@@ -103,7 +103,7 @@ Expr :=
 ";
 		
 		var parser = new Parser();
-		AssertThrows<ParserException>(() => parser.Parse(input), "Expected whitespace or & or ! or . or literal or range literal or rule name or parenthesized expression at line 6 col 2.");
+		AssertThrows<ParserException>(() => parser.Parse(input), "Expected rule at line 6 col 1.");
 	}
 	
 	[Test]
@@ -168,7 +168,7 @@ unconsumed = foo
 Expr := 'x'? 'y';
 ";
 		var parser = new Parser();
-		AssertThrows<ParserException>(() => parser.Parse(input), "Unconsumed value must be 'error', 'expose', or 'ignore' at line 4 col 2.");
+		AssertThrows<ParserException>(() => parser.Parse(input), "Unconsumed value must be 'error', 'expose', or 'ignore' at line 4 col 1.");
 	}
 	
 	[Test]
@@ -420,7 +420,7 @@ Value := 'x' / 'y' / 'z' / [ab\cXxd];
 Value := '(' Expr ')';
 ";
 		var parser = new Parser();
-		AssertThrows<ParserException>(() => parser.Parse(input), "Xx is not a valid Unicode character category at line 8 col 29.");
+		AssertThrows<ParserException>(() => parser.Parse(input), "Xx is not a valid Unicode character category at line 8 col 28.");
 	}
 	
 	[Test]
@@ -437,7 +437,7 @@ Value := 'x' / 'y' / 'z' / [];
 Value := '(' Expr ')';
 ";
 		var parser = new Parser();
-		AssertThrows<ParserException>(() => parser.Parse(input), "Expected range literal or rule name or parenthesized expression or comment at line 8 col 30.");
+		AssertThrows<ParserException>(() => parser.Parse(input), "Expected rule or comment at line 8 col 29.");
 	}
 	
 	[Test]
@@ -454,7 +454,7 @@ Value := 'x' / 'y' / 'z' / [^];
 Value := '(' Expr ')';
 ";
 		var parser = new Parser();
-		AssertThrows<ParserException>(() => parser.Parse(input), "Inverted range cannot be empty at line 8 col 29.");
+		AssertThrows<ParserException>(() => parser.Parse(input), "Inverted range cannot be empty at line 8 col 28.");
 	}
 }
 #endif	// TEST

@@ -91,8 +91,8 @@ result
 		}
 		catch (ParserException e)
 		{
-			if (e.Message != "Value is oor at line 1 col 2.")
-				throw new Exception(string.Format("Expected 'Value is oor at line 1 col 2.' but got '{0}'.", e.Message));
+			if (e.Message != "Value is oor at line 1 col 1.")
+				throw new Exception(string.Format("Expected 'Value is oor at line 1 col 1.' but got '{0}'.", e.Message));
 		}
 	}
 	#endregion

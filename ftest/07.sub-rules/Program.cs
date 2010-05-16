@@ -51,8 +51,8 @@ internal static class Program
 		}
 		catch (ParserException e)
 		{
-			if (e.Message != "Expected x or y or z or ( at line 1 col 4.")
-				Console.Error.WriteLine("Expected 'Expected x or y or z or ( at line 1 col 4.', but got '{0}'", e.Message);
+			if (e.Message != "Expected x or y or z or ( at line 1 col 3.")
+				Console.Error.WriteLine("Expected 'Expected x or y or z or ( at line 1 col 3.', but got '{0}'", e.Message);
 		}
 	}
 	
@@ -65,8 +65,8 @@ internal static class Program
 		}
 		catch (ParserException e)
 		{
-			if (e.Message != "Expected x or y or z or ( at line 1 col 4.")
-				Console.Error.WriteLine("Expected 'Expected x or y or z or ( at line 1 col 4.', but got '{0}'", e.Message);
+			if (e.Message != "Expected x or y or z or ( at line 1 col 3.")
+				Console.Error.WriteLine("Expected 'Expected x or y or z or ( at line 1 col 3.', but got '{0}'", e.Message);
 		}
 	}
 	#endregion

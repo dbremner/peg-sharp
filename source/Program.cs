@@ -86,7 +86,7 @@ internal static class Program
 		
 		var parser = new Parser();
 		string input = System.IO.File.ReadAllText(pegFile);
-		parser.Parse(input);
+		parser.Parse(input, pegFile);
 		
 		// Check for errors.
 		parser.Grammar.Validate();

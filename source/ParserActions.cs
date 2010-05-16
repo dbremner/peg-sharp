@@ -11,12 +11,52 @@ internal sealed partial class Parser
 	
 	partial void OnParseEpilog(State state)
 	{
-		if (!m_grammar.Settings.ContainsKey("start"))
-			throw new ParserException("Missing required setting 'start'.");
-		if (!m_grammar.Settings.ContainsKey("value"))
-			throw new ParserException("Missing required setting 'value'.");
-		if (!m_grammar.Rules.Exists(r => r.Name == m_grammar.Settings["start"]))
-			throw new ParserException(string.Format("Missing the start rule '{0}'.", m_grammar.Settings["start"]));
+		DoProcessIncludes();
+		
+		if (!Included)
+		{
+			if (!m_grammar.Settings.ContainsKey("start"))
+				throw new ParserException("Missing required setting 'start'.");
+			if (!m_grammar.Settings.ContainsKey("value"))
+				throw new ParserException("Missing required setting 'value'.");
+			if (!m_grammar.Rules.Exists(r => r.Name == m_grammar.Settings["start"]))
+				throw new ParserException(string.Format("Missing the start rule '{0}'.", m_grammar.Settings["start"]));
+		}
+		else
+		{
+			if (m_grammar.Settings.Count > 1)
+				throw new ParserException("Included files should not have settings.");
+			else
+				Contract.Assert(m_grammar.Settings.ContainsKey("comment"));		// added by the Grammar ctor
+		}
+	}
+	
+	public bool Included {get; set;}
+	
+	private void DoProcessIncludes()
+	{
+		foreach (string i in m_includes)
+		{
+			Grammar grammar = DoProcessInclude(i);
+			m_grammar.Rules.AddRange(grammar.Rules);
+		}
+	}
+	
+	private Grammar DoProcessInclude(string i)
+	{
+		string oldWd = System.IO.Directory.GetCurrentDirectory();
+		string newWd = System.IO.Path.GetDirectoryName(m_file);
+		if (newWd.Length > 0)
+			System.IO.Directory.SetCurrentDirectory(newWd);
+		
+		string contents = System.IO.File.ReadAllText(i);
+		var parser = new Parser();
+		parser.Included = true;
+		parser.DoParseFile(contents, i, "IncludedFile");
+		
+		System.IO.Directory.SetCurrentDirectory(oldWd);
+		
+		return parser.Grammar;
 	}
 	
 	private string DoAddSetting(List<Result> results)
@@ -26,7 +66,7 @@ internal sealed partial class Parser
 	
 	private string DoAddSetting(string name, string value)
 	{
-		if (name != "comment" && name != "debug" && name != "debug-file" && name != "exclude-exception" && name != "exclude-methods" && name != "ignore-case" && name != "namespace" && name != "start" && name != "unconsumed" && name != "using" && name != "value" && name != "visibility")
+		if (name != "comment" && name != "debug" && name != "debug-file" && name != "exclude-exception" && name != "exclude-methods" && name != "ignore-case" && name != "namespace" && name != "start" && name != "unconsumed" && name != "used" && name != "using" && name != "value" && name != "visibility")
 			return string.Format("Setting '{0}' is not a valid name", name);
 		
 		if (name == "comment")
@@ -128,5 +168,6 @@ internal sealed partial class Parser
 	
 	#region Fields
 	private Grammar m_grammar = new Grammar();
+	private List<string> m_includes = new List<string>();
 	#endregion
 }

@@ -1,1 +1,1 @@
-start = Exprvalue = doubledebug = Expr := Sum;Sum := Product (('+' / '-') Product)*;Product := Value (('*' / '/') Value)*;Value := 'x' / 'y' / 'z';Value := '(' Expr ')';
+start = Exprvalue = doubledebug = noneExpr := Sum;Sum := Product (('+' / '-') Product)*;Product := Value (('*' / '/') Value)*;Value := 'x' / 'y' / 'z';Value := '(' Expr ')';

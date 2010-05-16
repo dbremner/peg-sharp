@@ -229,7 +229,7 @@ internal sealed partial class Writer : IDisposable
 		if (!m_grammar.Settings["exclude-methods"].Contains("DoParseFile "))
 		{
 			string value = m_grammar.Settings["value"];
-			DoWriteLine("private {0} DoParseFile(string input, string file)", value == "void" ? "int" : value);
+			DoWriteLine("private {0} DoParseFile(string input, string file, string rule)", value == "void" ? "int" : value);
 			DoWriteLine("{");
 			++m_indent;
 			
@@ -267,7 +267,7 @@ internal sealed partial class Writer : IDisposable
 			DoWriteLine();
 			if (!m_grammar.Settings["exclude-methods"].Contains("OnParseProlog "))
 				DoWriteLine("OnParseProlog();");
-			DoWriteLine("state = DoParse(state, results, \"{0}\");", m_grammar.Settings["start"]);
+			DoWriteLine("state = DoParse(state, results, rule);");
 			DoWriteLine();
 			
 			if (m_grammar.Settings["unconsumed"] == "expose")
@@ -369,7 +369,7 @@ internal sealed partial class Writer : IDisposable
 			DoWriteLine("	int line = 1;");
 			DoWriteLine("	");
 			DoWriteLine("	int i = 0;");
-			DoWriteLine("	while (i <= index)");
+			DoWriteLine("	while (i < index)");
 			DoWriteLine("	{");
 			DoWriteLine("		char ch = m_input[i++];");
 			DoWriteLine("		");
@@ -403,7 +403,7 @@ internal sealed partial class Writer : IDisposable
 			DoWriteLine("		--index;");
 			DoWriteLine("	}");
 			DoWriteLine("	");
-			DoWriteLine("	return start - index + 1;");
+			DoWriteLine("	return start - index;");
 			DoWriteLine("}");
 			DoWriteLine("");
 		}
@@ -720,13 +720,13 @@ internal sealed partial class Writer : IDisposable
 		string value = m_grammar.Settings["value"];
 		DoWriteLine("public {0} Parse(string input)", value == "void" ? "int" : value);
 		DoWriteLine("{");
-		DoWriteLine("	return DoParseFile(input, null);");
+		DoWriteLine("	return DoParseFile(input, null, \"{0}\");", m_grammar.Settings["start"]);
 		DoWriteLine("}");
 		DoWriteLine();
 		DoWriteLine("// File is used for error reporting.");
 		DoWriteLine("public {0} Parse(string input, string file)", value == "void" ? "int" : value);
 		DoWriteLine("{");
-		DoWriteLine("	return DoParseFile(input, file);");
+		DoWriteLine("	return DoParseFile(input, file, \"{0}\");", m_grammar.Settings["start"]);
 		DoWriteLine("}");
 		DoWriteLine();
 	}
