@@ -1,3 +1,9 @@
+# For now this only works with mono on linux, mac, and presumably cygwin.
+# It probably wouldn't be too hard to get this working with .NET and cygwin
+# but there is some special goo you have to run in order to get csc to work
+# from the command line. If you want to build using .NET use the provided
+# solution file.
+
 # ------------------
 # Public variables
 CSC ?= gmcs
