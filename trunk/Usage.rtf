@@ -412,30 +412,39 @@ ReservedWord := (\cf3 'if'\cf0  / \cf3 'else'\cf0  / \cf3 'while')\cf0  !AlphaNu
 \
 
 \b Typing
-\b0  can be a problem because the parser expects that each parse function returns a single type. But it's quite common to want to parse languages which have distinct types for things like statements and expressions. The best way to handle this seems to be to define a union-like class. For example,\
+\b0  can be a problem because the parser expects that each parse function returns a single type. But it's quite common to want to parse languages which have distinct types for things like statements and expressions. One way to handle this is to define a union-like class. For example,\
+\
 
 \b \cf6 internal
 \b0 \cf0  
 \b \cf6 sealed class
-\b0 \cf0  Union\
+\b0 \cf0  
+\b\fs36 \shad\shadx21\shady-22\shadr0\shado85 \shadc0 Union
+\b0\fs28 \shad0 \
 \{\
 	
 \b \cf6 public
-\b0 \cf0  Union(Statement s)\
+\b0 \cf0  
+\b Union
+\b0 (Statement s)\
 	\{\
 		S = s;\
 	\}\
 	\
 	
 \b \cf6 public
-\b0 \cf0  Union(Expression e)\
+\b0 \cf0  
+\b Union
+\b0 (Expression e)\
 	\{\
 		E = E;\
 	\}\
 	\
 	
 \b \cf6 public
-\b0 \cf0  Union(
+\b0 \cf0  
+\b Union
+\b0 (
 \b \cf6 object
 \b0 \cf0  v)\
 	\{\
@@ -444,7 +453,9 @@ ReservedWord := (\cf3 'if'\cf0  / \cf3 'else'\cf0  / \cf3 'while')\cf0  !AlphaNu
 	\
 	
 \b \cf6 public
-\b0 \cf0  Statement S \{
+\b0 \cf0  Statement 
+\b S
+\b0  \{
 \b \cf6 get
 \b0 \cf0 ; 
 \b \cf6 private
@@ -454,7 +465,9 @@ ReservedWord := (\cf3 'if'\cf0  / \cf3 'else'\cf0  / \cf3 'while')\cf0  !AlphaNu
 	\
 	
 \b \cf6 public
-\b0 \cf0  Expression E \{
+\b0 \cf0  Expression 
+\b E
+\b0  \{
 \b \cf6 get
 \b0 \cf0 ; 
 \b \cf6 private
@@ -466,7 +479,9 @@ ReservedWord := (\cf3 'if'\cf0  / \cf3 'else'\cf0  / \cf3 'while')\cf0  !AlphaNu
 \b \cf6 public
 \b0 \cf0  
 \b \cf6 object
-\b0 \cf0  V \{
+\b0 \cf0  
+\b V
+\b0  \{
 \b \cf6 get
 \b0 \cf0 ; 
 \b \cf6 private
@@ -474,7 +489,10 @@ ReservedWord := (\cf3 'if'\cf0  / \cf3 'else'\cf0  / \cf3 'while')\cf0  !AlphaNu
 \b \cf6 set
 \b0 \cf0 ;\}\
 \}\
+\
 Note that you'll probably also want to use the exclude-methods setting so that you can replace Parse with one that returns a non-Union type.\
+\
+Another approach is to incrementally construct an object as non-terminals are parsed. For example, you can define a class with automatic properties corresponding to selected non-terminals and use object initializors to construct them. \
 \
 By default peg-sharp will find only a single parse error. So, if you want to find multiple parse errors or try to extract as much information as you can from input which may not be valid you'll have to implement some form of 
 \b error recovery
