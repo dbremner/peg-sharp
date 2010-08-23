@@ -28,9 +28,6 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-[assembly: CLSCompliant (true)]
-[assembly: ComVisible (false)]
-
 internal static class Program
 {
 	public static int Main(string[] args)
