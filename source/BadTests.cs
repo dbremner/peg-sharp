@@ -172,6 +172,20 @@ Expr := 'x'? 'y';
 	}
 	
 	[Test]
+	public void EmptyRepetition()
+	{
+		string input = @"
+start = Expr
+value = double
+
+Expr := 'x'{0, 0};
+Foo := 'x';
+";
+		var parser = new Parser();
+		AssertThrows<ParserException>(() => parser.Parse(input), "Max is not positive at line 5 col 9.");
+	}
+	
+	[Test]
 	public void LeftRecursion()
 	{
 		string input = @"

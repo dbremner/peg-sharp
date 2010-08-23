@@ -166,6 +166,18 @@ internal sealed partial class Parser
 		return null;
 	}
 	
+	private Expression DoRepetition(Expression e, int min, int max, int index)
+	{
+		if (min < 0)
+			DoThrow(index, "Min is less than zero");
+		if (max <= 0)
+			DoThrow(index, "Max is not positive");
+		if (min > max)
+			DoThrow(index, "Min is greater than max");
+		
+		return new RepetitionExpression(e, min, max);
+	}
+	
 	#region Fields
 	private Grammar m_grammar = new Grammar();
 	private List<string> m_includes = new List<string>();
