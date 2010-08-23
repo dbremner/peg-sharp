@@ -594,6 +594,7 @@ internal sealed class RepetitionExpression : Expression
 	{
 		Contract.Requires(expression != null, "expression is null");
 		Contract.Requires(min >= 0, "min is negative");
+		Contract.Requires(max > 0, "max is not positive");
 		Contract.Requires(min <= max, "mismatched min and max");
 		
 		Expression = expression;

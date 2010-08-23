@@ -937,6 +937,9 @@ internal sealed partial class Writer : IDisposable
 		DoWriteLine("	// The text which was parsed by the terminal or non-terminal.");
 		DoWriteLine("	public string Text {get {return m_input.Substring(m_index, m_length);}}");
 		DoWriteLine("	");
+		DoWriteLine("	// The 0-based character index the (non)terminal started on.");
+		DoWriteLine("	public int Index {get {return m_index;}}");
+		DoWriteLine("	");
 		DoWriteLine("	// The 1-based line number the (non)terminal started on.");
 		DoWriteLine("	public int Line {get {return m_parser.DoGetLine(m_index);}}");
 		DoWriteLine("	");
