@@ -1,1 +1,30 @@
-peg-sharp is a tool which is used to generate C# code for arbitrary  Parsing Expression Grammars (PEGs). The generated code implements a packrat parser so it is reasonably efficient. See <http://code.google.com/p/peg-sharp/> for more details.RUNNINGBuilding a parser is straight-forward and the peg-sharp.exe has help available via -help. On mono you'd do something like:   mono bin/peg-sharp.exe --out=example/Parser.cs example/Parser.peg   gmcs -out:bin/example.exe -target:exe example/*.csOn windows you'd do the same except that you don't need to use the mono executable.BUILDING ON MONOOn Mono building is done with the make file. Use `make app` to build peg-sharp.exe, `make check` to run unit and functional tests, and `make example` to build the example application. In order to build and run the unit tests with mono you'll need to:1) Download nunit 2.5.7 or later.2) Copy the 2.0/nunit.framework.dll file into the bin directory (create the bin directory if it doesn't already exist).3) Add an executable nunit-console file to the peg-sharp directory. It should look like this: mono --debug /some/path/nunit-console.exe $@BUILDING ON WINDOWSOn Windows building is done with the provided Visual Studio 2010 solution file. TODO: probably want a bit more here. -- jesjones@mindspring.com
+peg-sharp is a tool which is used to generate C# code for arbitrary  Parsing Expression Grammars (PEGs). The generated code implements a packrat parser so it is reasonably efficient. See <http://code.google.com/p/peg-sharp/> for more details.
+
+RUNNING
+
+Building a parser is straight-forward and the peg-sharp.exe has help available via -help. On mono you'd do something like:
+   mono bin/peg-sharp.exe --out=example/Parser.cs example/Parser.peg
+   gmcs -out:bin/example.exe -target:exe example/*.cs
+
+On windows you'd do the same except that you don't need to use the mono executable.
+
+BUILDING ON MONO
+
+On Mono building is done with the make file. Use `make app` to build peg-sharp.exe, `make check` to run unit and functional tests, and `make example` to build the example application. 
+
+In order to build and run the unit tests with mono you'll need to:
+1) Download nunit 2.5.7 or later.
+2) Copy the 2.0/nunit.framework.dll file into the bin directory (create the bin directory if it doesn't already exist).
+3) Add an executable nunit-console file to the peg-sharp directory. It should look like this: mono --debug /some/path/nunit-console.exe $@
+
+BUILDING ON WINDOWS
+
+On Windows building is done with the provided Visual Studio 2010 solution file. You'll also need to install nunit 2.5.7 or later (if you don't want to do this you can remove the nunit.framework reference and not build the utest configuration).
+
+If you want to run the unit tests on the command line you can use a bash script like this:
+   cd bin/x86/utest
+   /cygdrive/c/Program\ Files/NUnit\ 2.5.7/bin/net-2.0/nunit-console.exe peg-sharp.exe
+(You can do something very similar with a bat file and cmd).
+
+
+ -- jesjones@mindspring.com
