@@ -13,7 +13,7 @@ GENDARME ?= /usr/local/bin/gendarme
 INSTALL_DIR ?= /usr/local/bin
 
 # script that looks something like: mono --debug /some/path/nunit-console.exe $@
-NUNIT ?= nunit-console2
+NUNIT ?= nunit-console
 
 ifdef RELEASE
 	# Note that -debug+ just generates an mdb file.
@@ -43,7 +43,7 @@ example: bin/example.exe
 check: utest ftest
 
 utest: bin/unit-tests.dll
-	cd bin && "$(NUNIT)" -nologo unit-tests.dll
+	cd bin && "../$(NUNIT)" -nologo unit-tests.dll
 
 .PHONY: ftest
 ftest: bin/peg-sharp.exe
@@ -70,7 +70,7 @@ bin/example.exe: example/Parser.cs example/*.cs
 	$(CSC) -out:bin/example.exe $(CSC_FLAGS) -target:exe example/*.cs
 
 bin/unit-tests.dll: bin/csc_flags $(sources)
-	$(CSC) -out:$@ $(CSC_FLAGS) -d:TEST -pkg:mono-nunit -target:library $(sources)
+	$(CSC) -out:$@ $(CSC_FLAGS) -r:bin/nunit.framework.dll -d:TEST -target:library $(sources)
 
 # ------------------
 # Misc targets
