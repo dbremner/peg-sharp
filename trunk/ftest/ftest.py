@@ -1,6 +1,9 @@
 #!/usr/bin/python
 # Builds and runs the functional test exes (we don't use make files to do this so that we 
 # can run these tests on Windows without requiring make).
+#
+# On Windows run this from the peg-sharp/ftest directory using the Visual Studio Command 
+# Prompt (available from the start menu). 
 import glob
 import os
 import platform
@@ -29,8 +32,9 @@ def compileParser(command):
 
 def compileExe(exeName, sources):
 	if platform.system() == 'Windows':
-		# TODO: should probably set flags to some default value if CSC_FLAGS is not set
-		command = "csc \\out:%s %s \\target:exe %s" % (exeName, os.getenv('CSC_FLAGS', ''), sources)
+#		flags = '-checked+ -optimize+ -warn:4 -d:TRACE -d:CONTRACTS_PRECONDITIONS'
+		flags = '-checked+ -debug+ -warn:4 -warnaserror+ -d:DEBUG -d:TRACE -d:CONTRACTS_FULL'
+		command = "csc /out:%s %s /target:exe %s" % (exeName, flags, sources)
 	else:
 		command = "gmcs -out:%s %s -target:exe %s" % (exeName, os.getenv('CSC_FLAGS', ''), sources)
 	
@@ -39,19 +43,26 @@ def compileExe(exeName, sources):
 def buildParser(dir):
 	pattern = os.path.join(dir, 'Test*.peg')
 	pegs = glob.glob(pattern)
-	assert len(pegs) == 1
+	assert len(pegs) == 1, 'found %s peg files in %s' % (pegs, dir)
 	
 	parser = pegs[0].replace('.peg', '.cs')
 	if os.path.exists(parser):
 		os.remove(parser)
-	compileParser("../bin/peg-sharp.exe --out=%s %s" % (parser, pegs[0]))
+	if platform.system() != 'Windows':
+		exe = os.path.join('..', 'bin', 'peg-sharp.exe')
+	else:
+		exe = os.path.join('..', 'bin', 'Debug', 'peg-sharp.exe')
+	compileParser("%s --out=%s %s" % (exe, parser, pegs[0]))
 
 def buildExe(dir):
 	pattern = os.path.join(dir, 'Test*.peg')
 	pegs = glob.glob(pattern)
 	assert len(pegs) == 1
 	
-	app = os.path.join('../bin/ftest', os.path.basename(pegs[0].replace('.peg', '.exe')))
+	if platform.system() != 'Windows':
+		app = os.path.join('..', 'bin', 'ftest', os.path.basename(pegs[0].replace('.peg', '.exe')))
+	else:
+		app = os.path.join('..', 'bin', 'Debug', os.path.basename(pegs[0].replace('.peg', '.exe')))
 	if os.path.exists(app):
 		os.remove(app)
 	sources = os.path.join(dir, '*.cs')
