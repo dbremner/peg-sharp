@@ -22,6 +22,9 @@ else
 	CSC_FLAGS ?= -checked+ -debug+ -warn:4 -warnaserror+ -d:DEBUG -d:TRACE -d:CONTRACTS_FULL
 endif
 
+# For ftest.py
+export CSC_FLAGS
+
 # ------------------
 # Internal variables
 dummy1 := $(shell mkdir bin 2> /dev/null)
