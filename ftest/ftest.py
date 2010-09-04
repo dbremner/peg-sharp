@@ -1,9 +1,6 @@
 #!/usr/bin/python
 # Builds and runs the functional test exes (we don't use make files to do this so that we 
 # can run these tests on Windows without requiring make).
-#
-# On Windows run this from the peg-sharp/ftest directory using the Visual Studio Command 
-# Prompt (available from the start menu). 
 import glob
 import os
 import platform
@@ -32,7 +29,6 @@ def compileParser(command):
 
 def compileExe(exeName, sources):
 	if platform.system() == 'Windows':
-#		flags = '-checked+ -optimize+ -warn:4 -d:TRACE -d:CONTRACTS_PRECONDITIONS'
 		flags = '-checked+ -debug+ -warn:4 -warnaserror+ -d:DEBUG -d:TRACE -d:CONTRACTS_FULL'
 		command = "csc /out:%s %s /target:exe %s" % (exeName, flags, sources)
 	else:
