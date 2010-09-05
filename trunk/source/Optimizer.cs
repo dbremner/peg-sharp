@@ -38,11 +38,14 @@ internal sealed class Optimizer
 		if (Program.Verbosity >= 3)
 			DoDump("before optimization:");
 		
-		for	 (int i = 0; i < 32; ++i)		// do a max of 32 optimization passes
+		for	 (int i = 0; i < 64; ++i)		// do a max of 64 optimization passes
 		{
 			var oldEdit = m_editCount;
+			if (Program.Verbosity >= 3)
+				Console.WriteLine("{0}optimization pass {1}", Environment.NewLine, i+1);
 			DoOptimize("Merge", this.DoMergeRules);
 			DoOptimize("InlineTiny", this.DoInlineTiny);
+			DoOptimize("InlineSingleUse", this.DoInlineSingleUses);
 			var newEdit = m_editCount;
 			
 			if (newEdit == oldEdit)
@@ -121,6 +124,17 @@ internal sealed class Optimizer
 		return expressions;
 	}
 	
+	private IEnumerable<Expression> DoFindMatching(Predicate<Expression> predicate)
+	{
+		foreach (Rule rule in m_rules)
+		{
+			foreach (Expression e in rule.Expression.Select(predicate))
+			{
+				yield return e;
+			}
+		}
+	}
+	
 	// Merge rules with the same name and no actions into a single rule.
 	private void DoMergeRules(List<int> deathRow)
 	{
@@ -156,6 +170,8 @@ internal sealed class Optimizer
 				});
 			}
 		}
+		
+		++m_editCount;
 	}
 	
 	// Inline rules that have no more than two operators (and no semantic actions).
@@ -173,10 +189,39 @@ internal sealed class Optimizer
 				if (rule.Expression.GetSize() <= 2 && rule.Name != m_settings["start"])
 				{
 					if (Program.Verbosity >= 3)
-						Console.WriteLine("inlining {0}", rule.Name);
+						Console.WriteLine("inlining tiny {0}", rule.Name);
+						
 					DoInline(rule);
 					deathRow.AddRange(entry.Value);
-					++m_editCount;
+				}
+			}
+		}
+	}
+	
+	// Inline rules that are used in a single place (and have no semantic actions).
+	private void DoInlineSingleUses(List<int> deathRow)
+	{
+		Dictionary<string, List<int>> rules = DoGetNoActionRules();
+		foreach (var entry in rules)
+		{
+			if (entry.Value.Count == 1)
+			{
+				Rule rule = m_rules[entry.Value[0]];
+				
+				if (rule.Name != m_settings["start"])
+				{
+					if (DoFindMatching(e =>
+						{
+							var r = e as RuleExpression;
+							return r != null && r.Name == rule.Name;
+						}).Count() == 1)
+					{
+						if (Program.Verbosity >= 3)
+							Console.WriteLine("inlining single {0}", rule.Name);
+							
+						DoInline(rule);
+						deathRow.AddRange(entry.Value);
+					}
 				}
 			}
 		}
