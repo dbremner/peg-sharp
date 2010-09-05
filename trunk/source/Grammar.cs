@@ -1,4 +1,4 @@
-// Copyright (C) 2009 Jesse Jones
+// Copyright (C) 2009-2010 Jesse Jones
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -83,6 +83,12 @@ internal sealed class Grammar
 		DoCheckForUnreachableFailAction();
 		DoCheckForUnreachableAlternative();
 		DoCheckForBackwardsRange();
+	}
+	
+	public void Optimize()
+	{
+		var optimizer = new Optimizer(m_rules);
+		optimizer.Optimize();
 	}
 	
 	#region Private Methods

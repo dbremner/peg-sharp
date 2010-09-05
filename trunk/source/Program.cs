@@ -77,7 +77,7 @@ internal static class Program
 	private static void DoGenerate(string pegFile)
 	{
 		// Parse the file.
-		if (Program.Verbosity > 0)
+		if (Program.Verbosity >= 1)
 			Console.WriteLine("parsing '{0}'", pegFile);
 		
 		var parser = new Parser();
@@ -87,12 +87,15 @@ internal static class Program
 		// Check for errors.
 		parser.Grammar.Validate();
 		
+		// Run the optimizer.
+		parser.Grammar.Optimize();
+		
 		// Delete the old parser.
 		if (File.Exists(ms_outFile))
 			File.Delete(ms_outFile);
 		
 		// Write the new parser.
-		if (Program.Verbosity > 0)
+		if (Program.Verbosity >= 1)
 			Console.WriteLine("writing '{0}'", ms_outFile);
 		
 		using (var stream = new StreamWriter(ms_outFile))
@@ -157,7 +160,7 @@ internal static class Program
 	{
 		{"h|?|help", "prints this message and exits", Program.DoShowHelp},
 		{"o=|out=", "path to the parser file to be generated", v => {ms_outFile = v;}},
-		{"verbose", "enables extra output, may be used more than once", v => ++ms_verbosity},
+		{"v|verbose", "enables extra output, may be used more than once", v => ++ms_verbosity},
 		{"version", "prints the version number and exits", Program.DoShowVersion},
 	};
 	#endregion

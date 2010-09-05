@@ -45,4 +45,9 @@ internal sealed class Rule
 	public string FailAction {get; private set;}
 	
 	public int Line {get; private set;}
+	
+	public override string ToString()
+	{
+		return string.Format("{0} := {1}", Name, Expression);
+	}
 }

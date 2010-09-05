@@ -80,7 +80,7 @@ bin/example.exe: example/Parser.cs example/*.cs
 	$(CSC) -out:bin/example.exe $(CSC_FLAGS) -target:exe example/*.cs
 
 benchmark/Benchmark.cs: bin/peg-sharp.exe benchmark/Benchmark.peg
-	$(MONO) bin/peg-sharp.exe --out=benchmark/Benchmark.cs benchmark/Benchmark.peg
+	$(MONO) bin/peg-sharp.exe --out=benchmark/Benchmark.cs -vvv benchmark/Benchmark.peg
 
 bin/benchmark.exe: benchmark/Benchmark.cs benchmark/*.cs
 	$(CSC) -out:bin/benchmark.exe $(CSC_FLAGS) -target:exe benchmark/*.cs
