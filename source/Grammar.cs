@@ -86,12 +86,6 @@ internal sealed class Grammar
 		DoCheckForBackwardsRange();
 	}
 	
-	public void Optimize()
-	{
-		var optimizer = new Optimizer(m_settings, m_rules);
-		optimizer.Optimize();
-	}
-	
 	#region Private Methods
 	private void DoCheckForStartRule()
 	{

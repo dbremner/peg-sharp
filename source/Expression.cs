@@ -51,13 +51,6 @@ internal abstract class Expression
 	
 	public abstract string[] GetLeftRules();
 	
-	// Metric for the size of the grammar (used to determine when to stop optimizing).
-	public abstract int GetSize();
-	
-	public virtual void Optimize(Func<Expression, Expression> transform)
-	{
-	}
-	
 	public virtual string ToSubString()
 	{
 		return string.Format("({0})", this);
