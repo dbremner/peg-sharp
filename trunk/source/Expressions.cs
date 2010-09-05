@@ -37,17 +37,6 @@ internal sealed class AssertExpression : Expression
 	
 	public Expression Expression {get; private set;}
 	
-	public override int GetSize()
-	{
-		return Expression.GetSize();
-	}
-	
-	public override void Optimize(Func<Expression, Expression> transform)
-	{
-		Expression = transform(Expression);
-		Expression.Optimize(transform);
-	}
-	
 	public override Used FindUsed()
 	{
 		Used used = Used.Assert;
@@ -124,20 +113,6 @@ internal sealed class ChoiceExpression : Expression
 	}
 	
 	public Expression[] Expressions {get; private set;}
-	
-	public override int GetSize()
-	{
-		return Expressions.Sum(e => e.GetSize());
-	}
-	
-	public override void Optimize(Func<Expression, Expression> transform)
-	{
-		for (int i = 0; i < Expressions.Length; ++i)
-		{
-			Expressions[i] = transform(Expressions[i]);
-			Expressions[i].Optimize(transform);
-		}
-	}
 	
 	public override Used FindUsed()
 	{
@@ -229,11 +204,6 @@ internal sealed class LiteralExpression : Expression
 	
 	public string Literal {get; private set;}
 	
-	public override int GetSize()
-	{
-		return 1;
-	}
-	
 	public override Used FindUsed()
 	{
 		return Used.Literal;
@@ -289,17 +259,6 @@ internal sealed class NAssertExpression : Expression
 	}
 	
 	public Expression Expression {get; private set;}
-	
-	public override void Optimize(Func<Expression, Expression> transform)
-	{
-		Expression = transform(Expression);
-		Expression.Optimize(transform);
-	}
-	
-	public override int GetSize()
-	{
-		return Expression.GetSize();
-	}
 	
 	public override Used FindUsed()
 	{
@@ -419,11 +378,6 @@ internal sealed class RangeExpression : Expression
 	public override Used FindUsed()
 	{
 		return Used.Range;
-	}
-	
-	public override int GetSize()
-	{
-		return 1;
 	}
 	
 	public override string[] GetLeftRules()
@@ -654,17 +608,6 @@ internal sealed class RepetitionExpression : Expression
 	
 	public int Max {get; private set;}
 	
-	public override int GetSize()
-	{
-		return Expression.GetSize();
-	}
-	
-	public override void Optimize(Func<Expression, Expression> transform)
-	{
-		Expression = transform(Expression);
-		Expression.Optimize(transform);
-	}
-	
 	public override Used FindUsed()
 	{
 		Used used = Used.Repetition;
@@ -768,11 +711,6 @@ internal sealed class RuleExpression : Expression
 	
 	public string Name {get; private set;}
 	
-	public override int GetSize()
-	{
-		return 1;
-	}
-	
 	public override Used FindUsed()
 	{
 		return 0;
@@ -835,20 +773,6 @@ internal sealed class SequenceExpression : Expression
 	}
 	
 	public Expression[] Expressions {get; private set;}
-	
-	public override int GetSize()
-	{
-		return Expressions.Sum(e => e.GetSize());
-	}
-	
-	public override void Optimize(Func<Expression, Expression> transform)
-	{
-		for (int i = 0; i < Expressions.Length; ++i)
-		{
-			Expressions[i] = transform(Expressions[i]);
-			Expressions[i].Optimize(transform);
-		}
-	}
 	
 	public override IEnumerable<Expression> Select(Predicate<Expression> predicate)
 	{

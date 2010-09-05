@@ -87,18 +87,6 @@ internal static class Program
 		// Check for errors.
 		parser.Grammar.Validate();
 		
-		// Run the optimizer.
-		parser.Grammar.Optimize();
-		try
-		{
-			parser.Grammar.Validate();
-		}
-		catch (ParserException)
-		{
-			Console.Error.WriteLine("Optimizer introduced an error:");
-			throw;
-		}
-		
 		// Delete the old parser.
 		if (File.Exists(ms_outFile))
 			File.Delete(ms_outFile);

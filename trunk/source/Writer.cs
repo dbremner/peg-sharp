@@ -457,30 +457,27 @@ internal sealed partial class Writer : IDisposable
 			{
 				DoWriteLine("private State DoParseLiteral(State state, List<Result> results, string literal)");
 				DoWriteLine("{");
-				DoWriteLine("	int j = state.Index;");
+				DoWriteLine("	State result;");
 				DoWriteLine("	");
-				DoWriteLine("	for (int i = 0; i < literal.Length; ++i)");
-				DoWriteLine("	{");
 				if (m_grammar.Settings["ignore-case"] == "true")
-					DoWriteLine("		if (char.ToLower(m_input[j + i]) != literal[i])");
+					DoWriteLine("	if (string.Compare(m_input, state.Index, literal, 0, literal.Length, true) == 0)");
 				else
-					DoWriteLine("		if (m_input[j + i] != literal[i])");
-				DoWriteLine("		{");
-				DoWriteLine("			return new State(state.Index, false, ErrorSet.Combine(state.Errors, new ErrorSet(state.Index, literal)));");
-				DoWriteLine("		}");
+					DoWriteLine("	if (string.Compare(m_input, state.Index, literal, 0, literal.Length) == 0)");
+				DoWriteLine("	{");
+				if (m_grammar.Settings["value"] == "XmlNode")
+					DoWriteLine("		results.Add(new Result(this, state.Index, literal.Length, m_input, DoCreateTextNode(literal, DoGetLine(state.Index), DoGetCol(state.Index))));");
+				else if (m_grammar.Settings["value"] != "void")
+					DoWriteLine("		results.Add(new Result(this, state.Index, literal.Length, m_input, default({0})));", m_grammar.Settings["value"]);
+				else
+					DoWriteLine("		results.Add(new Result(this, state.Index, literal.Length, m_input));");
+				DoWriteLine("		result = new State(state.Index + literal.Length, true, state.Errors);");
+				DoWriteLine("	}");
+				DoWriteLine("	else");
+				DoWriteLine("	{");
+				DoWriteLine("		result = new State(state.Index, false, ErrorSet.Combine(state.Errors, new ErrorSet(state.Index, literal)));");
 				DoWriteLine("	}");
 				DoWriteLine("	");
-				DoWriteLine("	int k = j + literal.Length;");
-				DoWriteLine("	");
-				if (m_grammar.Settings["value"] == "XmlNode")
-					DoWriteLine("	results.Add(new Result(this, j, literal.Length, m_input, DoCreateTextNode(literal, DoGetLine(j), DoGetCol(j))));");
-				else if (m_grammar.Settings["value"] != "void")
-					DoWriteLine("	results.Add(new Result(this, j, literal.Length, m_input, default({0})));", m_grammar.Settings["value"]);
-				else
-					DoWriteLine("	results.Add(new Result(this, j, literal.Length, m_input));");
-				DoWriteLine("	state = new State(k, true, state.Errors);");
-				DoWriteLine("	");
-				DoWriteLine("	return state;");
+				DoWriteLine("	return result;");
 				DoWriteLine("}");
 				DoWriteLine("");
 			}
