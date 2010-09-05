@@ -95,9 +95,7 @@ Peg files consist of two or more settings, optional includes, and one or more no
 \b0  - Name of the namespace to put the parser within. Defaults to the global namespace.\
 \'95\'a0
 \b start
-\b0  - The name of the non-terminal with which parsing starts. If 
-\i void
-\i0  then semantic actions have no values and the Parse method returns a count of characters consumed instead of a value.\
+\b0  - The name of the non-terminal with which parsing starts.\
 \'95\'a0
 \b unconsumed
 \b0  - If this is 
@@ -119,7 +117,9 @@ Peg files consist of two or more settings, optional includes, and one or more no
 \b0  - Space separated list of custom namespace names to include.\
 \'95\'a0
 \b value
-\b0  - The name of the type used for the result value of semantic actions.\
+\b0  - The name of the type used for the result value of semantic actions. If 
+\i void
+\i0  then semantic actions have no values and the Parse method returns a count of characters consumed instead of a value.\
 \'95\'a0
 \b visibility
 \b0  - The visibility of the generated types. Defaults to "internal".\
