@@ -76,6 +76,7 @@ internal sealed class Grammar
 				let re = e as RuleExpression
 					select re.Name;
 		
+		DoCheckForStartRule();
 		DoCheckForBadDebugSetting();
 		DoCheckForMissingNonterminals(used);
 		DoCheckForUnusedNonterminals(used);
@@ -87,11 +88,18 @@ internal sealed class Grammar
 	
 	public void Optimize()
 	{
-		var optimizer = new Optimizer(m_rules);
+		var optimizer = new Optimizer(m_settings, m_rules);
 		optimizer.Optimize();
 	}
 	
 	#region Private Methods
+	private void DoCheckForStartRule()
+	{
+		// Should only happen if the the optimizer falls down.
+		if (!Rules.Exists(r => r.Name == Settings["start"]))
+			throw new ParserException(string.Format("Missing the start rule '{0}'.", Settings["start"]));
+	}
+	
 	private void DoCheckForBadDebugSetting()
 	{
 		string[] names = Settings["debug"].Split(new char[]{' '}, StringSplitOptions.RemoveEmptyEntries);

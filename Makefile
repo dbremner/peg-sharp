@@ -55,9 +55,14 @@ ftest: bin/peg-sharp.exe
 # Runs the command twice to minimize the affects of external overhead such
 # as disk access.
 .PHONY: benchmark
-benchmark: bin/benchmark.exe 
+benchmark: bin/benchmark.exe
 	$(MONO) bin/benchmark.exe benchmark/input.txt
 	time $(MONO) bin/benchmark.exe benchmark/input.txt
+
+# TODO: get rid of the lame absolute paths
+.PHONY: debug-benchmark
+debug-benchmark: bin/benchmark.exe
+	osascript -e 'tell application "Foreshadow" to debug "/Users/jessejones/Source/peg-sharp/bin/benchmark.exe" with "/Users/jessejones/Source/peg-sharp/benchmark/input.txt"'
 
 update-libraries:
 	cp `pkg-config --variable=Sources mono-options` source

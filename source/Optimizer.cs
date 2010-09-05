@@ -27,8 +27,9 @@ using System.Linq;
 // MIT master's thesis: Packrat Parsing: a Practical Linear-Time Algorithm with Backtracking.
 internal sealed class Optimizer
 {
-	public Optimizer(List<Rule> rules)
+	public Optimizer(Dictionary<string, string> settings, List<Rule> rules)
 	{
+		m_settings = settings;
 		m_rules = rules;
 	}
 	
@@ -37,50 +38,158 @@ internal sealed class Optimizer
 		if (Program.Verbosity >= 3)
 			DoDump("before optimization:");
 		
-		bool optimized = false;
-		while (true)
+		for	 (int i = 0; i < 32; ++i)		// do a max of 32 optimization passes
 		{
-			int oldSize = DoGetSize();
+			var oldEdit = m_editCount;
+			DoOptimize("Merge", this.DoMergeRules);
 			DoOptimize("InlineTiny", this.DoInlineTiny);
-			int newSize = DoGetSize();
+			var newEdit = m_editCount;
 			
-			if (newSize == oldSize)
+			if (newEdit == oldEdit)
 				break;
-			else
-				optimized = true;
 		}
 		
-		if (Program.Verbosity >= 3 && optimized)
+		if (Program.Verbosity >= 3 && m_editCount > 0)
 			DoDump("after optimization:");
 	}
 	
 	#region Private Methods
-	private void DoOptimize(string name, Action action)
+	private delegate void OptimizeCallback(List<int> deathRow);
+	
+	private void DoOptimize(string name, Action<List<int>> action)
 	{
+		var deathRow = new List<int>();
+			
 		int oldSize = DoGetSize();
-		action();
+		action(deathRow);
 		int newSize = DoGetSize();
-		Contract.Assert(newSize <= oldSize);
 		
-		if (Program.Verbosity >= 2 && newSize < oldSize)
+		for (int index = deathRow.Count - 1; index >= 0; --index)
+		{
+			m_rules.RemoveAt(deathRow[index]);
+		}
+		
+		if (Program.Verbosity >= 3 && newSize < oldSize)
 			Console.WriteLine("{0} reduced by {1}", name, oldSize - newSize);
-		else if (Program.Verbosity >= 3 && newSize == oldSize)
-			Console.WriteLine("{0} did nothing", name);
+		else if (Program.Verbosity >= 3 && newSize > oldSize)
+			Console.WriteLine("{0} grew by {1}", name, newSize - oldSize);
+	}
+	
+	private Dictionary<string, List<int>> DoGetNoActionRules()
+	{
+		var rules = new Dictionary<string, List<int>>();
+		
+		for (int i = 0; i < m_rules.Count; ++i)
+		{
+			string name = m_rules[i].Name;
+			if (!rules.ContainsKey(name))
+			{
+				var indices = new List<int>();
+				
+				for (int j = i; j < m_rules.Count; ++j)
+				{
+					if (m_rules[j].Name == name)
+					{
+						if (m_rules[j].PassAction == null && m_rules[j].FailAction == null)
+						{
+							indices.Add(j);
+						}
+						else
+						{
+							indices.Clear();
+							break;
+						}
+					}
+				}
+				
+				rules.Add(name, indices);
+			}
+		}
+		
+		return rules;
+	}
+	
+	private Expression[] DoGetExpressions(List<int> indices)
+	{
+		var expressions = new Expression[indices.Count];
+		
+		for (int i = 0; i < indices.Count; ++i)
+		{
+			expressions[i] = m_rules[indices[i]].Expression;
+		}
+		
+		return expressions;
+	}
+	
+	// Merge rules with the same name and no actions into a single rule.
+	private void DoMergeRules(List<int> deathRow)
+	{
+		Dictionary<string, List<int>> rules = DoGetNoActionRules();
+		foreach (var entry in rules)
+		{
+			if (entry.Value.Count > 1)
+			{
+				if (Program.Verbosity >= 3)
+					Console.WriteLine("merging {0}", entry.Key);
+				var expr = new ChoiceExpression(DoGetExpressions(entry.Value));
+				m_rules.Add(new Rule(entry.Key, expr, null, null, m_rules[entry.Value[0]].Line));
+				deathRow.AddRange(entry.Value);
+				++m_editCount;
+			}
+		}
+	}
+	
+	private void DoInline(Rule rule)
+	{
+		for (int i = 0; i < m_rules.Count; ++i)
+		{
+			Rule candidate = m_rules[i];
+			if (candidate.Name != rule.Name)
+			{
+				candidate.Optimize(e =>
+				{
+					var r = e as RuleExpression;
+					if (r != null && r.Name == rule.Name)
+						return rule.Expression;
+					else
+						return e;
+				});
+			}
+		}
 	}
 	
 	// Inline rules that have no more than two operators (and no semantic actions).
-	private void DoInlineTiny()
+	// It kind of sucks to not be able to inline rules with semantic actions, but doing
+	// so would require major changes and considerable complexity.
+	private void DoInlineTiny(List<int> deathRow)
 	{
+		Dictionary<string, List<int>> rules = DoGetNoActionRules();
+		foreach (var entry in rules)
+		{
+			if (entry.Value.Count == 1)
+			{
+				Rule rule = m_rules[entry.Value[0]];
+				
+				if (rule.Expression.GetSize() <= 2 && rule.Name != m_settings["start"])
+				{
+					if (Program.Verbosity >= 3)
+						Console.WriteLine("inlining {0}", rule.Name);
+					DoInline(rule);
+					deathRow.AddRange(entry.Value);
+					++m_editCount;
+				}
+			}
+		}
 	}
 	
 	private void DoDump(string header = null)
 	{
 		if (header != null)
-			Console.WriteLine("{0} (size = {1}", header, DoGetSize());
+			Console.WriteLine("{0} (size = {1})", header, DoGetSize());
 			
 		foreach (Rule rule in m_rules)
 		{
-			Console.WriteLine("   {0}", rule);
+			Console.WriteLine("   {0}  [{1}]", rule, rule.Expression.GetSize());
 		}
 	}
 	
@@ -91,6 +200,8 @@ internal sealed class Optimizer
 	#endregion
 	
 	#region Fields
+	private Dictionary<string, string> m_settings = new Dictionary<string, string>();
 	private List<Rule> m_rules = new List<Rule>();
+	private ulong m_editCount;
 	#endregion
 }

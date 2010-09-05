@@ -26,18 +26,10 @@ using System;
 [TestFixture]
 public sealed class BadTests
 {
-	// None of the standard nunit mehods allow us to easily check the exception message.
-	private void AssertThrows<E>(Action callback, string message) where E : Exception
+	private void AssertThrows<E>(TestDelegate callback, string message) where E : Exception
 	{
-		try
-		{
-			callback();
-			Assert.Fail("Expected a " + typeof(E).Name + " exception.");
-		}
-		catch (E e)
-		{
-			Assert.AreEqual(message, e.Message);
-		}
+		E e = Assert.Throws<E>(callback);
+		Assert.That(e.Message, Is.EqualTo(message));
 	}
 	
 	[Test]

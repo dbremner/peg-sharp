@@ -36,7 +36,7 @@ internal static class Program
 	{
 		var context = new Dictionary<string, int>();
 		Expression e = parser.Parse(expr);
-		Console.WriteLine(e);
+//		Console.WriteLine(e);
 		int actual = e.Evaluate(context);
 		if (expected != actual)
 			throw new Exception(string.Format("Expected {0} for \"{1}\" but got {2}", expected, expr, actual));

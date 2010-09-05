@@ -39,7 +39,13 @@ internal sealed class AssertExpression : Expression
 	
 	public override int GetSize()
 	{
-		return 1 + Expression.GetSize();
+		return Expression.GetSize();
+	}
+	
+	public override void Optimize(Func<Expression, Expression> transform)
+	{
+		Expression = transform(Expression);
+		Expression.Optimize(transform);
 	}
 	
 	public override Used FindUsed()
@@ -121,7 +127,16 @@ internal sealed class ChoiceExpression : Expression
 	
 	public override int GetSize()
 	{
-		return 1 + Expressions.Sum(e => e.GetSize());
+		return Expressions.Sum(e => e.GetSize());
+	}
+	
+	public override void Optimize(Func<Expression, Expression> transform)
+	{
+		for (int i = 0; i < Expressions.Length; ++i)
+		{
+			Expressions[i] = transform(Expressions[i]);
+			Expressions[i].Optimize(transform);
+		}
 	}
 	
 	public override Used FindUsed()
@@ -275,9 +290,15 @@ internal sealed class NAssertExpression : Expression
 	
 	public Expression Expression {get; private set;}
 	
+	public override void Optimize(Func<Expression, Expression> transform)
+	{
+		Expression = transform(Expression);
+		Expression.Optimize(transform);
+	}
+	
 	public override int GetSize()
 	{
-		return 1 + Expression.GetSize();
+		return Expression.GetSize();
 	}
 	
 	public override Used FindUsed()
@@ -635,7 +656,13 @@ internal sealed class RepetitionExpression : Expression
 	
 	public override int GetSize()
 	{
-		return 1 + Expression.GetSize();
+		return Expression.GetSize();
+	}
+	
+	public override void Optimize(Func<Expression, Expression> transform)
+	{
+		Expression = transform(Expression);
+		Expression.Optimize(transform);
 	}
 	
 	public override Used FindUsed()
@@ -811,7 +838,16 @@ internal sealed class SequenceExpression : Expression
 	
 	public override int GetSize()
 	{
-		return 1 + Expressions.Sum(e => e.GetSize());
+		return Expressions.Sum(e => e.GetSize());
+	}
+	
+	public override void Optimize(Func<Expression, Expression> transform)
+	{
+		for (int i = 0; i < Expressions.Length; ++i)
+		{
+			Expressions[i] = transform(Expressions[i]);
+			Expressions[i].Optimize(transform);
+		}
 	}
 	
 	public override IEnumerable<Expression> Select(Predicate<Expression> predicate)

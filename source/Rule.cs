@@ -46,6 +46,12 @@ internal sealed class Rule
 	
 	public int Line {get; private set;}
 	
+	public void Optimize(Func<Expression, Expression> transform)
+	{
+		Expression = transform(Expression);
+		Expression.Optimize(transform);
+	}
+	
 	public override string ToString()
 	{
 		return string.Format("{0} := {1}", Name, Expression);
