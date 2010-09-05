@@ -52,6 +52,13 @@ utest: bin/unit-tests.dll
 ftest: bin/peg-sharp.exe
 	cd ftest && "$(PYTHON)" ftest.py
 
+# Runs the command twice to minimize the affects of external overhead such
+# as disk access.
+.PHONY: benchmark
+benchmark: bin/benchmark.exe 
+	$(MONO) bin/benchmark.exe benchmark/input.txt
+	time $(MONO) bin/benchmark.exe benchmark/input.txt
+
 update-libraries:
 	cp `pkg-config --variable=Sources mono-options` source
 
@@ -72,6 +79,12 @@ example/Parser.cs: bin/peg-sharp.exe example/Parser.peg
 bin/example.exe: example/Parser.cs example/*.cs
 	$(CSC) -out:bin/example.exe $(CSC_FLAGS) -target:exe example/*.cs
 
+benchmark/Benchmark.cs: bin/peg-sharp.exe benchmark/Benchmark.peg
+	$(MONO) bin/peg-sharp.exe --out=benchmark/Benchmark.cs benchmark/Benchmark.peg
+
+bin/benchmark.exe: benchmark/Benchmark.cs benchmark/*.cs
+	$(CSC) -out:bin/benchmark.exe $(CSC_FLAGS) -target:exe benchmark/*.cs
+
 bin/unit-tests.dll: bin/csc_flags $(sources)
 	$(CSC) -out:$@ $(CSC_FLAGS) -r:bin/nunit.framework.dll -d:TEST -target:library $(sources)
 
@@ -86,6 +99,7 @@ clean:
 	-rm -rf bin/*.exe.mdb
 	-rm -rf bin/unit-tests.dll
 	-rm -rf bin/unit-tests.dll.mdb
+	-rm -rf bin/*.cs
 	-rm -rf bin/ftest
 	-rm  -f bin/csc_flags
 

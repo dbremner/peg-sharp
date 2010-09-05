@@ -1,0 +1,6048 @@
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
+x = 4
+result = 1
+while x > 1 do
+	result = result*x
+	x = x - 1
+end
+if x < 100 then
+	result
+else
+	100
+end
+
