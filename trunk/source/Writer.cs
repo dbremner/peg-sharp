@@ -174,22 +174,16 @@ internal sealed partial class Writer : IDisposable
 		DoWriteLine("[Serializable]");
 		DoWriteLine("{0} sealed class ParserException : Exception", m_grammar.Settings["visibility"]);
 		DoWriteLine("{");
-		DoWriteLine("	public ParserException()");
-		DoWriteLine("	{");
-		DoWriteLine("	}");
-		DoWriteLine("	");
-		DoWriteLine("	public ParserException(string message) : base(message)");
-		DoWriteLine("	{");
-		DoWriteLine("	}");
-		DoWriteLine("	");
 		DoWriteLine("	public ParserException(int line, int col, int offset, string file, string input, string message) : base(string.Format(\"{0} at line {1} col {2}{3}\", message, line, col, file != null ? (\" in \" + file) : \".\"))");
 		DoWriteLine("	{");
+		DoWriteLine("		File = file;");
+		DoWriteLine("		Line = line;");
+		DoWriteLine("		Col = col;");
 		DoWriteLine("	}");
 		DoWriteLine("	");
-		DoWriteLine("	[SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]");
-		DoWriteLine("	private ParserException(SerializationInfo info, StreamingContext context) : base(info, context)");
-		DoWriteLine("	{");
-		DoWriteLine("	}");
+		DoWriteLine("	public string File {get; private set;}");
+		DoWriteLine("	public int Line {get; private set;}");
+		DoWriteLine("	public int Col {get; private set;}");
 		DoWriteLine("}");
 		DoWriteLine("");
 	}
