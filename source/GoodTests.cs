@@ -56,7 +56,6 @@ Expr := 'x';";
 	public void Comments()
 	{
 		string input = @"
-# your comment here
 start = Expr		# another comment
 value = double
 
