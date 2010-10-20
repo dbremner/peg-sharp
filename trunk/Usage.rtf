@@ -53,7 +53,7 @@ Peg files consist of two or more settings, optional includes, and one or more no
 \b Settings\b0  must appear before the non-terminal definitions. The syntax is \i name = value\i0 . These are used to configure the generation of the parser. The supported settings are:\par
 \bullet\~\b comment\b0  - Custom class comment. This may appear multiple times for multiple line comments and '// ' will be added to the start if it does not begin with '//'.\par
 \bullet\~\b debug\b0  - Space separated list of non-terminal names for which progress information will be written to stdout. May be \i none\i0  or \i *\i0  (to match everything).\par
-\bullet\~\b debug-file\b0  - Name of the file for which to print debug information..\par
+\bullet\~\b debug-file\b0  - Name of the file for which to print debug information.\par
 \bullet\~\b exclude-exception\b0  - If \i true \i0 then the exception class will not be generated. Defaults to false.\par
 \bullet\~\b exclude-methods\b0  - Space separated list of parser method names to not generate. Note that these must still be defined (in a partial class).\par
 \bullet\~\b ignore-case\b0  - If true terminals are lower cased before they are compared. Defaults to false.\par
