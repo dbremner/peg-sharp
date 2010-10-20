@@ -66,7 +66,7 @@ internal sealed partial class Parser
 	
 	private string DoAddSetting(string name, string value)
 	{
-		if (name != "comment" && name != "debug" && name != "debug-file" && name != "exclude-exception" && name != "exclude-methods" && name != "ignore-case" && name != "namespace" && name != "start" && name != "unconsumed" && name != "used" && name != "using" && name != "value" && name != "visibility")
+		if (name != "comment" && name != "parse-accessibility" && name != "debug" && name != "debug-file" && name != "exclude-exception" && name != "exclude-methods" && name != "ignore-case" && name != "namespace" && name != "start" && name != "unconsumed" && name != "used" && name != "using" && name != "value" && name != "visibility")
 			return string.Format("Setting '{0}' is not a valid name", name);
 		
 		if (name == "comment")
