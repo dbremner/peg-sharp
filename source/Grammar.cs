@@ -51,7 +51,10 @@ internal sealed class Grammar
 			
 		if (!Settings.ContainsKey("ignore-case"))
 			Settings.Add("ignore-case", "false");
-			
+
+		if (!Settings.ContainsKey("parse-accessibility"))
+			Settings.Add("parse-accessibility", "public");
+
 		if (!Settings.ContainsKey("visibility"))
 			Settings.Add("visibility", "internal");
 			

@@ -709,13 +709,13 @@ internal sealed partial class Writer : IDisposable
 			return;
 			
 		string value = m_grammar.Settings["value"];
-		DoWriteLine("public {0} Parse(string input)", value == "void" ? "int" : value);
+		DoWriteLine("{0} {1} Parse(string input)", m_grammar.Settings["parse-accessibility"], value == "void" ? "int" : value);
 		DoWriteLine("{");
 		DoWriteLine("	return DoParseFile(input, null, \"{0}\");", m_grammar.Settings["start"]);
 		DoWriteLine("}");
 		DoWriteLine();
 		DoWriteLine("// File is used for error reporting.");
-		DoWriteLine("public {0} Parse(string input, string file)", value == "void" ? "int" : value);
+		DoWriteLine("{0} {1} Parse(string input, string file)", m_grammar.Settings["parse-accessibility"], value == "void" ? "int" : value);
 		DoWriteLine("{");
 		DoWriteLine("	return DoParseFile(input, file, \"{0}\");", m_grammar.Settings["start"]);
 		DoWriteLine("}");
