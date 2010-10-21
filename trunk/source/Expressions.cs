@@ -81,7 +81,7 @@ internal sealed class AssertExpression : Expression
 //			line.AppendFormat("({0}, {1}) => DoAssert({0}, {1},", s, r);
 			Expression.Write(line, depth + 1);
 //			line.Append(")");
-			line.Append(";)}");
+			line.Append(");}");
 		}
 	}
 	
