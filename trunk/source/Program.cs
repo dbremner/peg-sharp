@@ -81,7 +81,7 @@ internal static class Program
 			Console.WriteLine("parsing '{0}'", pegFile);
 		
 		var parser = new Parser();
-		string input = System.IO.File.ReadAllText(pegFile);
+		string input = System.IO.File.ReadAllText(pegFile, System.Text.Encoding.UTF8);
 		parser.Parse(input, pegFile);
 		
 		// Check for errors.

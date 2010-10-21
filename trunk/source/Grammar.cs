@@ -102,7 +102,7 @@ internal sealed class Grammar
 		string[] names = Settings["debug"].Split(new char[]{' '}, StringSplitOptions.RemoveEmptyEntries);
 		foreach (string name in names)
 		{
-			if (!m_rules.Any(r => r.Name == name))
+			if (name != "*" && !m_rules.Any(r => r.Name == name))
 			{
 				string mesg = string.Format("Debug setting has a value which is not the name of a non-terminal: {0}.", name);
 				throw new ParserException(mesg);
