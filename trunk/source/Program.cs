@@ -81,7 +81,7 @@ internal static class Program
 			Console.WriteLine("parsing '{0}'", pegFile);
 		
 		var parser = new Parser();
-		string input = System.IO.File.ReadAllText(pegFile, System.Text.Encoding.UTF8);
+		string input = File.ReadAllText(pegFile, System.Text.Encoding.UTF8);
 		parser.Parse(input, pegFile);
 		
 		// Check for errors.
@@ -95,7 +95,7 @@ internal static class Program
 		if (Program.Verbosity >= 1)
 			Console.WriteLine("writing '{0}'", ms_outFile);
 		
-		using (var stream = new StreamWriter(ms_outFile))
+		using (var stream = new StreamWriter(ms_outFile, false, System.Text.Encoding.UTF8))
 		{
 			using (var writer = new Writer(stream, parser.Grammar))
 			{
