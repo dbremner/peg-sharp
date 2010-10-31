@@ -1,0 +1,10 @@
+# Continuum syntax highlighting file.
+Language: peg
+Globs: *.peg
+
+Comment: \x23 .* $
+Keyword: \b(?<!-)(?: include)(?!-)\b
+Command: ` [^`]+ `
+String: ' (?: [^'\r\n\\] | \\.)* '
+String: " (?: [^"\r\n\\] | \\.)* "
+String: \[ (?: [^\]\r\n\\] | \\.)* \]
