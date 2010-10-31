@@ -81,7 +81,7 @@ some bogus text
 ";
 		
 		var parser = new Parser();
-		AssertThrows<ParserException>(() => parser.Parse(input), "Expected setting or comment or include or rule at line 4 col 6.");
+		AssertThrows<ParserException>(() => parser.Parse(input), "Expected setting or comment or include or rule or rule epilog or rule prolog at line 4 col 6.");
 	}
 	
 	[Test]
@@ -95,7 +95,7 @@ Expr :=
 ";
 		
 		var parser = new Parser();
-		AssertThrows<ParserException>(() => parser.Parse(input), "Expected rule at line 6 col 1.");
+		AssertThrows<ParserException>(() => parser.Parse(input), "Expected rule or rule epilog or rule prolog at line 6 col 1.");
 	}
 	
 	[Test]
@@ -443,7 +443,7 @@ Value := 'x' / 'y' / 'z' / [];
 Value := '(' Expr ')';
 ";
 		var parser = new Parser();
-		AssertThrows<ParserException>(() => parser.Parse(input), "Expected rule or comment at line 8 col 29.");
+		AssertThrows<ParserException>(() => parser.Parse(input), "Expected rule or rule epilog or rule prolog or comment at line 8 col 29.");
 	}
 	
 	[Test]
