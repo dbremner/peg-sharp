@@ -29,6 +29,8 @@ internal static class Program
 		DoTrivial(parser);
 		DoIf(parser);
 		DoTwoIfs(parser);
+		DoTwoPass(parser);
+		DoBadIndent(parser);
 	}
 	
 	#region Private Methods
@@ -70,6 +72,29 @@ internal static class Program
 		DoCheck(parser, input, expected);
 	}
 	
+	private static void DoTwoPass(Test18 parser)
+	{
+		string input = @"def Alpha:
+    if beta:
+        pass
+        pass";
+		string expected = @"def Alpha:
+   if beta:
+      pass
+      pass";
+		
+		DoCheck(parser, input, expected);
+	}
+	
+	private static void DoBadIndent(Test18 parser)
+	{
+		string input = @"def Alpha:
+    if beta:
+        pass
+          pass";
+		DoCheckBad(parser, input, "line 4");
+	}
+	
 	private static void DoCheck(Test18 parser, string input, string expected)
 	{
 		string actual = parser.Parse(input).ToText().Trim();
@@ -84,6 +109,20 @@ internal static class Program
 			Console.Error.WriteLine(actual);
 			
 			throw new Exception("failed");
+		}
+	}
+	
+	private static void DoCheckBad(Test18 parser, string input, string err)
+	{
+		try
+		{
+			parser.Parse(input);
+			throw new Exception("Expected a parser error");
+		}
+		catch (ParserException e)
+		{
+			if (!e.Message.Contains(err))
+				throw;
 		}
 	}
 	#endregion
