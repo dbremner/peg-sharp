@@ -146,10 +146,10 @@ internal sealed partial class Writer
 				DoWriteLine("	--m_debugLevel;");
 			}
 		}
-		DoWriteLine("	if (_state.Parsed)");
-		DoWriteLine("		DoDebug(_start.Index, _state.Index, \"" + debugName + " parsed\");");
-		DoWriteLine("	else");
-		DoWriteLine("		DoDebug(_state.Index, _start.Index, \"" + debugName + " \" + _state.Errors);");
+//		DoWriteLine("	if (_state.Parsed)");
+//		DoWriteLine("		DoDebug(_start.Index, _state.Index, \"" + debugName + " parsed\");");
+//		DoWriteLine("	else");
+//		DoWriteLine("		DoDebug(_state.Index, _start.Index, \"" + debugName + " \" + _state.Errors);");
 		DoWriteEpilog(rule);
 		DoWriteLine("	");
 		DoWriteLine("	return _state;");
@@ -175,7 +175,7 @@ internal sealed partial class Writer
 			{
 				DoWriteLine("	if (fail != null)");
 				DoWriteLine("	{");
-				DoWriteLine("		DoDebug(_state.Index, _start.Index, \"" + debugName + " failed prolog\");");
+//				DoWriteLine("		DoDebug(_state.Index, _start.Index, \"" + debugName + " failed prolog\");");
 				DoWriteLine("		return new State(_start.Index, false, ErrorSet.Combine(_start.Errors, new ErrorSet(_start.Index, fail)));");
 				DoWriteLine("	}");
 			}
