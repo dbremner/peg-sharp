@@ -51,6 +51,11 @@ utest: bin/unit-tests.dll
 .PHONY: ftest
 ftest: bin/peg-sharp.exe
 	cd ftest && "$(PYTHON)" ftest.py
+	
+test18: bin/peg-sharp.exe ftest/18.whitespace/*.cs
+	$(MONO) --debug bin/peg-sharp.exe --out=ftest/18.whitespace/Test18.cs ftest/18.whitespace/Test18.peg
+	$(CSC) -out:bin/ftest/Test18.exe -checked+ -debug+ -warn:4 -warnaserror+ -d:DEBUG -d:TRACE -d:CONTRACTS_FULL -debug+ -target:exe ftest/18.whitespace/*.cs
+	$(MONO) --debug bin/ftest/Test18.exe
 
 # Runs the command twice to minimize the affects of external overhead such
 # as disk access.

@@ -41,6 +41,23 @@ internal sealed class Grammar
 		get {return m_rules;}
 	}
 	
+	public void AddHook(Hook hook, string ruleName, string code)
+	{
+		List<string> codes;
+		
+		if (code.StartsWith("`"))
+			code = code.Substring(1, code.Length - 2);
+		
+		var key = new HookKey(hook, ruleName);
+		if (!m_hooks.TryGetValue(key, out codes))
+		{
+			codes = new List<string>();
+			m_hooks.Add(key, codes);
+		}
+		
+		codes.Add(code);
+	}
+	
 	public void Validate()
 	{
 		if (!Settings.ContainsKey("unconsumed"))
@@ -87,6 +104,9 @@ internal sealed class Grammar
 		DoCheckForUnreachableFailAction();
 		DoCheckForUnreachableAlternative();
 		DoCheckForBackwardsRange();
+		DoCheckForMissingHookRule();
+		
+		DoAddHooksToRules();
 	}
 	
 	#region Private Methods
@@ -386,10 +406,107 @@ internal sealed class Grammar
 			throw new ParserException(mesg);
 		}
 	}
+	
+	private void DoCheckForMissingHookRule()
+	{
+		var bad = new List<string>();
+		
+		foreach (HookKey key in m_hooks.Keys)
+		{
+			if (!m_rules.Any(r => r.Name == key.RuleName))
+			{
+				bad.Add(key.ToString());
+			}
+		}
+		
+		if (bad.Count > 0)
+		{
+			string mesg = string.Format("There are no rules matching: {0}", string.Join(" ", bad.ToArray()));
+			throw new ParserException(mesg);
+		}
+	}
+	
+	private void DoAddHooksToRules()
+	{
+		foreach (var entry in m_hooks)
+		{
+			IEnumerable<Rule> rules = from r in m_rules where r.Name == entry.Key.RuleName select r;
+			foreach (Rule rule in rules)
+			{
+				rule.AddHook(entry.Key.Hook, entry.Value);
+			}
+		}
+	}
+	#endregion
+	
+	#region Private Types
+	private struct HookKey : IEquatable<HookKey>
+	{
+		public HookKey(Hook hook, string ruleName) : this()
+		{
+			Hook = hook;
+			RuleName = ruleName;
+		}
+		
+		public Hook Hook {get; private set;}
+		public string RuleName {get; private set;}
+		
+		public override string ToString()
+		{
+			return string.Format("{0} {1}", RuleName, Hook.ToString().ToLower());
+		}
+		
+		public override bool Equals(object obj)
+		{
+			if (obj == null)
+				return false;
+			
+			if (GetType() != obj.GetType())
+				return false;
+			
+			HookKey rhs = (HookKey) obj;
+			return this == rhs;
+		}
+		
+		public bool Equals(HookKey rhs)
+		{
+			return this == rhs;
+		}
+		
+		public static bool operator!=(HookKey lhs, HookKey rhs)
+		{
+			return !(lhs == rhs);
+		}
+		
+		public static bool operator==(HookKey lhs, HookKey rhs)
+		{
+			if (lhs.Hook != rhs.Hook)
+				return false;
+			
+			if (lhs.RuleName != rhs.RuleName)
+				return false;
+			
+			return true;
+		}
+		
+		public override int GetHashCode()
+		{
+			int hash = 0;
+			
+			unchecked
+			{
+				hash += Hook.GetHashCode();
+				hash += RuleName.GetHashCode();
+			}
+			
+			return hash;
+		}
+	}
 	#endregion
 	
 	#region Fields
 	private Dictionary<string, string> m_settings = new Dictionary<string, string>();
 	private List<Rule> m_rules = new List<Rule>();			// note that the order is significant
+	private Dictionary<HookKey, List<string>> m_hooks = new Dictionary<HookKey, List<string>>();
 	#endregion
 }

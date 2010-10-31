@@ -33,6 +33,7 @@ internal sealed partial class Parser
 	
 	public bool Included {get; set;}
 	
+	#region Private Methods
 	private void DoProcessIncludes()
 	{
 		foreach (string i in m_includes)
@@ -177,6 +178,7 @@ internal sealed partial class Parser
 		
 		return new RepetitionExpression(e, min, max);
 	}
+	#endregion
 	
 	#region Fields
 	private Grammar m_grammar = new Grammar();

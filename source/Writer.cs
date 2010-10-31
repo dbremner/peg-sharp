@@ -193,6 +193,7 @@ internal sealed partial class Writer : IDisposable
 		DoWriteLine("#region Fields");
 		DoWriteLine("private string m_input;");
 		DoWriteLine("private string m_file;");
+		DoWriteLine("private object m_context = 0;");
 		DoWriteLine("private Dictionary<string, ParseMethod[]> m_nonterminals = new Dictionary<string, ParseMethod[]>();");
 		DoWriteLine("private Dictionary<CacheKey, CacheValue> m_cache = new Dictionary<CacheKey, CacheValue>();");
 		if (m_grammar.Settings["unconsumed"] == "expose")
@@ -483,7 +484,7 @@ internal sealed partial class Writer : IDisposable
 			DoWriteLine("	State start = state;");
 			DoWriteLine("	");
 			DoWriteLine("	CacheValue cache;");
-			DoWriteLine("	CacheKey key = new CacheKey(nonterminal, start.Index);");
+			DoWriteLine("	CacheKey key = new CacheKey(nonterminal, start.Index, m_context);");
 			DoWriteLine("	if (!m_cache.TryGetValue(key, out cache))");
 			DoWriteLine("	{");
 			DoWriteLine("		ParseMethod[] methods = m_nonterminals[nonterminal];");
@@ -737,10 +738,11 @@ internal sealed partial class Writer : IDisposable
 		DoWriteLine("#region Private Types");
 		DoWriteLine("private struct CacheKey : IEquatable<CacheKey>");
 		DoWriteLine("{");
-		DoWriteLine("	public CacheKey(string rule, int index)");
+		DoWriteLine("	public CacheKey(string rule, int index, object context)");
 		DoWriteLine("	{");
 		DoWriteLine("		m_rule = rule;");
 		DoWriteLine("		m_index = index;");
+		DoWriteLine("		m_context = context;");
 		DoWriteLine("	}");
 		DoWriteLine("	");
 		DoWriteLine("	public override bool Equals(object obj)");
@@ -768,6 +770,9 @@ internal sealed partial class Writer : IDisposable
 		DoWriteLine("		if (lhs.m_index != rhs.m_index)");
 		DoWriteLine("			return false;");
 		DoWriteLine("		");
+		DoWriteLine("		if (lhs.m_context != rhs.m_context)");
+		DoWriteLine("			return false;");
+		DoWriteLine("		");
 		DoWriteLine("		return true;");
 		DoWriteLine("	}");
 		DoWriteLine("	");
@@ -784,6 +789,7 @@ internal sealed partial class Writer : IDisposable
 		DoWriteLine("		{");
 		DoWriteLine("			hash += m_rule.GetHashCode();");
 		DoWriteLine("			hash += m_index.GetHashCode();");
+		DoWriteLine("			hash += m_context.GetHashCode();");
 		DoWriteLine("		}");
 		DoWriteLine("		");
 		DoWriteLine("		return hash;");
@@ -791,6 +797,7 @@ internal sealed partial class Writer : IDisposable
 		DoWriteLine("	");
 		DoWriteLine("	private string m_rule;");
 		DoWriteLine("	private int m_index;");
+		DoWriteLine("	private object m_context;");
 		DoWriteLine("}");
 		DoWriteLine("");
 		DoWriteLine("private struct CacheValue");

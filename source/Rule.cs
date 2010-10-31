@@ -44,10 +44,33 @@ internal sealed class Rule
 	// May be null.
 	public string FailAction {get; private set;}
 	
+	// Returns null if there is no hook.
+	public List<string> GetHook(Hook hook)
+	{
+		List<string> code = null;
+		
+		if (m_hooks != null)
+			Unused.Value = m_hooks.TryGetValue(hook, out code);
+		
+		return code;
+	}
+	
 	public int Line {get; private set;}
 	
 	public override string ToString()
 	{
 		return string.Format("{0} := {1}", Name, Expression);
 	}
+	
+	internal void AddHook(Hook hook, List<string> code)
+	{
+		if (m_hooks == null)
+			m_hooks = new Dictionary<Hook, List<string>>();
+			
+		m_hooks.Add(hook, code);
+	}
+	
+	#region Fields
+	private Dictionary<Hook, List<string>> m_hooks;
+	#endregion
 }
