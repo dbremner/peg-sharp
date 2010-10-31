@@ -21,6 +21,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 internal sealed partial class Writer
 {
@@ -28,11 +29,11 @@ internal sealed partial class Writer
 	{
 		if (m_grammar.Settings["exclude-methods"].Contains(methodName + ' '))
 			return;
-			 
+		
 		string debugName = rule.Name;
 		if (maxIndex > 1)
 			debugName += i + 1;
-			
+		
 		string prolog = string.Format("{0} := {1}", rule.Name, rule.Expression);
 		DoWriteLine("// " + prolog);
 		DoWriteLine("private State " + methodName + "(State _state, List<Result> _outResults)");
@@ -57,6 +58,7 @@ internal sealed partial class Writer
 		DoWriteLine("	State _start = _state;");
 		DoWriteLine("	List<Result> results = new List<Result>();");
 		DoWriteLine("	");
+		DoWriteProlog(rule, debugName);
 		DoWriteNonTerminalRule(rule);
 		DoWriteLine("	");
 		DoWriteLine("	if (_state.Parsed)");
@@ -77,10 +79,7 @@ internal sealed partial class Writer
 			if (DoReferencesLocal(rule.PassAction, "text"))
 				DoWriteLine("		string text = m_input.Substring(_start.Index, _state.Index - _start.Index);");
 			
-			string trailer = string.Empty;
-			if (rule.PassAction[rule.PassAction.Length - 1] != ';' && rule.PassAction[rule.PassAction.Length - 1] != '}')
-				trailer = ";";
-			DoWriteLine("		" + rule.PassAction + trailer);
+			DoWriteCode("		", rule.PassAction);
 			
 			if (DoReferencesLocal(rule.PassAction, "fatal"))
 			{
@@ -118,10 +117,7 @@ internal sealed partial class Writer
 			DoWriteLine("	{");
 			DoWriteLine("		string expected = null;");
 			
-			string trailer = string.Empty;
-			if (rule.FailAction[rule.FailAction.Length - 1] != ';' && rule.FailAction[rule.FailAction.Length - 1] != '}')
-				trailer = ";";
-			DoWriteLine("		" + rule.FailAction + trailer);
+			DoWriteCode("		", rule.FailAction);
 			
 			DoWriteLine("		if (expected != null)");
 			DoWriteLine("			_state = new State(_start.Index, false, ErrorSet.Combine(_start.Errors, new ErrorSet(_state.Errors.Index, expected)));");
@@ -150,12 +146,56 @@ internal sealed partial class Writer
 				DoWriteLine("	--m_debugLevel;");
 			}
 		}
+		DoWriteLine("	if (_state.Parsed)");
+		DoWriteLine("		DoDebug(_start.Index, _state.Index, \"" + debugName + " parsed\");");
+		DoWriteLine("	else");
+		DoWriteLine("		DoDebug(_state.Index, _start.Index, \"" + debugName + " \" + _state.Errors);");
+		DoWriteEpilog(rule);
 		DoWriteLine("	");
 		DoWriteLine("	return _state;");
 		DoWriteLine("}");
 	}
 	
 	#region Private Methods
+	private void DoWriteProlog(Rule rule, string debugName)
+	{
+		List<string> code = rule.GetHook(Hook.Prolog);
+		if (code != null)
+		{
+			bool usesFail = code.Any(c => DoReferencesLocal(c, "fail"));
+			if (usesFail)
+				DoWriteLine("	string fail = null;");
+			
+			foreach (string c in code)
+			{
+				DoWriteCode("	", c);
+			}
+			
+			if (usesFail)
+			{
+				DoWriteLine("	if (fail != null)");
+				DoWriteLine("	{");
+				DoWriteLine("		DoDebug(_state.Index, _start.Index, \"" + debugName + " failed prolog\");");
+				DoWriteLine("		return new State(_start.Index, false, ErrorSet.Combine(_start.Errors, new ErrorSet(_start.Index, fail)));");
+				DoWriteLine("	}");
+			}
+			DoWriteLine("	");
+		}
+	}
+	
+	private void DoWriteEpilog(Rule rule)
+	{
+		List<string> code = rule.GetHook(Hook.Epilog);
+		if (code != null)
+		{
+			DoWriteLine("	");
+			foreach (string c in code)
+			{
+				DoWriteCode("	", c);
+			}
+		}
+	}
+	
 	private void DoWriteNonTerminalRule(Rule rule)
 	{
 		var line = new System.Text.StringBuilder();
@@ -165,6 +205,14 @@ internal sealed partial class Writer
 		line.Append(";");
 		
 		DoWriteLine(line.ToString());
+	}
+	
+	private void DoWriteCode(string indent, string code)
+	{
+		string trailer = string.Empty;
+		if (code[code.Length - 1] != ';' && code[code.Length - 1] != '}')
+			trailer = ";";
+		DoWriteLine(indent + code + trailer);
 	}
 	
 	// This isn't especially efficient but it shouldn't matter except perhaps for
