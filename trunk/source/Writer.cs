@@ -31,10 +31,6 @@ internal sealed partial class Writer : IDisposable
 	{
 		m_writer = writer;
 		m_grammar = grammar;
-		if (m_grammar.Settings.ContainsKey("debug"))
-			m_debug = m_grammar.Settings["debug"].Split(new char[]{' '}, StringSplitOptions.RemoveEmptyEntries);
-		else
-			m_debug = new string[0];
 	}
 	
 	public void Write(string pegFile)
@@ -198,11 +194,8 @@ internal sealed partial class Writer : IDisposable
 		DoWriteLine("private Dictionary<CacheKey, CacheValue> m_cache = new Dictionary<CacheKey, CacheValue>();");
 		if (m_grammar.Settings["unconsumed"] == "expose")
 			DoWriteLine("private int m_consumed;");
-		if (m_debug.Length > 0)
+		if (m_grammar.Settings["debug"] != "none")
 		{
-			DoWriteLine("private int m_debugLevel;");
-			string[] names = (from n in m_debug select '"' + n + '"').ToArray();
-			DoWriteLine("private string[] m_debug = new string[]{" + string.Join(", ", names) + "};");
 			if (m_grammar.Settings["debug-file"].Length > 0)
 				DoWriteLine("private string m_debugFile = \"" + m_grammar.Settings["debug-file"] + "\";");
 		}
@@ -229,22 +222,22 @@ internal sealed partial class Writer : IDisposable
 			DoWriteLine("{");
 			++m_indent;
 			
-			if (m_debug.Length > 0)
+			if (m_grammar.Settings["debug"] != "none")
 			{
 				if (m_grammar.Settings["debug-file"].Length > 0)
 				{
 					DoWriteLine("if (m_file == m_debugFile)");
 					DoWriteLine("{");
-					DoWriteLine("	DoDebugWrite(new string('-', 32));");
+					DoWriteLine("	Console.WriteLine(new string('-', 32));");
 					DoWriteLine("	if (!string.IsNullOrEmpty(file))");
-					DoWriteLine("		DoDebugWrite(file);");
+					DoWriteLine("		Console.WriteLine(file);");
 					DoWriteLine("}");
 				}
 				else
 				{
-					DoWriteLine("DoDebugWrite(new string('-', 32));");
+					DoWriteLine("Console.WriteLine(new string('-', 32));");
 					DoWriteLine("if (!string.IsNullOrEmpty(file))");
-					DoWriteLine("	DoDebugWrite(file);");
+					DoWriteLine("	Console.WriteLine(file);");
 				}
 				DoWriteLine();
 			}
@@ -255,6 +248,7 @@ internal sealed partial class Writer : IDisposable
 			DoWriteLine("m_input = m_file;				// we need to ensure that m_file is used or we will (in some cases) get a compiler warning");
 			DoWriteLine("m_input = input + \"\\x0\";	// add a sentinel so we can avoid range checks");
 			DoWriteLine("m_cache.Clear();");
+			DoWriteLine("m_lineStarts = null;");
 			if (m_grammar.Settings["unconsumed"] == "expose")
 				DoWriteLine("m_consumed = 0;");
 			DoWriteLine();
@@ -330,27 +324,89 @@ internal sealed partial class Writer : IDisposable
 			DoWriteLine("}");
 			DoWriteLine("");
 		}
-		if (m_debug.Length > 0)
+		if (m_grammar.Settings["debug"] != "none")
 		{
-			if (!m_grammar.Settings["exclude-methods"].Contains("DoDebugWrite "))
+			DoWriteLine("private static readonly string RightArrow = \"\\x2192\";");
+			DoWriteLine("private static readonly string DownArrow = \"\\x2193\";");
+			DoWriteLine("private static readonly string DownHookedArrow = \"\\x21A9\";");
+			DoWriteLine("private const int DebugWidth = 30;");
+			
+			if (!m_grammar.Settings["exclude-methods"].Contains("DoDebugLine "))
 			{
-				DoWriteLine("private void DoDebugWrite(string format, params object[] args)");
+				DoWriteLine("private void DoDebugLine(int offset1, int offset2)");
 				DoWriteLine("{");
-				DoWriteLine("	Console.Write(new string(' ', 4*m_debugLevel));");
-				DoWriteLine("	Console.WriteLine(DoEscapeAll(string.Format(format, args)));");
+				DoWriteLine("	int line1 = DoGetLine(offset1);");
+				DoWriteLine("	int line2 = DoGetLine(offset2);");
+				DoWriteLine("	if (line1 > line2)");
+				DoWriteLine("		Console.WriteLine(\", lines {0}-{1}\", line2, line1);");
+				DoWriteLine("	else if (line1 < line2)");
+				DoWriteLine("		Console.WriteLine(\", lines {0}-{1}\", line1, line2);");
+				DoWriteLine("	else");
+				DoWriteLine("		Console.WriteLine(\", line {0}\", line1);");
+				DoWriteLine("	Console.WriteLine();");
 				DoWriteLine("}");
 				DoWriteLine("");
 			}
-			if (!m_grammar.Settings["exclude-methods"].Contains("DoTruncateString "))
+			if ((m_grammar.Settings["debug"] == "matches" || m_grammar.Settings["debug"] == "both") && !m_grammar.Settings["exclude-methods"].Contains("DoDebugMatch "))
 			{
-				DoWriteLine("private string DoTruncateString(string str)");
+				DoWriteLine("private void DoDebugMatch(int oldOffset, int newOffset, string label)");
 				DoWriteLine("{");
-				DoWriteLine("	if (str.Length > 48)");
-				DoWriteLine("		return str.Substring(0, 24) + \"...\" + str.Substring(str.Length - 24);");
-				DoWriteLine("	else if (str.Length > 0 && str[str.Length - 1] == '\\x0')");
-				DoWriteLine("		return str.Substring(0, str.Length - 1);");
-				DoWriteLine("	else");
-				DoWriteLine("		return str;");
+				DoWriteLine("	// Write the input centered on the new offset.");
+				DoWriteLine("	int end = Math.Min(newOffset + DebugWidth, m_input.Length - 1);	// last char is 0x00");
+				DoWriteLine("	int begin = Math.Max(end - 2*DebugWidth, 0);");
+				DoWriteLine("	int length = end - begin;");
+				DoWriteLine("	");
+				DoWriteLine("	string text = m_input.Substring(begin, length);");
+				DoWriteLine("	if (begin > 0)");
+				DoWriteLine("		text = \"...\" + text;");
+				DoWriteLine("	if (end < m_input.Length - 1)");
+				DoWriteLine("		text += \"...\";");
+				DoWriteLine("		");
+				DoWriteLine("	text = text.Replace(\"\\t\", RightArrow);");
+				DoWriteLine("	text = text.Replace(\"\\n\", DownArrow);");
+				DoWriteLine("	text = text.Replace(\"\\r\", DownHookedArrow);");
+				DoWriteLine("	");
+				DoWriteLine("	// Write an arrow pointing to the new offset.");
+				DoWriteLine("	int padding = begin > 0 ? 3 : 0;");
+				DoWriteLine("	Console.WriteLine(text);");
+				DoWriteLine("	");
+				DoWriteLine("	Console.Write(new string(' ', padding + Math.Max(oldOffset - begin, 0)));");
+				DoWriteLine("	Console.Write(new string('_', newOffset - Math.Max(oldOffset, begin)));");
+				DoWriteLine("	Console.Write(\"^ \");");
+				DoWriteLine("	Console.Write(label);");
+				DoWriteLine("	DoDebugLine(oldOffset, newOffset);");
+				DoWriteLine("}");
+				DoWriteLine("");
+			}
+			if ((m_grammar.Settings["debug"] == "failures" || m_grammar.Settings["debug"] == "both") && !m_grammar.Settings["exclude-methods"].Contains("DoDebugFailure "))
+			{
+				DoWriteLine("private void DoDebugFailure(int offset, string label)");
+				DoWriteLine("{");
+				DoWriteLine("	const int DebugWidth = 30;");
+				DoWriteLine("	");
+				DoWriteLine("	// Write the input centered on the offset.");
+				DoWriteLine("	int end = Math.Min(offset + DebugWidth, m_input.Length - 1);	// last char is 0x00");
+				DoWriteLine("	int begin = Math.Max(end - 2*DebugWidth, 0);");
+				DoWriteLine("	int length = end - begin;");
+				DoWriteLine("	");
+				DoWriteLine("	string text = m_input.Substring(begin, length);");
+				DoWriteLine("	if (begin > 0)");
+				DoWriteLine("		text = \"...\" + text;");
+				DoWriteLine("	if (end < m_input.Length - 1)");
+				DoWriteLine("		text += \"...\";");
+				DoWriteLine("		");
+				DoWriteLine("	text = text.Replace(\"\\t\", RightArrow);");
+				DoWriteLine("	text = text.Replace(\"\\n\", DownArrow);");
+				DoWriteLine("	text = text.Replace(\"\\r\", DownHookedArrow);");
+				DoWriteLine("	");
+				DoWriteLine("	// Write an arrow pointing to the old offset.");
+				DoWriteLine("	Console.WriteLine(text);");
+				DoWriteLine("	");
+				DoWriteLine("	int padding = begin > 0 ? 3 : 0;");
+				DoWriteLine("	Console.Write(new string(' ', padding + Math.Max(offset - begin, 0)));");
+				DoWriteLine("	Console.Write(\"^ \");");
+				DoWriteLine("	Console.Write(label);");
+				DoWriteLine("	DoDebugLine(offset, offset);");
 				DoWriteLine("}");
 				DoWriteLine("");
 			}
@@ -522,23 +578,6 @@ internal sealed partial class Writer : IDisposable
 			DoWriteLine("	}");
 			DoWriteLine("	else");
 			DoWriteLine("	{");
-			if (m_debug.Length > 0)
-			{
-				if (m_grammar.Settings["debug-file"].Length > 0)
-					DoWriteLine("		if (m_file == m_debugFile && (m_debug[0] == \"*\" || Array.IndexOf(m_debug, nonterminal) >= 0))");
-				else
-					DoWriteLine("		if (m_debug[0] == \"*\" || Array.IndexOf(m_debug, nonterminal) >= 0)");
-				DoWriteLine("		{");
-				DoWriteLine("			DoDebugWrite(\"cached {0}\", nonterminal);");
-				DoWriteLine("			++m_debugLevel;");
-				DoWriteLine("			if (cache.State.Parsed)");
-				DoWriteLine("				DoDebugWrite(\"{0} parsed: {1}\", nonterminal, DoTruncateString(m_input.Substring(start.Index, cache.State.Index - start.Index)));");
-				DoWriteLine("			else");
-				DoWriteLine("				DoDebugWrite(\"{0} failed: {1} at line {2} col {3}\", nonterminal, cache.State.Errors, DoGetLine(cache.State.Errors.Index), DoGetCol(cache.State.Errors.Index));");
-				DoWriteLine("			--m_debugLevel;");
-				DoWriteLine("		}");
-				DoWriteLine("		");
-			}
 			DoWriteLine("		if (cache.HasResult)");
 			if (m_grammar.Settings["value"] != "void")
 				DoWriteLine("			results.Add(new Result(this, start.Index, cache.State.Index - start.Index, m_input, cache.Value));");
@@ -1033,7 +1072,6 @@ internal sealed partial class Writer : IDisposable
 	private TextWriter m_writer;
 	private Grammar m_grammar;
 	private int m_indent;
-	private string[] m_debug;
 	private Used m_used;
 	private string m_className;
 	private bool m_disposed;

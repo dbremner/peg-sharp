@@ -25,7 +25,6 @@ Peg files should be utf-8 encoded. Here's an example of a peg file:\
 
 \i \cf2 # Grammar for arithmetic expressions which may contain variables.
 \i0 \cf0 \
-\pard\pardeftab480\ql\qnatural\pardirnatural
 
 \i \cf2 # DoCreateBinary is a custom method defined using a partial Parser class..\
 \pard\pardeftab480\ql\qnatural\pardirnatural
@@ -34,6 +33,7 @@ Peg files should be utf-8 encoded. Here's an example of a peg file:\
 debug = none\
 value = Expression\
 \
+\pard\pardeftab480\ql\qnatural\pardirnatural
 
 \i \cf2 # Start
 \i0 \cf0 \
@@ -82,12 +82,12 @@ Space := \cf3 [ \\t\\r\\n]\cf0
 \f0 \cf0  
 \f1 \cf4 `expected = "whitespace"`
 \f0 \cf0 \
-\pard\pardeftab480\ql\qnatural\pardirnatural
-\cf0 \
+\
 Peg files consist of two or more settings, optional includes, and one or more non-terminal definitions. Comments may appear at the start or end of lines, start with a '#', and extend to the end of the line.\
 \
+\pard\pardeftab480\ql\qnatural\pardirnatural
 
-\b Settings
+\b \cf0 Settings
 \b0  must appear before the non-terminal definitions. The syntax is 
 \i name = value
 \i0 . These are used to configure the generation of the parser. The supported settings are:\
@@ -96,11 +96,15 @@ Peg files consist of two or more settings, optional includes, and one or more no
 \b0  - Custom class comment. This may appear multiple times for multiple line comments and '// ' will be added to the start if it does not begin with '//'.\
 \'95\'a0
 \b debug
-\b0  - Space separated list of non-terminal names for which progress information will be written to stdout. May be 
-\i none
+\b0  - If this is 
+\i matches
+\i0  then the text that matches each rule is printed to stdout. If 
+\i failures
+\i0  then the text that failed and the reason are printed. May also be 
+\i both
 \i0  or 
-\i *
-\i0  (to match everything).\
+\i none
+\i0 .\
 \'95\'a0
 \b debug-file
 \b0  - Name of the file for which to print debug information.\
@@ -347,6 +351,7 @@ Because the parser may back-track semantic actions should not have side effects.
 \b results 
 \b0 - This of type List<Result>. Terminals and non-terminals parsed by the rule will add new results to the list. For terminals Value will be set to the default value for the result type. For non-terminals it will be set using the value variable from the rule. The Result type looks something like this:\
 \
+\pard\pardeftab480\ql\qnatural\pardirnatural
 
 \b \cf7 private
 \b0 \cf0  
@@ -423,8 +428,9 @@ Because the parser may back-track semantic actions should not have side effects.
 \b0 \cf0 ;\}\
 \}\
 \
+\pard\pardeftab480\ql\qnatural\pardirnatural
 
-\b text
+\b \cf0 text
 \b0  - This is of type System.String and contains all of the text consumed by the rule. If a semantic action sets this to null then the rule will not append a result onto results (setting it to any other value has no effect on the returned Result). This may be used only within the success case.\
 \
 
@@ -443,6 +449,7 @@ For XmlText the Value and Data properties will be the text which was matched. Fo
 \b0\fs28 \
 There are a handful of partial methods that you can choose to implement in order to hook into parsing:\
 \
+\pard\pardeftab480\ql\qnatural\pardirnatural
 
 \b \cf7 partial
 \b0 \cf0  
@@ -470,8 +477,9 @@ partial
 \b0 (State state);\
 This is called after the input is parsed. The state argument has properties to indicate if parsing succeeded, the index of the first unconsumed character, and error messages. \
 \
+\pard\pardeftab480\ql\qnatural\pardirnatural
 
-\b\fs36 Techniques and Pitfalls\
+\b\fs36 \cf0 Techniques and Pitfalls\
 \
 
 \b0\fs28 Unlike most other parsers packrat parsers typically integrate lexing and parsing. This is a nice simplification since there is there is no need for a separate tokenization phase. However it does mean that the grammar needs to explicitly specify 
@@ -489,6 +497,7 @@ ReservedWord := (\cf10 'if'\cf0  / \cf10 'else'\cf0  / \cf10 'while')\cf0  !Alph
 \b Typing
 \b0  can be a problem because the parser expects that each parse function returns a single type. But it's quite common to want to parse languages which have distinct types for things like statements and expressions. One way to handle this is to define a union-like class. For example,\
 \
+\pard\pardeftab480\ql\qnatural\pardirnatural
 
 \b \cf7 internal
 \b0 \cf0  
@@ -583,6 +592,7 @@ Method := MethodSignature MethodBody;\
 \
 MethodSignature := Access? Type Identifier Args;\
 \
+\pard\pardeftab480\ql\qnatural\pardirnatural
 
 \i \cf8 # If we can't parse a method body then we'll eat tokens until we
 \i0 \cf0 \
@@ -619,8 +629,7 @@ Additive := Multitive ((\cf10 '+'\cf0  / \cf10 ' -'\cf0 ) Multitive)*;\
 \b\fs36 Peg File Grammar\
 
 \b0\fs28 \
-\pard\pardeftab480\ql\qnatural\pardirnatural
-\cf0 Action := \cf3 '`'\cf0  \cf3 [^`]\cf0 + \cf3 '`'\cf0 \
+Action := \cf3 '`'\cf0  \cf3 [^`]\cf0 + \cf3 '`'\cf0 \
 \
 Any := \cf3 '.'\cf0  S\
 \

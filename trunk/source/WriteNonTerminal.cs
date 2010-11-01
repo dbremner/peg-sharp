@@ -38,23 +38,6 @@ internal sealed partial class Writer
 		DoWriteLine("// " + prolog);
 		DoWriteLine("private State " + methodName + "(State _state, List<Result> _outResults)");
 		DoWriteLine("{");
-		if (m_debug.Length > 0 && (m_debug[0] == "*" || Array.IndexOf(m_debug, rule.Name) >= 0))
-		{
-			if (m_grammar.Settings["debug-file"].Length > 0)
-			{
-				DoWriteLine("	if (m_file == m_debugFile)");
-				DoWriteLine("	{");
-				DoWriteLine("		DoDebugWrite(\"" + debugName + "\");");
-				DoWriteLine("		++m_debugLevel;");
-				DoWriteLine("	}");
-			}
-			else
-			{
-				DoWriteLine("	DoDebugWrite(\"" + debugName + "\");");
-				DoWriteLine("	++m_debugLevel;");
-			}
-			DoWriteLine("	");
-		}
 		DoWriteLine("	State _start = _state;");
 		DoWriteLine("	List<Result> results = new List<Result>();");
 		DoWriteLine("	");
@@ -123,34 +106,40 @@ internal sealed partial class Writer
 			DoWriteLine("			_state = new State(_start.Index, false, ErrorSet.Combine(_start.Errors, new ErrorSet(_state.Errors.Index, expected)));");
 			DoWriteLine("	}");
 		}
-		if (m_debug.Length > 0 && (m_debug[0] == "*" || Array.IndexOf(m_debug, rule.Name) >= 0))
+		if (m_grammar.Settings["debug"] != "none")
 		{
 			DoWriteLine("	");
 			if (m_grammar.Settings["debug-file"].Length > 0)
 			{
 				DoWriteLine("	if (m_file == m_debugFile)");
 				DoWriteLine("	{");
-				DoWriteLine("		if (_state.Parsed)");
-				DoWriteLine("			DoDebugWrite(\"" + debugName + " parsed: {0}\", DoTruncateString(m_input.Substring(_start.Index, _state.Index - _start.Index)));");
-				DoWriteLine("		else");
-				DoWriteLine("			DoDebugWrite(\"" + debugName + " failed: {0} at line {1} col {2}\", _state.Errors, DoGetLine(_state.Errors.Index), DoGetCol(_state.Errors.Index));");
-				DoWriteLine("		--m_debugLevel;");
+				if (m_grammar.Settings["debug"] == "matches" || m_grammar.Settings["debug"] == "both")
+				{
+					DoWriteLine("		if (_state.Parsed)");
+					DoWriteLine("			DoDebugMatch(_start.Index, _state.Index, \"" + debugName + " parsed\");");
+				}
+				if (m_grammar.Settings["debug"] == "failures" || m_grammar.Settings["debug"] == "both")
+				{
+					DoWriteLine("		if (!_state.Parsed)");
+					DoWriteLine("			DoDebugFailure(_start.Index, \"" + debugName + " \" + DoEscapeAll(_state.Errors.ToString()));");
+				}
 				DoWriteLine("	}");
 			}
 			else
 			{
-				DoWriteLine("	if (_state.Parsed)");
-				DoWriteLine("		DoDebugWrite(\"" + debugName + " parsed: {0}\", DoTruncateString(m_input.Substring(_start.Index, _state.Index - _start.Index)));");
-				DoWriteLine("	else");
-				DoWriteLine("		DoDebugWrite(\"" + debugName + " failed: {0} at line {1} col {2}\", _state.Errors, DoGetLine(_state.Errors.Index), DoGetCol(_state.Errors.Index));");
-				DoWriteLine("	--m_debugLevel;");
+				if (m_grammar.Settings["debug"] == "matches" || m_grammar.Settings["debug"] == "both")
+				{
+					DoWriteLine("	if (_state.Parsed)");
+					DoWriteLine("		DoDebugMatch(_start.Index, _state.Index, \"" + debugName + " parsed\");");
+				}
+				if (m_grammar.Settings["debug"] == "failures" || m_grammar.Settings["debug"] == "both")
+				{
+					DoWriteLine("	if (!_state.Parsed)");
+					DoWriteLine("		DoDebugFailure(_start.Index, \"" + debugName + " \" + DoEscapeAll(_state.Errors.ToString()));");
+				}
 			}
 		}
-//		DoWriteLine("	if (_state.Parsed)");
-//		DoWriteLine("		DoDebug(_start.Index, _state.Index, \"" + debugName + " parsed\");");
-//		DoWriteLine("	else");
-//		DoWriteLine("		DoDebug(_state.Index, _start.Index, \"" + debugName + " \" + _state.Errors);");
-
+		
 		List<string> code = rule.GetHook(Hook.Epilog);
 		if (code != null)
 			DoWriteEpilog(rule, code, "	");
@@ -191,7 +180,10 @@ internal sealed partial class Writer
 			{
 				DoWriteLine("	if (fail != null)");
 				DoWriteLine("	{");
-//				DoWriteLine("		DoDebug(_state.Index, _start.Index, \"" + debugName + " failed prolog\");");
+				if (m_grammar.Settings["debug"] == "failures" || m_grammar.Settings["debug"] == "both")
+				{
+					DoWriteLine("		DoDebugFailure(_start.Index, \"" + debugName + " failed prolog\");");
+				}
 				DoWriteLine("		return new State(_start.Index, false, ErrorSet.Combine(_start.Errors, new ErrorSet(_start.Index, fail)));");
 				DoWriteLine("	}");
 			}
