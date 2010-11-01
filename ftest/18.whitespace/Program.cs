@@ -28,8 +28,10 @@ internal static class Program
 		var parser = new Test18();
 		DoTrivial(parser);
 		DoIf(parser);
-		DoTwoIfs(parser);
+		DoSiblingIfs(parser);
+		DoNestedIfs(parser);
 		DoTwoPass(parser);
+		DoComplex(parser);
 		DoBadIndent(parser);
 	}
 	
@@ -56,7 +58,7 @@ internal static class Program
 		DoCheck(parser, input, expected);
 	}
 	
-	private static void DoTwoIfs(Test18 parser)
+	private static void DoSiblingIfs(Test18 parser)
 	{
 		string input = @"def Alpha:
     if beta:
@@ -72,6 +74,22 @@ internal static class Program
 		DoCheck(parser, input, expected);
 	}
 	
+	private static void DoNestedIfs(Test18 parser)
+	{
+		string input = @"def Alpha:
+    if beta:
+        pass
+        if gamma:
+            pass";
+		string expected = @"def Alpha:
+   if beta:
+      pass
+      if gamma:
+         pass";
+		
+		DoCheck(parser, input, expected);
+	}
+	
 	private static void DoTwoPass(Test18 parser)
 	{
 		string input = @"def Alpha:
@@ -82,6 +100,28 @@ internal static class Program
    if beta:
       pass
       pass";
+		
+		DoCheck(parser, input, expected);
+	}
+	
+	private static void DoComplex(Test18 parser)
+	{
+		string input = @"def Alpha:
+    if beta:
+        pass
+        if gamma:
+            pass
+            pass
+        pass
+    pass";
+		string expected = @"def Alpha:
+   if beta:
+      pass
+      if gamma:
+         pass
+         pass
+      pass
+   pass";
 		
 		DoCheck(parser, input, expected);
 	}
