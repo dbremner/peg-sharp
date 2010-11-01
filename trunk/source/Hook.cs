@@ -25,5 +25,7 @@ internal enum Hook
 {
 	Prolog,
 	Epilog,
+	PassEpilog,
+	FailEpilog,
 }
 

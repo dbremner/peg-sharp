@@ -150,7 +150,23 @@ internal sealed partial class Writer
 //		DoWriteLine("		DoDebug(_start.Index, _state.Index, \"" + debugName + " parsed\");");
 //		DoWriteLine("	else");
 //		DoWriteLine("		DoDebug(_state.Index, _start.Index, \"" + debugName + " \" + _state.Errors);");
-		DoWriteEpilog(rule);
+
+		List<string> code = rule.GetHook(Hook.Epilog);
+		if (code != null)
+			DoWriteEpilog(rule, code, "	");
+		code = rule.GetHook(Hook.PassEpilog);
+		if (code != null)
+		{
+			DoWriteLine("	if (_state.Parsed)");
+			DoWriteEpilog(rule, code, "		");
+		}
+		code = rule.GetHook(Hook.FailEpilog);
+		if (code != null)
+		{
+			DoWriteLine("	if (!_state.Parsed)");
+			DoWriteEpilog(rule, code, "		");
+		}
+		
 		DoWriteLine("	");
 		DoWriteLine("	return _state;");
 		DoWriteLine("}");
@@ -183,16 +199,11 @@ internal sealed partial class Writer
 		}
 	}
 	
-	private void DoWriteEpilog(Rule rule)
+	private void DoWriteEpilog(Rule rule, List<string> code, string indent)
 	{
-		List<string> code = rule.GetHook(Hook.Epilog);
-		if (code != null)
+		foreach (string c in code)
 		{
-			DoWriteLine("	");
-			foreach (string c in code)
-			{
-				DoWriteCode("	", c);
-			}
+			DoWriteCode(indent, c);
 		}
 	}
 	
