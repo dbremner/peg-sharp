@@ -81,6 +81,10 @@ internal sealed partial class Test18
 		int prevIndent = DoGetIndent(line - 1);
 		if (currentIndent > prevIndent)
 		{
+			// Setting m_indent will affect whether or not Statement rules parse.
+			// In order for parsing to work correctly the memoization we do with 
+			// m_cache must take into account m_indent so we have to set m_context
+			// whenever we change m_indent.
 			m_indent = currentIndent;
 			m_context = m_indent;
 			increased = true;

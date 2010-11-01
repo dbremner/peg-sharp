@@ -1,8 +1,8 @@
 {\rtf1\ansi\ansicpg1252\cocoartf1038\cocoasubrtf320
-{\fonttbl\f0\fnil\fcharset0 Verdana;}
-{\colortbl;\red255\green255\blue255;\red242\green0\blue43;\red176\green45\blue127;\red43\green96\blue67;
-\red0\green0\blue255;\red0\green72\blue255;\red0\green91\blue255;\red161\green33\blue108;\red32\green78\blue51;
-}
+{\fonttbl\f0\fnil\fcharset0 Verdana;\f1\fmodern\fcharset0 Courier;}
+{\colortbl;\red255\green255\blue255;\red240\green0\blue31;\red161\green33\blue108;\red0\green0\blue255;
+\red219\green255\blue255;\red0\green72\blue255;\red0\green91\blue255;\red242\green0\blue43;\red43\green96\blue67;
+\red176\green45\blue127;}
 \deftab480
 \pard\pardeftab480\ql\qnatural\pardirnatural
 
@@ -21,44 +21,69 @@ FooParser.cs will be created (or over-written) with a back-tracking recursive de
 \b0\fs28 \
 Peg files should be utf-8 encoded. Here's an example of a peg file:\
 \
+\pard\pardeftab480\ql\qnatural\pardirnatural
 
-\i \cf2 # 
-\i0 Simple grammer used to evaluate arithmetic expressions such as `3 + 4*5`.
-\i \
-# 
-\i0 EvaluateBinary is a custom method defined using a partial Parser class
-\i .
+\i \cf2 # Grammar for arithmetic expressions which may contain variables.
 \i0 \cf0 \
-start = Expr\
-value = double\
+\pard\pardeftab480\ql\qnatural\pardirnatural
+
+\i \cf2 # DoCreateBinary is a custom method defined using a partial Parser class..\
+\pard\pardeftab480\ql\qnatural\pardirnatural
+
+\i0 \cf0 start = Start\
+debug = none\
+value = Expression\
 \
-Expr := S Sum;\
+
+\i \cf2 # Start
+\i0 \cf0 \
+Start := S (Assignment / Expression);\
+Assignment := Identifier \cf3 '='\cf0  S Expression 
+\f1 \cf4 `value = new AssignmentExpression(results[0].Text.Trim(), results[2].Value)`
+\f0 \cf0 \
+\
+
+\i \cf2 # Expressions  
+\i0 \cf0 \
+Expression := Sum;\
+Identifier := \cf3 [a-zA-Z$]\cf0  \cf3 [a-zA-Z0-9]\cf0 * S 
+\f1 \cf4 `value = new VariableExpression(text.Trim())`
+\f0 \cf0 \
 Sum := Product ((\cf3 '+'\cf0  / \cf3 '-'\cf0 ) S Product)*  
-\b \cf4 `if (results.Count > 0) value = EvaluateBinary(results)`
-\b0 \cf0 \
+\f1 \cf4 `value = DoCreateBinary(results)`
+\f0 \cf0 \
 Product := Value ((\cf3 '*'\cf0  / \cf3 '/'\cf0 ) S Value)*  
-\b \cf4 `if (results.Count > 0) value = EvaluateBinary(results)`
-\b0 \cf0 \
+\f1 \cf4 `value = DoCreateBinary(results)`
+\f0 \cf0 \
+Value := \cf3 [0-9]\cf0 + \cf3 '.'\cf0  \cf3 [0-9]\cf0 + ((\cf3 'e'\cf0  / \cf3 'E'\cf0 ) \cf3 [0-9]\cf0 +)? S 
+\f1 \cf4 `value = new FloatExpression(text.Trim())`
+\f0 \cf0 \
+Value := \cf3 [0-9]\cf0 + (\cf3 'e'\cf0  / \cf3 'E'\cf0 ) \cf3 [0-9]\cf0 + S 
+\f1 \cf4 `value = new FloatExpression(text.Trim())`
+\f0 \cf0 \
 Value := \cf3 [0-9]\cf0 + S 
-\b \cf4 `value = Double.Parse(text.Trim())`
-\b0 \cf0  
-\b \cf4 `expected = "number"`
-\b0 \cf0 \
-Value := \cf3 '('\cf0  Expr \cf3 ')'\cf0  S 
-\b \cf4 `value = results[1].Value`
-\b0 \cf0  
-\b \cf4 `expected = "parenthesized expression"`
-\b0 \cf0 \
-S := Space* 
-\b \cf4 `text = null` 
-\i\b0 \cf2  
-\i0 # We use a separate space rule because x* always succeeds.\cf0 \
-Space := \cf3 [ \\t\\r\\n]\cf0  
-\b \cf4 `;`
-\b0 \cf0  
-\b \cf4 `expected = "whitespace"`
-\b0 \cf0 \
+\f1 \cf4 `value = new IntegerExpression(text.Trim())`
+\f0 \cf0 \
+Value := Identifier;\
+Value := \cf3 '('\cf0  Expression \cf3 ')'\cf0  S 
+\f1 \cf4 `value = results[1].Value`
+\f0 \cf0 \
 \
+
+\i \cf2 # Scaffolding
+\i0 \cf0 \
+S := Space* 
+\f1 \cf4 `text = null`
+\f0 \cf0   
+\i \cf2 # We use a separate space rule because x* always succeeds.
+\i0 \cf0 \
+Space := \cf3 [ \\t\\r\\n]\cf0  
+\f1 \cf4 `;`
+\f0 \cf0  
+\f1 \cf4 `expected = "whitespace"`
+\f0 \cf0 \
+\pard\pardeftab480\ql\qnatural\pardirnatural
+\cf0 \
 Peg files consist of two or more settings, optional includes, and one or more non-terminal definitions. Comments may appear at the start or end of lines, start with a '#', and extend to the end of the line.\
 \
 
@@ -237,7 +262,7 @@ All terminals support hexadecimal escapes (
 \i \\x20
 \i0 ) with up to four hex digits. Ranges also support Unicode character category escapes (
 \i \\cLu
-\i0 ). <{\field{\*\fldinst{HYPERLINK "http://www.fileformat.info/info/unicode/category/index.htm"}}{\fldrslt \cf5 \ul \ulc5 http://www.fileformat.info/info/unicode/category/index.htm}}> has a good breakdown of which characters are in the various classes.\
+\i0 ). <{\field{\*\fldinst{HYPERLINK "http://www.fileformat.info/info/unicode/category/index.htm"}}{\fldrslt \cf4 \ul \ulc4 http://www.fileformat.info/info/unicode/category/index.htm}}> has a good breakdown of which characters are in the various classes.\
 \
 The precedence is as follows (from highest to lowest):\
 \{\} * + ?	repetition, optional\
@@ -246,7 +271,50 @@ The precedence is as follows (from highest to lowest):\
 /			ordered choice\
 \
 
-\b\fs36 Semantic Actions\
+\b\fs36 Rule Hooks\
+
+\b0\fs28 \
+Hooks are used to inject code before or after a non-terminal rule parses. This can be useful for context sensitive parsers (e.g. for languages like Python where statement parsing depends upon the indentation of the current line and the previous line). Note that this will usually require updating the m_context field in the parser so memoization works correctly (see the Test18 ftest for an example).\
+\
+The hook syntax consists of a rule name, ':<', ':>', ':>=', or ':>!=', and the code. ':<' is for prolog code, ':>' is for epilog code, ':>=' is for epilog code where the rule matched, and ':>!=' is for epilog code where the rule did not match.\
+\
+Here's an example from Test18:\
+\
+\pard\pardeftab480\ql\qnatural\pardirnatural
+
+\i \cf2 # Only try to parse the statement if its indentation matches m_indent.
+\i0 \cf0 \
+Statement :<\
+\pard\pardeftab480\ql\qnatural\pardirnatural
+\cf0 \cb5 	
+\f1 \cf4 \cb1 `if (!DoIndentMatches(_state.Index))\
+		fail = "indentation";`
+\f0 \cf0 \
+Statement := IfStatement / PassStatement;\
+\
+\pard\pardeftab480\ql\qnatural\pardirnatural
+
+\i \cf2 # Parse the statements if the first line is more indented than the previous line.\
+# Also sets m_indent to the indent for the current line.
+\i0 \cf0 \
+Statements :<\
+\pard\pardeftab480\ql\qnatural\pardirnatural
+\cf0 \cb5 	
+\f1 \cf4 \cb1 `int oldIndent = m_indent;\
+	if (!DoAdjustIndent(_state.Index))\
+		fail = "indentation";`
+\f0 \cf0 \
+Statements := Statement+		
+\f1 \cf4 `value = new BlockNode(from r in results where r.Value != null select r.Value)`
+\f0 \cf0 \
+Statements :>\
+\cb5 	
+\f1 \cf4 \cb1 `DoRestoreIndent(oldIndent)`
+\f0 \cf0 \
+\pard\pardeftab480\ql\qnatural\pardirnatural
+
+\b\fs36 \cf0 \
+Semantic Actions\
 
 \b0\fs28 \
 Semantic actions appear at the end of rules enclosed in backticks and are used to execute custom code when a non-terminal is parsed. They may contain arbitrary C# code and if the code does not end with a semi-colon or curly brace then a semi-colon will be added. The parser class is a partial class to allow custom helper methods to be defined. The first semantic action is executed if the rule succeeded, the second if it failed.\
@@ -258,8 +326,12 @@ Because the parser may back-track semantic actions should not have side effects.
 \b0  - This is of type System.String. If the semantic action sets this then errors that occur because the parser expected a terminal use this text instead of the terminal text. This may be used only within the failure case.\
 \
 
+\b fail
+\b0  - This is of type System.String. If a prolog hook sets this then the rule will fail to match.\
+\
+
 \b fatal
-\b0  - This is of type System.String. If the semantic action sets this to a non-null value then a ParserException is thrown using fatal for the message. This may be used only within the success case. You can also directly throw an exception by calling: 
+\b0  - This is of type System.String. If a semantic action sets this to a non-null value then a ParserException is thrown using fatal for the message. This may be used only within the success case. You can also directly throw an exception by calling: 
 \b DoThrow
 \b0 (
 \b \cf6 int
@@ -280,11 +352,11 @@ Because the parser may back-track semantic actions should not have side effects.
 \b0 \cf0  
 \b \cf7 struct
 \b0 \cf0  
-\b\fs36 \shad\shadx60\shady-60\shadr0\shado85 \shadc0 Result
+\b\fs36 \shad\shadx21\shady-22\shadr0\shado85 \shadc0 Result
 \b0\fs28 \shad0 \
 \{\
 	
-\i \cf2 // The text which was parsed by the terminal or non-terminal.
+\i \cf8 // The text which was parsed by the terminal or non-terminal.
 \i0 \cf0 \
 	
 \b \cf7 public
@@ -297,7 +369,7 @@ Because the parser may back-track semantic actions should not have side effects.
 \b0 \cf0 ;\}\
 	\
 	
-\i \cf2 // The 0-based character index the (non)terminal started on.
+\i \cf8 // The 0-based character index the (non)terminal started on.
 \i0 \cf0 \
 	
 \b \cf7 public
@@ -310,7 +382,7 @@ Because the parser may back-track semantic actions should not have side effects.
 \b0 \cf0 ;\}\
 	\
 	
-\i \cf2 // The 1-based line number the (non)terminal started on.
+\i \cf8 // The 1-based line number the (non)terminal started on.
 \i0 \cf0 \
 	
 \b \cf7 public
@@ -323,7 +395,7 @@ Because the parser may back-track semantic actions should not have side effects.
 \b0 \cf0 ;\}\
 	\
 	
-\i \cf2 // The 1-based column number the (non)terminal started on.
+\i \cf8 // The 1-based column number the (non)terminal started on.
 \i0 \cf0 \
 	
 \b \cf7 public
@@ -336,10 +408,10 @@ Because the parser may back-track semantic actions should not have side effects.
 \b0 \cf0 ;\}\
 	\
 	
-\i \cf2 // For non-terminals this will be the result of the semantic action, 
+\i \cf8 // For non-terminals this will be the result of the semantic action, 
 \i0 \cf0 \
 	
-\i \cf2 // otherwise it will be the default value. (If the value setting is\
+\i \cf8 // otherwise it will be the default value. (If the value setting is\
 	// void then this property will be omitted).
 \i0 \cf0 \
 	
@@ -360,9 +432,9 @@ Because the parser may back-track semantic actions should not have side effects.
 \b0  - The type is determined by the value setting. If the value setting is XmlNode then the value will be set to an XmlElement for non-terminals and an XmlText for terminals, otherwise it will default to results[0].Value. Semantic actions may mutate the node or set the value using the results local variable. The value local may be used only within the success case.\
 \
 For XmlText the Value and Data properties will be the text which was matched. For XmlElement the Name property will be the non-terminal name and line, col, offset, and length attributes may be used. (Note that it's usually easier to use a semantic action like 
-\b \cf4 `value.InnerText = text.Trim()` 
+\b \cf9 `value.InnerText = text.Trim()` 
 \b0 \cf0 instead of offset and length).
-\b \cf4  
+\b \cf9  
 \b0 \cf0 If a non-terminal has multiple definitions then the corresponding XmlElement will have an alternative attribute with a one based integer value indicating which definition was matched.\
 \
 
@@ -411,7 +483,7 @@ Because packrat parsers operate on the text instead of tokens they also often mu
 \b0 . This can be done using rules like the below:\
 \
 Identifier := !ReservedWord Letter AlphaNum* Space*;\
-ReservedWord := (\cf3 'if'\cf0  / \cf3 'else'\cf0  / \cf3 'while')\cf0  !AlphaNum;\
+ReservedWord := (\cf10 'if'\cf0  / \cf10 'else'\cf0  / \cf10 'while')\cf0  !AlphaNum;\
 \
 
 \b Typing
@@ -422,7 +494,7 @@ ReservedWord := (\cf3 'if'\cf0  / \cf3 'else'\cf0  / \cf3 'while')\cf0  !AlphaNu
 \b0 \cf0  
 \b \cf7 sealed class
 \b0 \cf0  
-\b\fs36 \shad\shadx60\shady-60\shadr0\shado85 \shadc0 Union
+\b\fs36 \shad\shadx21\shady-22\shadr0\shado85 \shadc0 Union
 \b0\fs28 \shad0 \
 \{\
 	
@@ -503,29 +575,29 @@ By default peg-sharp will find only a single parse error. So, if you want to fin
 \
 CompilationUnit := Class*;\
 \
-Class := ClassSignature \cf3 '\{'\cf0  Method* \cf3 '\}'\cf0 ;\
+Class := ClassSignature \cf10 '\{'\cf0  Method* \cf10 '\}'\cf0 ;\
 \
-ClassSignature := Visibility? \cf3 'class'\cf0  Identifier Bases?;\
+ClassSignature := Visibility? \cf10 'class'\cf0  Identifier Bases?;\
 \
 Method := MethodSignature MethodBody;\
 \
 MethodSignature := Access? Type Identifier Args;\
 \
 
-\i \cf2 # If we can't parse a method body then we'll eat tokens until we
+\i \cf8 # If we can't parse a method body then we'll eat tokens until we
 \i0 \cf0 \
 
-\i \cf2 # find something that looks like a method or class.
+\i \cf8 # find something that looks like a method or class.
 \i0 \cf0 \
-MethodBody := \cf3 '\{'\cf0  Statement+ \cf3 '\}'\cf0  / RecoverMethod+;\
+MethodBody := \cf10 '\{'\cf0  Statement+ \cf10 '\}'\cf0  / RecoverMethod+;\
 \
 RecoverMethod := !MethodOrClassSig .;\
 \
-MethodOrClassSig := MethodSignature / \cf3 '\}'\cf0  ClassSignature;\
+MethodOrClassSig := MethodSignature / \cf10 '\}'\cf0  ClassSignature;\
 \
-Access := \cf3 'public'\cf0  / \cf3 'private'\cf0  / \cf3 'protected'\cf0  / \cf3 'internal'\cf0 ;\
+Access := \cf10 'public'\cf0  / \cf10 'private'\cf0  / \cf10 'protected'\cf0  / \cf10 'internal'\cf0 ;\
 \
-Visibility := \cf3 'public'\cf0  / \cf3 'internal'\cf0 ;\
+Visibility := \cf10 'public'\cf0  / \cf10 'internal'\cf0 ;\
 \
 Note that this technique needs to be used carefully however because it interferes with the normal backtracking behavior of the parser. The above, for example, is OK only if the only input which can match MethodSignature is a method.\
 \
@@ -533,87 +605,85 @@ Many parsers support
 \b left recursion
 \b0  and grammars often make use of it. However peg-sharp will error our if it is used because it leads to infinite recursion. It's usually easy to rewrite left recursive rules however. For example, instead of:\
 \
-Additive := Additive \cf3 '+'\cf0  Multitive;	
-\i \cf2 # illegal left recursion
+Additive := Additive \cf10 '+'\cf0  Multitive;	
+\i \cf8 # illegal left recursion
 \i0 \cf0 \
-Additive := Additive \cf3 '-'\cf0  Multitive;\
+Additive := Additive \cf10 '-'\cf0  Multitive;\
 Additive := Multitive;\
 \
 You can write:\
 \
-Additive := Multitive ((\cf3 '+'\cf0  / \cf3 ' -'\cf0 ) Multitive)*;\
+Additive := Multitive ((\cf10 '+'\cf0  / \cf10 ' -'\cf0 ) Multitive)*;\
 \
 
 \b\fs36 Peg File Grammar\
 
 \b0\fs28 \
-start = PegFile\
-used = IncludedFile\
+\pard\pardeftab480\ql\qnatural\pardirnatural
+\cf0 Action := \cf3 '`'\cf0  \cf3 [^`]\cf0 + \cf3 '`'\cf0 \
 \
-Action := \cf3 '`'\cf0  \cf3 [^`]\cf0 + \cf3 '`'\cf0 ;\
+Any := \cf3 '.'\cf0  S\
 \
-Any := \cf3 '.'\cf0  S;\
+AssertExpression := \cf3 '&'\cf0  PostfixExpression\
+AssertExpression := \cf3 '!'\cf0  PostfixExpression\
+AssertExpression := PostfixExpression\
 \
-AssertExpression := \cf3 '&'\cf0  PostfixExpression;\
-AssertExpression := \cf3 '!'\cf0  PostfixExpression;\
-AssertExpression := PostfixExpression;\
+Comment := \cf3 '#'\cf0  \cf3 [^\\n\\r]\cf0 * S\
 \
-Comment := \cf3 '#'\cf0  \cf3 [^\\n\\r]\cf0 * S;\
+Expression := SequenceExpression (\cf3 '/'\cf0  S SequenceExpression)*\
 \
-Expression := SequenceExpression (\cf3 '/'\cf0  S SequenceExpression)*;\
+Identifier := \cf3 [a-zA-Z]\cf0  \cf3 [a-zA-Z0-9_-]\cf0 * S\
 \
-Identifier := \cf3 [a-zA-Z]\cf0  \cf3 [a-zA-Z0-9_-]\cf0 * S;\
+Include := \cf3 'include'\cf0  S Path\
 \
-Include := \cf8 'include'\cf0  S Path;\
+IncludedFile := S Comment* (Include / Rule / Comment)+\
 \
-IncludedFile := S Comment* (Include / Rule / Comment)+;\
+Integer := \cf3 [0-9]\cf0 + S \
 \
-Integer := \cf3 [0-9]\cf0 + S;\
+Literal := \cf3 '\\''\cf0  (\cf3 '\\\\\\''\cf0  / \cf3 '\\x5c\\x5c'\cf0  / \cf3 [^']\cf0 )+ \cf3 '\\''\cf0  S \
+Literal := \cf3 '"'\cf0  (\cf3 '\\\\"'\cf0  / \cf3 '\\x5c\\x5c'\cf0  / \cf3 [^"]\cf0 )+ \cf3 '"'\cf0  S\
 \
-Literal := \cf3 '\\''\cf0  (\cf3 '{\field{\*\fldinst{HYPERLINK "%5C%5C%5C%5C%5C%5C'"}}{\fldrslt \cf5 \ul \ulc5 \\\\\\'}}'\cf0  / \cf3 '\\x5c\\x5c'\cf0  / \cf3 [^']\cf0 )+ \cf3 '\\''\cf0  S;\
-Literal := \cf3 '"'\cf0  (\cf3 '{\field{\*\fldinst{HYPERLINK "%5C%5C%5C%5C%22"}}{\fldrslt \cf5 \ul \ulc5 \\\\"}}'\cf0  / \cf3 '\\x5c\\x5c'\cf0  / \cf3 [^"]\cf0 )+ \cf3 '"'\cf0  S;\
+Path := PathComponent (\cf3 '/'\cf0  PathComponent)* (\cf3 '.'\cf0  PathName)* S\
 \
-Path := PathComponent (\cf8 '/'\cf0  PathComponent)* (\cf8 '.'\cf0  PathName)* S
-\b \cf9 ;
-\b0 \cf0 \
+PathComponent := \cf3 '..'\cf0 \
+PathComponent := \cf3 '.'\cf0 \
+PathComponent := PathName\
 \
-PathComponent := \cf8 '..'\cf0 ;\
-PathComponent := \cf8 '.'\cf0 ;\
-PathComponent := PathName;\
+PathName := \cf3 [a-zA-Z0-9_-]\cf0 +\
 \
-PathName := \cf8 [a-zA-Z0-9_-]\cf0 +;\
+PegFile := S (Setting / Comment)+ (Include / Rule / RuleEpilogFail / RuleEpilogPass / RuleEpilog / RuleProlog / Comment)+\
 \
-PegFile := S (Setting / Comment)+ (Include / Rule / Comment)+;\
+PostfixExpression := PrimitiveExpression \cf3 '\{'\cf0  S Integer \cf3 ','\cf0  S Integer \cf3 '\}'\cf0  S\
+PostfixExpression := PrimitiveExpression \cf3 '\{'\cf0  S Integer \cf3 ','\cf0  S \cf3 '\}'\cf0  S \
+PostfixExpression := PrimitiveExpression \cf3 '*'\cf0  S\
+PostfixExpression := PrimitiveExpression \cf3 '+'\cf0  S\
+PostfixExpression := PrimitiveExpression \cf3 '?'\cf0  S\
+PostfixExpression := PrimitiveExpression\
 \
-PostfixExpression := PrimitiveExpression \cf3 '\{'\cf0  S Integer \cf3 ','\cf0  S Integer \cf3 '\}'\cf0  S;\
-PostfixExpression := PrimitiveExpression \cf3 '\{'\cf0  S Integer \cf3 ','\cf0  S \cf3 '\}'\cf0  S;\
-PostfixExpression := PrimitiveExpression \cf3 '*'\cf0  S;\
-PostfixExpression := PrimitiveExpression \cf3 '+'\cf0  S;\
-PostfixExpression := PrimitiveExpression \cf3 '?'\cf0  S;\
-PostfixExpression := PrimitiveExpression;\
+PrimitiveExpression := Any / Literal / Range / SubRule / SubExpression\
 \
-PrimitiveExpression := Any / Literal / Range / SubRule / SubExpression;\
+Range := \cf3 '['\cf0  (\cf3 '\\\\]'\cf0  / \cf3 '\\\\\\\\'\cf0  / \cf3 [^\\]]\cf0 )+ \cf3 ']'\cf0  S\
 \
-Range := \cf3 '['\cf0  (\cf3 '{\field{\*\fldinst{HYPERLINK "%5C%5C%5C%5C%5D"}}{\fldrslt \cf5 \ul \ulc5 \\\\]}}'\cf0  / \cf3 '{\field{\*\fldinst{HYPERLINK "%5C%5C%5C%5C%5C%5C%5C%5C"}}{\fldrslt \cf5 \ul \ulc5 \\\\\\\\}}'\cf0  / \cf3 [^\\]]\cf0 )+ \cf3 ']'\cf0  S;\
+Rule := Identifier \cf3 ':='\cf0  S Expression (\cf3 ';'\cf0  / Action S Action?) S\
 \
-Rule := Identifier \cf3 ':='\cf0  S Expression (\cf3 ';'\cf0  / Action S Action?) S;\
+RuleEpilog := Identifier \cf3 ':>'\cf0  S Action S\
+RuleEpilogFail := Identifier \cf3 ':>!='\cf0  S Action S\
+RuleEpilogPass := Identifier \cf3 ':>='\cf0  S Action S\
+RuleProlog := Identifier \cf3 ':<'\cf0  S Action S\
 \
-S := Space*;\
+S := Space*\
 \
-SequenceExpression := AssertExpression+;\
+SequenceExpression := AssertExpression+\
 \
-Setting := Identifier \cf8 '='\cf0  S \cf8 'none'\cf0  S
-\b \cf9 ;
-\b0 \cf0 \
-Setting := Identifier \cf8 '='\cf0  S Value S
-\b \cf9 ;
-\b0 \cf0 \
+Setting := Identifier \cf3 '='\cf0  S \cf3 'none'\cf0  S\
+Setting := Identifier \cf3 '='\cf0  S Value S\
 \
-Space := \cf3 [ \\t\\r\\n]\cf0 ;\
+Space := \cf3 [ \\t\\r\\n]\cf0 \
 \
-SubExpression := \cf3 '('\cf0  S Expression \cf3 ')'\cf0  S;\
+SubExpression := \cf3 '('\cf0  S Expression \cf3 ')'\cf0  S\
 \
-SubRule := Identifier;\
+SubRule := Identifier\
 \
-Value := \cf3 [^\\t\\n\\r]\cf0 +;\
+Value := \cf3 [^\\t\\n\\r]\cf0 +\
+\
 }
