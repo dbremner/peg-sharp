@@ -208,6 +208,7 @@ internal sealed partial class Writer : IDisposable
 		}
 		if (m_grammar.Settings["value"] == "XmlNode")
 			DoWriteLine("private XmlDocument m_doc;");
+		DoWriteLine("private List<int> m_lineStarts;	// offsets at which each line starts");
 		DoWriteLine("#endregion");
 	}
 	
@@ -356,34 +357,48 @@ internal sealed partial class Writer : IDisposable
 		}
 		if (!m_grammar.Settings["exclude-methods"].Contains("DoGetLine "))
 		{
-			DoWriteLine("// This is normally only used for error handling so it doesn't need to be too");
-			DoWriteLine("// fast. If it somehow does become a bottleneck for some parsers they can");
-			DoWriteLine("// replace it with the custom-methods setting.");
+			DoWriteLine("// This is most often used just for error handling where it is a bit overkill.");
+			DoWriteLine("// However it's also sometimes used in rule prologs where efficiency is more");
+			DoWriteLine("// important (and doing a bit of extra work in the error case is not very harmful).");
 			DoWriteLine("private int DoGetLine(int index)");
 			DoWriteLine("{");
-			DoWriteLine("	int line = 1;");
+			DoWriteLine("	if (m_lineStarts == null)");
+			DoWriteLine("		DoBuildLineStarts();");
+			DoWriteLine("		");
+			DoWriteLine("	int line = m_lineStarts.BinarySearch(index);");
+			DoWriteLine("	if (line >= 0)");
+			DoWriteLine("		return line + 1;");
+			DoWriteLine("		");
+			DoWriteLine("	return ~line;");
+			DoWriteLine("}");
+			DoWriteLine("");
+		}
+		if (!m_grammar.Settings["exclude-methods"].Contains("DoBuildLineStarts "))
+		{
+			DoWriteLine("private void DoBuildLineStarts()");
+			DoWriteLine("{");
+			DoWriteLine("	m_lineStarts = new List<int>();");
+			DoWriteLine("	");
+			DoWriteLine("	m_lineStarts.Add(0);		// line 1 starts at index 0 (even if we have no text)");
 			DoWriteLine("	");
 			DoWriteLine("	int i = 0;");
-			DoWriteLine("	while (i < index)");
+			DoWriteLine("	while (i < m_input.Length)");
 			DoWriteLine("	{");
 			DoWriteLine("		char ch = m_input[i++];");
 			DoWriteLine("		");
 			DoWriteLine("		if (ch == '\\r' && m_input[i] == '\\n')");
 			DoWriteLine("		{");
-			DoWriteLine("			++i;");
-			DoWriteLine("			++line;");
+			DoWriteLine("			m_lineStarts.Add(++i);");
 			DoWriteLine("		}");
 			DoWriteLine("		else if (ch == '\\r')");
 			DoWriteLine("		{");
-			DoWriteLine("			++line;");
+			DoWriteLine("			m_lineStarts.Add(i);");
 			DoWriteLine("		}");
 			DoWriteLine("		else if (ch == '\\n')");
 			DoWriteLine("		{");
-			DoWriteLine("			++line;");
+			DoWriteLine("			m_lineStarts.Add(i);");
 			DoWriteLine("		}");
 			DoWriteLine("	}");
-			DoWriteLine("	");
-			DoWriteLine("	return line;");
 			DoWriteLine("}");
 			DoWriteLine("");
 		}

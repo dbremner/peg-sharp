@@ -119,48 +119,9 @@ internal sealed partial class Test18
 		
 		return indent;
 	}
-	
-	private int DoGetLine(int index)
-	{
-		if (m_lineStarts == null)
-			DoBuildLineStarts();
-			
-		int line = m_lineStarts.BinarySearch(index);
-		if (line >= 0)
-			return line + 1;
-			
-		return ~line;
-	}
-	
-	private void DoBuildLineStarts()
-	{
-		m_lineStarts = new List<int>();
-		
-		m_lineStarts.Add(0);		// line 1 starts at index 0 (even if we have no text)
-		
-		int i = 0;
-		while (i < m_input.Length)
-		{
-			char ch = m_input[i++];
-			
-			if (ch == '\r' && m_input[i] == '\n')
-			{
-				m_lineStarts.Add(++i);
-			}
-			else if (ch == '\r')
-			{
-				m_lineStarts.Add(i);
-			}
-			else if (ch == '\n')
-			{
-				m_lineStarts.Add(i);
-			}
-		}
-	}
 	#endregion
 	
 	#region Fields
 	private int m_indent = 0;
-	private List<int> m_lineStarts;	// offsets at which each line starts
 	#endregion
 }
