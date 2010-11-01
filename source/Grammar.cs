@@ -82,7 +82,7 @@ internal sealed class Grammar
 			Settings.Add("exclude-methods", string.Empty);
 			
 		if (!Settings.ContainsKey("debug"))
-			Settings.Add("debug", string.Empty);
+			Settings.Add("debug", "none");
 			
 		if (!Settings.ContainsKey("debug-file"))
 			Settings.Add("debug-file", string.Empty);
@@ -119,14 +119,16 @@ internal sealed class Grammar
 	
 	private void DoCheckForBadDebugSetting()
 	{
-		string[] names = Settings["debug"].Split(new char[]{' '}, StringSplitOptions.RemoveEmptyEntries);
-		foreach (string name in names)
+		switch (Settings["debug"])
 		{
-			if (name != "*" && !m_rules.Any(r => r.Name == name))
-			{
-				string mesg = string.Format("Debug setting has a value which is not the name of a non-terminal: {0}.", name);
-				throw new ParserException(mesg);
-			}
+			case "matches":
+			case "failures":
+			case "both":
+			case "none":
+				break;
+				
+			default:
+				throw new ParserException(string.Format("Debug setting value must be 'matches', 'failures', 'both', or 'none' not '{0}'.", Settings["debug"]));
 		}
 	}
 	

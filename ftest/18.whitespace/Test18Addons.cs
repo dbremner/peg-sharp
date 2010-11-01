@@ -4,72 +4,7 @@ using System.Collections.Generic;
 // Custom parse methods.
 internal sealed partial class Test18
 {
-	partial void OnParseProlog()
-	{
-		m_lineStarts = null;
-	}
-	
 	#region Private Methods
-//	private static readonly string RightArrow = "\x2192";
-//	private static readonly string DownArrow = "\x2193";
-//	private static readonly string DownHookedArrow = "\x21A9";
-	
-	// TODO: 
-	// need to generate this
-	private void DoDebug(int oldOffset, int newOffset, string text)
-	{
-#if NOT_YET
-		const int Width = 30;
-		
-		// Write the input centered on the new offset.
-		int offset = Math.Max(newOffset - Width, 0);
-		int count1 = Math.Min(m_input.Length - offset, Width);
-		string before = m_input.Substring(offset, count1);
-		if (offset > 0)
-			before = "..." + before;
-		
-		int count2 = Math.Min(m_input.Length - newOffset, Width);
-		string after = m_input.Substring(newOffset, count2);
-		if (newOffset + count2 < m_input.Length)
-			after += "...";
-		
-		before = before.Replace("\t", RightArrow);
-		before = before.Replace("\n", DownArrow);
-		before = before.Replace("\r", DownHookedArrow);
-		
-		after = after.Replace("\t", RightArrow);
-		after = after.Replace("\n", DownArrow);
-		after = after.Replace("\r", DownHookedArrow);
-		
-		if (after.EndsWith("\x00"))
-			after = after.Substring(0, after.Length - 1);
-		
-		// If we matched then write an arrow pointing to the new offset.
-		int padding = before.StartsWith("...") ? 3 : 0;
-		if (newOffset > oldOffset)
-		{
-			Console.WriteLine("{0}{1}", before, after);
-			
-			Console.Write(new string(' ', padding + Math.Max(oldOffset - offset, 0)));
-			Console.Write(new string('_', Math.Min(newOffset - oldOffset, before.Length - padding)));
-			Console.Write("^ ");
-			Console.WriteLine(text);
-			Console.WriteLine();
-		}
-		else
-		{
-			// If we failed then write an arrow pointing to the old offset.
-//			Console.WriteLine("{0}{1}", before, after);
-//			
-//			Console.Write(new string(' ', padding + newOffset - offset));
-//			Console.Write("^ ");
-//			Console.Write(new string('_', oldOffset - newOffset));
-//			Console.WriteLine(text);
-//			Console.WriteLine();
-		}
-#endif
-	}
-	
 	// Used at the start of a code block to figure out what the new indentation is.
 	private bool DoAdjustIndent(int offset)
 	{
