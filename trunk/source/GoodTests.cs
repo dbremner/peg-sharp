@@ -431,5 +431,26 @@ Beta := 'b';
 		var e = parser.Grammar.Rules[0].Expression;
 		Assert.AreEqual("[^\\n\\r\\\\]* Beta", e.ToString());
 	}
+	
+	[Test]
+	public void PlusAndMinus()
+	{
+		string input = @"
+start = Expr
+value = double
+
+Expr := [^\n\r\\]* Beta+A-Char;
+Beta+A-Char := 'b';
+";
+		var parser = new Parser();
+		parser.Parse(input);
+		parser.Grammar.Validate();
+		
+		Assert.AreEqual(2, parser.Grammar.Rules.Count);
+		Assert.AreEqual("Expr", parser.Grammar.Rules[0].Name);
+		
+		var e = parser.Grammar.Rules[0].Expression;
+		Assert.AreEqual("[^\\n\\r\\\\]* Beta+A-Char", e.ToString());
+	}
 }
 #endif	// TEST
