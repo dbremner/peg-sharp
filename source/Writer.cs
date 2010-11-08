@@ -375,6 +375,7 @@ internal sealed partial class Writer : IDisposable
 				DoWriteLine("	Console.Write(\"^ \");");
 				DoWriteLine("	Console.Write(label);");
 				DoWriteLine("	DoDebugLine(oldOffset, newOffset);");
+				DoWriteLine("	Console.Out.Flush();");
 				DoWriteLine("}");
 				DoWriteLine("");
 			}
@@ -407,6 +408,7 @@ internal sealed partial class Writer : IDisposable
 				DoWriteLine("	Console.Write(\"^ \");");
 				DoWriteLine("	Console.Write(label);");
 				DoWriteLine("	DoDebugLine(offset, offset);");
+				DoWriteLine("	Console.Out.Flush();");
 				DoWriteLine("}");
 				DoWriteLine("");
 			}
@@ -583,6 +585,13 @@ internal sealed partial class Writer : IDisposable
 				DoWriteLine("			results.Add(new Result(this, start.Index, cache.State.Index - start.Index, m_input, cache.Value));");
 			else
 				DoWriteLine("			results.Add(new Result(this, start.Index, cache.State.Index - start.Index, m_input));");
+			if (m_grammar.Settings["debug"] != "none")
+			{
+				DoWriteLine("	");
+				DoWriteLine("		State _state = cache.State;");
+				DoWriteLine("		State _start = start;");
+				DoDebug("\"cached\" + nonterminal");
+			}
 			DoWriteLine("	}");
 			DoWriteLine("	");
 			DoWriteLine("	return cache.State;");
