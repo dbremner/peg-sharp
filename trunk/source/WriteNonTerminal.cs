@@ -109,35 +109,7 @@ internal sealed partial class Writer
 		if (m_grammar.Settings["debug"] != "none")
 		{
 			DoWriteLine("	");
-			if (m_grammar.Settings["debug-file"].Length > 0)
-			{
-				DoWriteLine("	if (m_file == m_debugFile)");
-				DoWriteLine("	{");
-				if (m_grammar.Settings["debug"] == "matches" || m_grammar.Settings["debug"] == "both")
-				{
-					DoWriteLine("		if (_state.Parsed)");
-					DoWriteLine("			DoDebugMatch(_start.Index, _state.Index, \"" + debugName + " parsed\");");
-				}
-				if (m_grammar.Settings["debug"] == "failures" || m_grammar.Settings["debug"] == "both")
-				{
-					DoWriteLine("		if (!_state.Parsed)");
-					DoWriteLine("			DoDebugFailure(_start.Index, \"" + debugName + " \" + DoEscapeAll(_state.Errors.ToString()));");
-				}
-				DoWriteLine("	}");
-			}
-			else
-			{
-				if (m_grammar.Settings["debug"] == "matches" || m_grammar.Settings["debug"] == "both")
-				{
-					DoWriteLine("	if (_state.Parsed)");
-					DoWriteLine("		DoDebugMatch(_start.Index, _state.Index, \"" + debugName + " parsed\");");
-				}
-				if (m_grammar.Settings["debug"] == "failures" || m_grammar.Settings["debug"] == "both")
-				{
-					DoWriteLine("	if (!_state.Parsed)");
-					DoWriteLine("		DoDebugFailure(_start.Index, \"" + debugName + " \" + DoEscapeAll(_state.Errors.ToString()));");
-				}
-			}
+			DoDebug('"' + debugName + '"');
 		}
 		
 		List<string> code = rule.GetHook(Hook.Epilog);
@@ -159,6 +131,39 @@ internal sealed partial class Writer
 		DoWriteLine("	");
 		DoWriteLine("	return _state;");
 		DoWriteLine("}");
+	}
+
+	private void DoDebug(string debugName)
+	{
+		if (m_grammar.Settings["debug-file"].Length > 0)
+		{
+			DoWriteLine("	if (m_file == m_debugFile)");
+			DoWriteLine("	{");
+			if (m_grammar.Settings["debug"] == "matches" || m_grammar.Settings["debug"] == "both")
+			{
+				DoWriteLine("		if (_state.Parsed)");
+				DoWriteLine("			DoDebugMatch(_start.Index, _state.Index, " + debugName + " + \"parsed\");");
+			}
+			if (m_grammar.Settings["debug"] == "failures" || m_grammar.Settings["debug"] == "both")
+			{
+				DoWriteLine("		if (!_state.Parsed)");
+				DoWriteLine("			DoDebugFailure(_start.Index, " + debugName + " + DoEscapeAll(_state.Errors.ToString()));");
+			}
+			DoWriteLine("	}");
+		}
+		else
+		{
+			if (m_grammar.Settings["debug"] == "matches" || m_grammar.Settings["debug"] == "both")
+			{
+				DoWriteLine("	if (_state.Parsed)");
+				DoWriteLine("		DoDebugMatch(_start.Index, _state.Index, " + debugName + " + \"parsed\");");
+			}
+			if (m_grammar.Settings["debug"] == "failures" || m_grammar.Settings["debug"] == "both")
+			{
+				DoWriteLine("	if (!_state.Parsed)");
+				DoWriteLine("		DoDebugFailure(_start.Index, " + debugName + " + DoEscapeAll(_state.Errors.ToString()));");
+			}
+		}
 	}
 	
 	#region Private Methods
