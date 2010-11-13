@@ -1,4 +1,4 @@
-// Copyright (C) 2009 Jesse Jones
+// Copyright (C) 2009-2010 Jesse Jones
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -580,6 +580,8 @@ internal sealed partial class Writer : IDisposable
 			DoWriteLine("	}");
 			DoWriteLine("	else");
 			DoWriteLine("	{");
+			if (m_grammar.Settings["debug"] != "none")
+				DoWriteLine("	Console.WriteLine(nonterminal);");
 			DoWriteLine("		if (cache.HasResult)");
 			if (m_grammar.Settings["value"] != "void")
 				DoWriteLine("			results.Add(new Result(this, start.Index, cache.State.Index - start.Index, m_input, cache.Value));");
