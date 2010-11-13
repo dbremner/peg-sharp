@@ -1,4 +1,4 @@
-// Copyright (C) 2009 Jesse Jones
+// Copyright (C) 2009-2010 Jesse Jones
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -38,6 +38,8 @@ internal sealed partial class Writer
 		DoWriteLine("// " + prolog);
 		DoWriteLine("private State " + methodName + "(State _state, List<Result> _outResults)");
 		DoWriteLine("{");
+		if (m_grammar.Settings["debug"] != "none")
+			DoWriteLine("	Console.WriteLine(\"" + rule.Name + "\");");
 		DoWriteLine("	State _start = _state;");
 		DoWriteLine("	List<Result> results = new List<Result>();");
 		DoWriteLine("	");
@@ -142,12 +144,12 @@ internal sealed partial class Writer
 			if (m_grammar.Settings["debug"] == "matches" || m_grammar.Settings["debug"] == "both")
 			{
 				DoWriteLine("		if (_state.Parsed)");
-				DoWriteLine("			DoDebugMatch(_start.Index, _state.Index, " + debugName + " + \"parsed\");");
+				DoWriteLine("			DoDebugMatch(_start.Index, _state.Index, " + debugName + " + \" parsed\");");
 			}
 			if (m_grammar.Settings["debug"] == "failures" || m_grammar.Settings["debug"] == "both")
 			{
 				DoWriteLine("		if (!_state.Parsed)");
-				DoWriteLine("			DoDebugFailure(_start.Index, " + debugName + " + DoEscapeAll(_state.Errors.ToString()));");
+				DoWriteLine("			DoDebugFailure(_start.Index, " + debugName + " + \" \" + DoEscapeAll(_state.Errors.ToString()));");
 			}
 			DoWriteLine("	}");
 		}
@@ -156,12 +158,12 @@ internal sealed partial class Writer
 			if (m_grammar.Settings["debug"] == "matches" || m_grammar.Settings["debug"] == "both")
 			{
 				DoWriteLine("	if (_state.Parsed)");
-				DoWriteLine("		DoDebugMatch(_start.Index, _state.Index, " + debugName + " + \"parsed\");");
+				DoWriteLine("		DoDebugMatch(_start.Index, _state.Index, " + debugName + " + \" parsed\");");
 			}
 			if (m_grammar.Settings["debug"] == "failures" || m_grammar.Settings["debug"] == "both")
 			{
 				DoWriteLine("	if (!_state.Parsed)");
-				DoWriteLine("		DoDebugFailure(_start.Index, " + debugName + " + DoEscapeAll(_state.Errors.ToString()));");
+				DoWriteLine("		DoDebugFailure(_start.Index, " + debugName + " + \" \" + DoEscapeAll(_state.Errors.ToString()));");
 			}
 		}
 	}
