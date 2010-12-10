@@ -46,6 +46,19 @@ internal sealed partial class Writer
 		DoWriteProlog(rule, debugName);
 		DoWriteNonTerminalRule(rule);
 		DoWriteLine("	");
+		List<string> code = rule.GetHook(Hook.PassEpilog);
+		if (code != null)
+		{
+			DoWriteLine("	if (_state.Parsed)");
+			DoWriteEpilog(rule, code, "		");
+
+			bool usesFail = code.Any(c => DoReferencesLocal(c, "fail"));
+			if (usesFail)
+			{
+				DoWriteLine("		if (fail != null)");
+				DoWriteLine("			_state = new State(_start.Index, false, ErrorSet.Combine(_start.Errors, new ErrorSet(_state.Errors.Index, fail)));");
+			}
+		}
 		DoWriteLine("	if (_state.Parsed)");
 		DoWriteLine("	{");
 		if (m_grammar.Settings["value"] == "XmlNode")
@@ -114,15 +127,9 @@ internal sealed partial class Writer
 			DoDebug('"' + debugName + '"');
 		}
 		
-		List<string> code = rule.GetHook(Hook.Epilog);
+		code = rule.GetHook(Hook.Epilog);
 		if (code != null)
 			DoWriteEpilog(rule, code, "	");
-		code = rule.GetHook(Hook.PassEpilog);
-		if (code != null)
-		{
-			DoWriteLine("	if (_state.Parsed)");
-			DoWriteEpilog(rule, code, "		");
-		}
 		code = rule.GetHook(Hook.FailEpilog);
 		if (code != null)
 		{
@@ -177,7 +184,7 @@ internal sealed partial class Writer
 			bool usesFail = code.Any(c => DoReferencesLocal(c, "fail"));
 			if (usesFail)
 				DoWriteLine("	string fail = null;");
-			
+
 			foreach (string c in code)
 			{
 				DoWriteCode("	", c);
@@ -220,7 +227,7 @@ internal sealed partial class Writer
 	private void DoWriteCode(string indent, string code)
 	{
 		string trailer = string.Empty;
-		if (code[code.Length - 1] != ';' && code[code.Length - 1] != '}')
+		if (code[code.Length - 1] != ';' && code[code.Length - 1] != '{' && code[code.Length - 1] != '}')
 			trailer = ";";
 		DoWriteLine(indent + code + trailer);
 	}
