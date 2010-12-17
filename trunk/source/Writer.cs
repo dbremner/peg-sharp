@@ -23,8 +23,6 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
-//using System.Reflection;
-//using System.Text.RegularExpressions;
 
 // Writes the parser file.
 internal sealed partial class Writer : IDisposable
@@ -71,18 +69,6 @@ internal sealed partial class Writer : IDisposable
 		
 		m_className = System.IO.Path.GetFileNameWithoutExtension(pegFile);
 		DoSetReplacements(pegFile);
-		
-//		var rules = new Dictionary<string, List<Rule>>();
-//		foreach (Rule rule in m_grammar.Rules)
-//		{
-//			List<Rule> temp;
-//			if (!rules.TryGetValue(rule.Name, out temp))
-//			{
-//				temp = new List<Rule>();
-//				rules.Add(rule.Name, temp);
-//			}
-//			temp.Add(rule);
-//		}
 		
 		string parser = DoCreateParser();
 		m_writer.Write(parser);
