@@ -1,4 +1,4 @@
-// Copyright (C) 2009 Jesse Jones
+// Copyright (C) 2010 Jesse Jones
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -20,42 +20,44 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using System;
+using System.Collections.Generic;
 
-internal static class StringExtensions
+// Contains the settings and other variables used to evaluate template predicates.
+internal sealed class Context
 {
-	public static bool IsBlank(this string s)
+	public void AddVariable(string name, object value)
 	{
-		foreach (char ch in s)
-		{
-			if (!char.IsWhiteSpace(ch))
-				return false;
-		}
-		
-		return true;
+		m_variables.Add(name, value);
 	}
 	
-	public static string EscapeAll(this string s)
+	public void SetVariable(string name, object value)
 	{
-		var builder = new System.Text.StringBuilder(s.Length);
-		
-		foreach (char ch in s)
-		{
-			if (ch == '\n')
-				builder.Append("\\n");
-			
-			else if (ch == '\r')
-				builder.Append("\\r");
-			
-			else if (ch == '\t')
-				builder.Append("\\t");
-			
-			else if (ch < ' ' || ch > '\x7F')
-				builder.AppendFormat("\\x{0:X4}", (int) ch);
-			
-			else
-				builder.Append(ch);
-		}
-		
-		return builder.ToString();
+		m_variables[name] = value;
 	}
+	
+	public void AddExcluded(string name)
+	{
+		m_excluded.Add(name);
+	}
+	
+	public bool IsExcluded(string name)
+	{
+		Contract.Requires(name != null);
+		
+		return m_excluded.Contains(name);
+	}
+	
+	public object Dereference(string name)
+	{
+		object result;
+		if (m_variables.TryGetValue(name, out result))
+			return result;
+		else
+			throw new Exception(name + " isn't a known variable");
+	}
+	
+	#region Fields
+	private HashSet<string> m_excluded = new HashSet<string>();
+	private Dictionary<string, object> m_variables = new Dictionary<string, object>();
+	#endregion
 }
