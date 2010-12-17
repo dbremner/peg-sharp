@@ -8,6 +8,7 @@
 # Public variables
 CSC ?= gmcs
 MONO ?= mono --debug
+#PEG-SHARP ?= /usr/local/bin/peg-sharp.exe
 PYTHON ?= python
 GENDARME ?= /usr/local/bin/gendarme
 INSTALL_DIR ?= /usr/local/bin
@@ -74,14 +75,19 @@ update-libraries:
 
 # ------------------
 # Binary targets 
-sources := source/*.cs
+sources := source/*.cs source/predicates/*.cs
+templates := $(wildcard source/templates/*.*)
+resources := $(addprefix -resource:,$(templates))
 
 source/Parser.cs: source/Parser.peg
 	if [ -x bin/peg-sharp.exe ]; then $(MONO) bin/peg-sharp.exe --out=source/Parser.cs source/Parser.peg; fi
 
-bin/peg-sharp.exe: bin/csc_flags $(sources)
+source/predicates/PredicateParser.cs: source/predicates/PredicateParser.peg
+	if [ -x $(bin/peg-sharp.exe) ]; then $(MONO) $(bin/peg-sharp.exe) --out=source/predicates/PredicateParser.cs source/predicates/PredicateParser.peg; fi
+
+bin/peg-sharp.exe: bin/csc_flags $(sources) $(templates)
 	@./gen_version.sh $(version) source/AssemblyVersion.cs
-	$(CSC) -out:$@ $(CSC_FLAGS) -target:exe $(sources)
+	$(CSC) -out:$@ $(CSC_FLAGS) -target:exe $(sources) $(resources)
 
 example/Parser.cs: bin/peg-sharp.exe example/Parser.peg
 	$(MONO) bin/peg-sharp.exe --out=example/Parser.cs example/Parser.peg

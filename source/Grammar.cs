@@ -90,6 +90,9 @@ internal sealed class Grammar
 		if (!Settings.ContainsKey("used"))
 			Settings.Add("used", string.Empty);
 			
+		if (!Settings.ContainsKey("using"))
+			Settings.Add("using", string.Empty);
+			
 		var used =
 			from r in Rules
 				from e in r.Expression.Select(f => f is RuleExpression)

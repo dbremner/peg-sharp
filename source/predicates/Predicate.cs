@@ -1,4 +1,4 @@
-// Copyright (C) 2009 Jesse Jones
+// Copyright (C) 2010 Jesse Jones
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -21,41 +21,35 @@
 
 using System;
 
-internal static class StringExtensions
+// Base class for predicate expressions within templates.
+internal abstract class Predicate
 {
-	public static bool IsBlank(this string s)
+	protected Predicate()
 	{
-		foreach (char ch in s)
-		{
-			if (!char.IsWhiteSpace(ch))
-				return false;
-		}
-		
-		return true;
 	}
 	
-	public static string EscapeAll(this string s)
+	public object Evaluate(Context context)
 	{
-		var builder = new System.Text.StringBuilder(s.Length);
-		
-		foreach (char ch in s)
-		{
-			if (ch == '\n')
-				builder.Append("\\n");
-			
-			else if (ch == '\r')
-				builder.Append("\\r");
-			
-			else if (ch == '\t')
-				builder.Append("\\t");
-			
-			else if (ch < ' ' || ch > '\x7F')
-				builder.AppendFormat("\\x{0:X4}", (int) ch);
-			
-			else
-				builder.Append(ch);
-		}
-		
-		return builder.ToString();
+		return OnEvaluate(context);
 	}
+	
+	public bool EvaluateBool(Context context)
+	{
+		object result = OnEvaluate(context);
+		if (result is bool)
+			return (bool) result;
+		else
+			throw new Exception("Expected a bool result but have " + this);
+	}
+	
+	public string EvaluateString(Context context)
+	{
+		object result = OnEvaluate(context);
+		if (result is string)
+			return (string) result;
+		else
+			throw new Exception("Expected a string result but have " + this);
+	}
+	
+	protected abstract object OnEvaluate(Context context);
 }

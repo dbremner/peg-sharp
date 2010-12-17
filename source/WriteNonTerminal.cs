@@ -25,6 +25,7 @@ using System.Linq;
 
 internal sealed partial class Writer
 {
+#if OBSOLETE
 	private void DoWriteNonTerminal(string methodName, Rule rule, int i, int maxIndex)
 	{
 		if (m_grammar.Settings["exclude-methods"].Contains(methodName + ' '))
@@ -266,4 +267,5 @@ internal sealed partial class Writer
 		return false;
 	}
 	#endregion
+#endif
 }
