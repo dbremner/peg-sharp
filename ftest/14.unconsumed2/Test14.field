@@ -1,0 +1,11 @@
+# We don't have any semantic actions so all we can check is parsed or not.
+text: x
+stdout: 0
+
+#------------------------------------------------------------------------------
+text: xxxx
+stdout: 0
+
+#------------------------------------------------------------------------------
+text: xxyy
+stdout: 0

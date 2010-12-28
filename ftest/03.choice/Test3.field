@@ -1,0 +1,11 @@
+# We don't have any semantic actions so all we can check is parsed or not.
+text: x
+stdout: 0
+
+#------------------------------------------------------------------------------
+text: z
+stderr: Expected x or y at line 1 col 1
+
+#------------------------------------------------------------------------------
+text: yz
+stderr: Expected x at line 1 col 1

@@ -332,7 +332,9 @@ ADD-NON-TERMINALS
 		CacheKey key = new CacheKey(nonterminal, start.Index, m_context);
 		if (!m_cache.TryGetValue(key, out cache))
 		{
-			ParseMethod[] methods = m_nonterminals[nonterminal];
+			ParseMethod[] methods = null;
+			if (!m_nonterminals.TryGetValue(nonterminal, out methods))
+				throw new Exception("Couldn't find a " + nonterminal + " parse method");
 			
 			int oldCount = results.Count;											// {{value != 'void'}}
 			state = DoChoice(state, results, methods);

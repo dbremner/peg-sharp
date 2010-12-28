@@ -50,8 +50,8 @@ utest: bin/unit-tests.dll
 	cd bin && "../$(NUNIT)" -nologo unit-tests.dll
 
 .PHONY: ftest
-ftest: bin/peg-sharp.exe
-	cd ftest && "$(PYTHON)" ftest.py
+ftest: bin/peg-sharp.exe bin/ftester.exe
+	$(MONO) --debug bin/ftester.exe -vv ftest
 	
 test18: bin/peg-sharp.exe ftest/18.whitespace/*.cs
 	$(MONO) --debug bin/peg-sharp.exe --out=ftest/18.whitespace/Test18.cs ftest/18.whitespace/Test18.peg
@@ -88,6 +88,9 @@ source/predicates/PredicateParser.cs: source/predicates/PredicateParser.peg
 bin/peg-sharp.exe: bin/csc_flags $(sources) $(templates)
 	@./gen_version.sh $(version) source/AssemblyVersion.cs
 	$(CSC) -out:$@ $(CSC_FLAGS) -target:exe $(sources) $(resources)
+
+bin/ftester.exe: bin/csc_flags ftest/*.cs
+	$(CSC) -out:$@ $(CSC_FLAGS) -target:exe ftest/*.cs source/AssemblyVersion.cs
 
 example/Parser.cs: bin/peg-sharp.exe example/Parser.peg
 	$(MONO) bin/peg-sharp.exe --out=example/Parser.cs example/Parser.peg

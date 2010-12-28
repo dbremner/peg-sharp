@@ -1,0 +1,84 @@
+text!
+	def Alpha:
+	   pass
+stdout!
+	def Alpha:
+	   pass
+
+#------------------------------------------------------------------------------
+text!
+	def Alpha:
+	   if beta:
+	      pass
+stdout!
+	def Alpha:
+	   if beta:
+	      pass
+
+#------------------------------------------------------------------------------
+text!
+	def Alpha:
+	   if beta:
+	      pass
+	   if gamma:
+	      pass
+stdout!
+	def Alpha:
+	   if beta:
+	      pass
+	   if gamma:
+	      pass
+
+#------------------------------------------------------------------------------
+text!
+	def Alpha:
+	   if beta:
+	      pass
+	      if gamma:
+	         pass
+stdout!
+	def Alpha:
+	   if beta:
+	      pass
+	      if gamma:
+	         pass
+
+#------------------------------------------------------------------------------
+text!
+	def Alpha:
+	   if beta:
+	      pass
+	      pass
+stdout!
+	def Alpha:
+	   if beta:
+	      pass
+	      pass
+
+#------------------------------------------------------------------------------
+text!
+	def Alpha:
+	   if beta:
+	      pass
+	      if gamma:
+	         pass
+	         pass
+	      pass
+	   pass
+stdout!
+	def Alpha:
+	   if beta:
+	      pass
+	      if gamma:
+	         pass
+	         pass
+	      pass
+	   pass
+
+#------------------------------------------------------------------------------
+text!
+	def Alpha:
+	   if beta:
+	      pass
+	         pass
+stderr: line 4
