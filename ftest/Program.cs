@@ -114,7 +114,7 @@ internal static class Program
 				Console.WriteLine("processing {0}", srcDir);
 			
 			string exe = DoBuild(srcDir, Path.GetFullPath(pegs[0]), data[0]);
-			DoRun(Path.GetFileName(srcDir), exe, data[0]);
+			DoRun(Path.GetFileName(srcDir), exe);
 		}
 		else
 		{
@@ -164,7 +164,7 @@ internal static class Program
 			// generate a Program.cs or Program.fs file
 			string program = Path.Combine(genTestDir, "Program.cs");
 			string parserName = Path.GetFileNameWithoutExtension(pegFile);
-			DoGenerateCsProgram(program, parserName);
+			DoGenerateCsProgram(program, parserName, dataFile);
 			
 			// build the assembly
 			srcFiles.Add(program);
@@ -191,40 +191,103 @@ internal static class Program
 		return false;
 	}
 	
-	private static void DoGenerateCsProgram(string program, string parserName)
+	private static void DoGenerateCsProgram(string program, string parserName, string dataFile)
 	{
+		var good = new Dictionary<string, string>();
+		var bad = new Dictionary<string, string>();
+		DoGetTests(dataFile, good, bad);
+		
+		string contents = @"using System;
+using System.Collections.Generic;
+
+internal static class Program
+{
+	public static int Main(string[] args)
+	{
+		int numFailures = 0;
+		
+		try
+		{
+			foreach (var good in new Dictionary<string, string>{GOOD})
+			{
+				if (!DoCheckGood(good.Key, good.Value))
+					++numFailures;
+			}
+			foreach (var bad in new Dictionary<string, string>{BAD})
+			{
+				if (!DoCheckBad(bad.Key, bad.Value))
+					++numFailures;
+			}
+		}
+		catch (Exception e)
+		{
+			Console.Error.WriteLine(e.Message);
+		}
+		
+		return numFailures;
+	}
+	
+	private static bool DoCheckGood(string input, string expected)
+	{
+		var result = ms_parser.Parse(input);
+		string actual = result.ToString().Trim();
+		if (actual != expected)
+			Console.Error.WriteLine(""input: {0}, expected: {1}, actual: {2}"", input, expected, actual);
+		
+		return actual == expected;
+	}
+	
+	private static bool DoCheckBad(string input, string expected)
+	{
+		bool passed = false;
+		
+		try
+		{
+			var result = ms_parser.Parse(input);
+			string actual = result.ToString().Trim();
+			Console.Error.WriteLine(""input: {0}, expected: {1} error, actual: {2}"", input, expected, actual);
+		}
+		catch (Exception e)
+		{
+			if (e.Message.Contains(expected))
+				passed = true;
+			else
+				Console.Error.WriteLine(""input: {0}, expected: {1}, actual: {2}"", input, expected, e.Message);
+		}
+		
+		return passed;
+	}
+	
+	private static PARSER ms_parser = new PARSER();
+}";
+		contents = contents.Replace("PARSER", parserName);
+		contents = contents.Replace("GOOD", DoDictToStr(good));
+		contents = contents.Replace("BAD", DoDictToStr(bad));
+		
 		using (var stream = new StreamWriter(program, false, System.Text.Encoding.UTF8))
 		{
-			stream.WriteLine("using System;");
-			stream.WriteLine("");
-			stream.WriteLine("internal static class Program");
-			stream.WriteLine("{");
-			stream.WriteLine("	public static void Main(string[] args)");
-			stream.WriteLine("	{");
-			stream.WriteLine("		try");
-			stream.WriteLine("		{");
-			stream.WriteLine("			string text = args[0];");
-			stream.WriteLine("			text = text.Replace(\"&bslash;\", \"\\\\\");");
-			stream.WriteLine("			text = text.Replace(\"&amp;\", \"'\");");
-			stream.WriteLine("			text = text.Replace(\"&nl;\", \"\\n\");");
-			stream.WriteLine("			var parser = new {0}();", parserName);
-			stream.WriteLine("			var result = parser.Parse(text);");
-			stream.WriteLine("			Console.WriteLine(result);");
-			stream.WriteLine("		}");
-			stream.WriteLine("		catch (ParserException e)");
-			stream.WriteLine("		{");
-			stream.WriteLine("			Console.Error.WriteLine(e.Message);");
-			stream.WriteLine("		}");
-			stream.WriteLine("		catch (Exception e)");
-			stream.WriteLine("		{");
-			stream.WriteLine("			Console.Error.WriteLine(e.Message);");
-			stream.WriteLine("		}");
-			stream.WriteLine("	}");
-			stream.WriteLine("}");
+			stream.Write(contents);
 		}
 	}
 	
-	private static void DoRun(string testName, string exe, string dataFile)
+	private static string DoDictToStr(Dictionary<string, string> dict)
+	{
+		var entries = new List<string>();
+		
+		foreach (var entry in dict)
+		{
+			string text = "{\"";
+			text += entry.Key;
+			text += "\", \"";
+			text += entry.Value;
+			text += "\"}";
+			entries.Add(text);
+		}
+		
+		return string.Join(", ", entries.ToArray());
+	}
+	
+	private static void DoGetTests(string dataFile, Dictionary<string, string> good, Dictionary<string, string> bad)
 	{
 		const string sep = "#------------------------------------------------------------------------------";
 		
@@ -232,51 +295,18 @@ internal static class Program
 		string[] tests = contents.Split(new string[]{sep}, StringSplitOptions.RemoveEmptyEntries);
 		foreach (string test in tests)
 		{
-			++ms_numTests;
-			DoRunTest(testName, exe, FieldParser.Parse(test));
-		}
-	}
-	
-	private static void DoRunTest(string testName, string exe, Field[] fields)
-	{
-		System.Diagnostics.Debug.Assert(fields.Length == 2);
-		System.Diagnostics.Debug.Assert(fields[0].Name == "text");
-		
-		string stdout, stderr;
-		string input = DoSanitize(fields[0].Value);
-		DoRunParser(exe, input, out stdout, out stderr);
-		
-		stdout = DoSanitize(stdout);
-		stderr = DoSanitize(stderr);
-		
-		var failures = new List<string>();
-		if (fields[1].Name == "stdout")
-		{
-			if (stderr.Length > 0)
-				failures.Add(string.Format("got stderr: {0}.", stderr));
+			Field[] fields = FieldParser.Parse(test);
 			
-			string expected = DoSanitize(fields[1].Value);
-			if (stdout != expected)
-				failures.Add(string.Format("expected {0} but got {1}.", expected, stdout));
-		}
-		else if (fields[1].Name == "stderr")
-		{
-			if (stderr.Length == 0)
-				failures.Add(string.Format("no stderr but expected: {0}.", fields[1].Value));
-			else if (!stderr.Contains(fields[1].Value))
-				failures.Add(string.Format("expected stderr containing {0} but got {1}.", fields[1].Value, stderr));
-		}
-		else
-			System.Diagnostics.Debug.Assert(false);
-		
-		if (failures.Count > 0)
-		{
-			Console.Error.WriteLine("{0} failed with '{1}'", testName, fields[0].Value);
-			foreach (string f in failures)
+			if (fields[1].Name == "stdout")
 			{
-				Console.Error.WriteLine("   {0}", f);
+				good.Add(DoSanitize(fields[0].Value), DoSanitize(fields[1].Value));
 			}
-			++ms_numFailed;
+			else if (fields[1].Name == "stderr")
+			{
+				bad.Add(DoSanitize(fields[0].Value), DoSanitize(fields[1].Value));
+			}
+			else
+				System.Diagnostics.Debug.Assert(false);
 		}
 	}
 	
@@ -289,22 +319,50 @@ internal static class Program
 		{
 			if (lines[i].Length > 0 && lines[i][0] == '\t')
 				lines[i] = lines[i].Substring(1);
+				
+			lines[i] = lines[i].Replace("\\", "\\\\");
+			lines[i] = lines[i].Replace("\"", "\\\"");
+			lines[i] = lines[i].Replace("\t", "\\t");		// makes it a bit easier to see whats going on
 		}
 		
-		return string.Join("\n", lines);
+		return string.Join("\\n", lines);
 	}
 	
-	private static void DoRunParser(string exe, string text, out string stdout, out string stderr)
+	private static void DoRun(string testName, string exe)
 	{
-		text = "'" + text + "'";
+		string stdout, stderr;
+		int result = DoRunParser(exe, out stdout, out stderr);
 		
+		var failures = new List<string>();
+		if (result != 0)
+		{
+			failures.Add(string.Format("{0} test cases failed", result));
+		}
+		
+		if (stderr.Length > 0)
+			failures.Add(string.Format("got stderr: {0}.", stderr));
+		
+		if (failures.Count > 0)
+		{
+			Console.Error.WriteLine("{0} failed", testName);
+			foreach (string f in failures)
+			{
+				Console.Error.WriteLine("   {0}", f);
+			}
+			++ms_numFailed;
+		}
+		++ms_numTests;
+	}
+	
+	private static int DoRunParser(string exe, out string stdout, out string stderr)
+	{
 		if (Verbosity >= 2)
-			Console.WriteLine("{0} {1}", exe, text);
+			Console.WriteLine(exe);
 		
+		int result = -1;
 		using (Process process = new Process())
 		{
 			process.StartInfo.FileName = exe;
-			process.StartInfo.Arguments = text;
 			process.StartInfo.UseShellExecute = false;
 			process.StartInfo.RedirectStandardOutput = true;
 			process.StartInfo.RedirectStandardError = true;
@@ -317,10 +375,10 @@ internal static class Program
 			
 			stdout = process.StandardOutput.ReadToEnd().Trim();
 			stderr = process.StandardError.ReadToEnd().Trim();
-			
-			if (process.ExitCode != 0)
-				throw new SystemException("Non-zero exit code.");
+			result = process.ExitCode;
 		}
+		
+		return result;
 	}
 	
 	private static void DoRunTool(string tool, string format, params object[] args)
