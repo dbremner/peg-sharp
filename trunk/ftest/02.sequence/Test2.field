@@ -1,0 +1,15 @@
+# We don't have any semantic actions so all we can check is parsed or not.
+text: xy
+stdout: 0
+
+#------------------------------------------------------------------------------
+text: x
+stderr: Expected y at line 1 col 2
+
+#------------------------------------------------------------------------------
+text: y
+stderr: Expected x at line 1 col 1
+
+#------------------------------------------------------------------------------
+text: xyxy
+stderr: Not all input was consumed starting from 'xy' at line 1 col 1
