@@ -87,9 +87,5 @@ text: y
 stderr: Expected [abc] or [e-h] or [mnzp-ru-w] or [^\n\r\]a-z]
 
 #------------------------------------------------------------------------------
-text: &nl;
-stderr: Expected [abc] or [e-h] or [mnzp-ru-w] or [^\n\r\]a-z]
-
-#------------------------------------------------------------------------------
 text: ]
 stderr: Expected [abc] or [e-h] or [mnzp-ru-w] or [^\n\r\]a-z]
