@@ -69,7 +69,6 @@
     <Compile Include="source\Rule.cs" />
     <Compile Include="source\StringExtensions.cs" />
     <Compile Include="source\Unused.cs" />
-    <Compile Include="source\WriteNonTerminal.cs" />
     <Compile Include="source\Writer.cs" />
   </ItemGroup>
   <ItemGroup>
