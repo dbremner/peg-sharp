@@ -65,16 +65,29 @@
     <Compile Include="source\Parser.cs" />
     <Compile Include="source\ParserActions.cs" />
     <Compile Include="source\ParserException.cs" />
+    <Compile Include="source\predicates\Context.cs" />
+    <Compile Include="source\predicates\Predicate.cs" />
+    <Compile Include="source\predicates\PredicateParser.cs" />
+    <Compile Include="source\predicates\Predicates.cs" />
     <Compile Include="source\Program.cs" />
     <Compile Include="source\Rule.cs" />
     <Compile Include="source\StringExtensions.cs" />
+    <EmbeddedResource Include="source\templates\Code.cs" />
+    <EmbeddedResource Include="source\templates\NonTerminal.cs" />
+    <Compile Include="source\TemplateEngine.cs" />
     <Compile Include="source\Unused.cs" />
     <Compile Include="source\Writer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="source\Parser.peg" />
+    <None Include="source\predicates\PredicateParser.peg" />
+    <None Include="source\templates\Templates.rtf" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy /Y "$(TargetDir)peg-sharp.exe" "$(SolutionDir)ftest\ftest\$(OutDir)"
+xcopy /Y "$(TargetDir)peg-sharp.pdb" "$(SolutionDir)ftest\ftest\$(OutDir)"</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
