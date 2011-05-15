@@ -22,7 +22,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
-//using System.Linq;
+using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 
@@ -76,11 +76,16 @@ internal sealed class TemplateEngine
 	}
 	
 	#region Private Methods
-	private string[] DoLoadTemplate(string name)
+	private string[] DoLoadTemplate(string inName)
 	{
 		string text;
-		
+
+		// When building with studio resource names are prepended with a path
+		// like peg-sharp\source\templates and afaict there is no way to use
+		// just the file name. So, we have to do a search for the file we want.
 		Assembly assembly = Assembly.GetExecutingAssembly();
+		string name = assembly.GetManifestResourceNames().Single(n => n.EndsWith(inName));
+		
 		using (Stream stream = assembly.GetManifestResourceStream(name))	// templates must be utf-8 with unix line endings
 		{
 			byte[] bytes = new byte[stream.Length];

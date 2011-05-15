@@ -156,10 +156,10 @@ internal static class Program
 		
 		string parser = Path.Combine(genTestDir, "Parser.cs");
 		string exe = Path.Combine(genTestDir, "test.exe");
-		if (DoHasNewPrerequisite(parser, prerequisites))
+		if (DoHasNewPrerequisite(parser, prerequisites) || !File.Exists(exe))
 		{
 			// build the parser
-			DoRunTool(pegSharp, "--out={0} {1}", parser, pegFile);
+			DoRunTool(pegSharp, @"--out=""{0}"" ""{1}""", parser, pegFile);
 			
 			// generate a Program.cs or Program.fs file
 			string program = Path.Combine(genTestDir, "Program.cs");
@@ -169,7 +169,8 @@ internal static class Program
 			// build the assembly
 			srcFiles.Add(program);
 			srcFiles.Add(parser);
-			DoRunTool("gmcs", "-out:{0} -checked+ -debug+ -warn:4 -warnaserror+ -d:DEBUG -d:TRACE -d:CONTRACTS_FULL -target:exe {1}", exe, string.Join(" ", srcFiles.ToArray()));
+			string compiler = Environment.OSVersion.Platform == PlatformID.Win32NT ? "csc" : "gmcs";
+			DoRunTool(compiler, @"-out:""{0}"" -nologo -checked+ -debug+ -warn:4 -warnaserror+ -d:DEBUG -d:TRACE -d:CONTRACTS_FULL -target:exe {1}", exe, string.Join(" ", srcFiles.ToArray()));
 		}
 		
 		return exe;
