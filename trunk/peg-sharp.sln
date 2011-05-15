@@ -11,6 +11,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Usage.rtf = Usage.rtf
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ftest", "ftest\ftest\ftest.csproj", "{92FDF9BD-34C4-4918-A365-3F1402985695}"
+	ProjectSection(ProjectDependencies) = postProject
+		{06751131-8E67-463E-9594-49729B83B9B4} = {06751131-8E67-463E-9594-49729B83B9B4}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -24,6 +29,12 @@ Global
 		{06751131-8E67-463E-9594-49729B83B9B4}.Release|x86.Build.0 = Release|x86
 		{06751131-8E67-463E-9594-49729B83B9B4}.utest|x86.ActiveCfg = utest|x86
 		{06751131-8E67-463E-9594-49729B83B9B4}.utest|x86.Build.0 = utest|x86
+		{92FDF9BD-34C4-4918-A365-3F1402985695}.Debug|x86.ActiveCfg = Debug|x86
+		{92FDF9BD-34C4-4918-A365-3F1402985695}.Debug|x86.Build.0 = Debug|x86
+		{92FDF9BD-34C4-4918-A365-3F1402985695}.Release|x86.ActiveCfg = Release|x86
+		{92FDF9BD-34C4-4918-A365-3F1402985695}.Release|x86.Build.0 = Release|x86
+		{92FDF9BD-34C4-4918-A365-3F1402985695}.utest|x86.ActiveCfg = Release|x86
+		{92FDF9BD-34C4-4918-A365-3F1402985695}.utest|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
