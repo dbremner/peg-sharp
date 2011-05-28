@@ -26,6 +26,6 @@ If you want to run the unit tests on the command line you can use a bash script 
    /cygdrive/c/Program\ Files/NUnit\ 2.5.7/bin/net-2.0/nunit-console.exe peg-sharp.exe
 (You can do something very similar with a bat file and cmd).
 
-You can run the functional tests using the Visual Studio Command Prompt (available from the start menu). Navigate to the peg-sharp/ftest directory and use `python ftest.py`. 
+You can run the functional tests using the Visual Studio Command Prompt (available from the Start menu). Navigate to the peg-sharp directory and use `ftest\ftest\bin\Debug\ftest.exe -v ftest`. 
 
- -- jesjones@mindspring.com
+ -- jesse9jones@gmail.com
