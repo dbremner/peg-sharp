@@ -12,6 +12,7 @@ MONO ?= mono --debug
 PYTHON ?= python
 GENDARME ?= /usr/local/bin/gendarme
 INSTALL_DIR ?= /usr/local/bin
+SHELL := /bin/bash
 
 # script that looks something like: mono --debug /some/path/nunit-console.exe $@
 NUNIT ?= nunit-console
