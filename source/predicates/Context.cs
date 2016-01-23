@@ -21,6 +21,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 
 // Contains the settings and other variables used to evaluate template predicates.
 internal sealed class Context
