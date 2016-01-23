@@ -189,7 +189,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="source\BadTests.cs" />
     <Compile Include="source\CharSet.cs" />
-    <None Include="source\Contract.cs" />
     <Compile Include="source\Expression.cs" />
     <Compile Include="source\Expressions.cs" />
     <Compile Include="source\GoodTests.cs" />
