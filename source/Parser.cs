@@ -183,7 +183,7 @@ internal sealed partial class Parser
 		}
 		else
 		{
-			string expected = null;
+			string expected;
 			
 			expected = "comment";
 			
@@ -244,7 +244,7 @@ internal sealed partial class Parser
 		}
 		else
 		{
-			string expected = null;
+			string expected;
 			
 			expected = "identifier";
 			
@@ -275,7 +275,7 @@ internal sealed partial class Parser
 		}
 		else
 		{
-			string expected = null;
+			string expected;
 			
 			expected = "identifier";
 			
@@ -307,7 +307,7 @@ internal sealed partial class Parser
 		}
 		else
 		{
-			string expected = null;
+			string expected;
 			
 			expected = "include";
 			
@@ -363,7 +363,7 @@ internal sealed partial class Parser
 		}
 		else
 		{
-			string expected = null;
+			string expected;
 			
 			expected = "integer";
 			
@@ -403,7 +403,7 @@ internal sealed partial class Parser
 		}
 		else
 		{
-			string expected = null;
+			string expected;
 			
 			expected = "literal";
 			
@@ -443,7 +443,7 @@ internal sealed partial class Parser
 		}
 		else
 		{
-			string expected = null;
+			string expected;
 			
 			expected = "literal";
 			
@@ -480,7 +480,7 @@ internal sealed partial class Parser
 		}
 		else
 		{
-			string expected = null;
+			string expected;
 			
 			expected = "path";
 			
@@ -783,7 +783,7 @@ internal sealed partial class Parser
 		{
 			Expression value = results.Count > 0 ? results[0].Value : default(Expression);
 			
-			string fatal = null;
+			string fatal;
 			string text = m_input.Substring(_start.Index, _state.Index - _start.Index);
 			
 			fatal = DoRange(text, ref value);
@@ -796,7 +796,7 @@ internal sealed partial class Parser
 		}
 		else
 		{
-			string expected = null;
+			string expected;
 			
 			expected = "range literal";
 			
@@ -837,7 +837,7 @@ internal sealed partial class Parser
 		}
 		else
 		{
-			string expected = null;
+			string expected;
 			
 			expected = "rule";
 			
@@ -871,7 +871,7 @@ internal sealed partial class Parser
 		}
 		else
 		{
-			string expected = null;
+			string expected;
 			
 			expected = "rule epilog";
 			
@@ -905,7 +905,7 @@ internal sealed partial class Parser
 		}
 		else
 		{
-			string expected = null;
+			string expected;
 			
 			expected = "rule epilog";
 			
@@ -939,7 +939,7 @@ internal sealed partial class Parser
 		}
 		else
 		{
-			string expected = null;
+			string expected;
 			
 			expected = "rule epilog";
 			
@@ -973,7 +973,7 @@ internal sealed partial class Parser
 		}
 		else
 		{
-			string expected = null;
+			string expected;
 			
 			expected = "rule prolog";
 			
@@ -1046,7 +1046,7 @@ internal sealed partial class Parser
 		{
 			Expression value = results.Count > 0 ? results[0].Value : default(Expression);
 			
-			string fatal = null;
+			string fatal;
 			
 			fatal = DoAddSetting(results);
 			
@@ -1057,7 +1057,7 @@ internal sealed partial class Parser
 		}
 		else
 		{
-			string expected = null;
+			string expected;
 			
 			expected = "setting";
 			
@@ -1084,7 +1084,7 @@ internal sealed partial class Parser
 		}
 		else
 		{
-			string expected = null;
+			string expected;
 			
 			expected = "whitespace";
 			
@@ -1118,7 +1118,7 @@ internal sealed partial class Parser
 		}
 		else
 		{
-			string expected = null;
+			string expected;
 			
 			expected = "parenthesized expression";
 			
@@ -1150,7 +1150,7 @@ internal sealed partial class Parser
 		}
 		else
 		{
-			string expected = null;
+			string expected;
 			
 			expected = "rule name";
 			

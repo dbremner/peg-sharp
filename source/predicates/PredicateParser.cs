@@ -78,7 +78,7 @@ internal sealed partial class PredicateParser
 		}
 		else
 		{
-			string expected = null;
+			string expected;
 			expected = "or expression";
 			if (expected != null)
 				_state = new State(_start.Index, false, ErrorSet.Combine(_start.Errors, new ErrorSet(_state.Errors.Index, expected)));
@@ -126,7 +126,7 @@ internal sealed partial class PredicateParser
 		}
 		else
 		{
-			string expected = null;
+			string expected;
 			expected = "and expression";
 			if (expected != null)
 				_state = new State(_start.Index, false, ErrorSet.Combine(_start.Errors, new ErrorSet(_state.Errors.Index, expected)));
@@ -172,7 +172,7 @@ internal sealed partial class PredicateParser
 		}
 		else
 		{
-			string expected = null;
+			string expected;
 			expected = "equality expression";
 			if (expected != null)
 				_state = new State(_start.Index, false, ErrorSet.Combine(_start.Errors, new ErrorSet(_state.Errors.Index, expected)));
@@ -201,7 +201,7 @@ internal sealed partial class PredicateParser
 		}
 		else
 		{
-			string expected = null;
+			string expected;
 			expected = "equality expression";
 			if (expected != null)
 				_state = new State(_start.Index, false, ErrorSet.Combine(_start.Errors, new ErrorSet(_state.Errors.Index, expected)));
@@ -246,7 +246,7 @@ internal sealed partial class PredicateParser
 		}
 		else
 		{
-			string expected = null;
+			string expected;
 			expected = "not expression";
 			if (expected != null)
 				_state = new State(_start.Index, false, ErrorSet.Combine(_start.Errors, new ErrorSet(_state.Errors.Index, expected)));
@@ -335,7 +335,7 @@ internal sealed partial class PredicateParser
 		}
 		else
 		{
-			string expected = null;
+			string expected;
 			expected = "excluded function";
 			if (expected != null)
 				_state = new State(_start.Index, false, ErrorSet.Combine(_start.Errors, new ErrorSet(_state.Errors.Index, expected)));
@@ -384,7 +384,7 @@ internal sealed partial class PredicateParser
 		}
 		else
 		{
-			string expected = null;
+			string expected;
 			expected = "string literal";
 			if (expected != null)
 				_state = new State(_start.Index, false, ErrorSet.Combine(_start.Errors, new ErrorSet(_state.Errors.Index, expected)));
@@ -411,7 +411,7 @@ internal sealed partial class PredicateParser
 		}
 		else
 		{
-			string expected = null;
+			string expected;
 			expected = "boolean literal";
 			if (expected != null)
 				_state = new State(_start.Index, false, ErrorSet.Combine(_start.Errors, new ErrorSet(_state.Errors.Index, expected)));
@@ -438,7 +438,7 @@ internal sealed partial class PredicateParser
 		}
 		else
 		{
-			string expected = null;
+			string expected;
 			expected = "boolean literal";
 			if (expected != null)
 				_state = new State(_start.Index, false, ErrorSet.Combine(_start.Errors, new ErrorSet(_state.Errors.Index, expected)));
@@ -469,7 +469,7 @@ internal sealed partial class PredicateParser
 		}
 		else
 		{
-			string expected = null;
+			string expected;
 			expected = "variable";
 			if (expected != null)
 				_state = new State(_start.Index, false, ErrorSet.Combine(_start.Errors, new ErrorSet(_state.Errors.Index, expected)));
@@ -572,7 +572,7 @@ internal sealed partial class PredicateParser
 		}
 		else
 		{
-			string expected = null;
+			string expected;
 			expected = "whitespace";
 			if (expected != null)
 				_state = new State(_start.Index, false, ErrorSet.Combine(_start.Errors, new ErrorSet(_state.Errors.Index, expected)));
