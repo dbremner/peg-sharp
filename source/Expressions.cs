@@ -36,7 +36,7 @@ internal sealed class AssertExpression : Expression
 		Expression = expression;
 	}
 	
-	public Expression Expression {get; private set;}
+	public Expression Expression {get; }
 	
 	public override Used FindUsed()
 	{
@@ -113,7 +113,7 @@ internal sealed class ChoiceExpression : Expression
 		Expressions = expressions;
 	}
 	
-	public Expression[] Expressions {get; private set;}
+	public Expression[] Expressions {get; }
 	
 	public override Used FindUsed()
 	{
@@ -203,7 +203,7 @@ internal sealed class LiteralExpression : Expression
 		Literal = literal;
 	}
 	
-	public string Literal {get; private set;}
+	public string Literal {get; }
 	
 	public override Used FindUsed()
 	{
@@ -259,7 +259,7 @@ internal sealed class NAssertExpression : Expression
 		Expression = expression;
 	}
 	
-	public Expression Expression {get; private set;}
+	public Expression Expression {get; }
 	
 	public override Used FindUsed()
 	{
@@ -366,15 +366,15 @@ internal sealed class RangeExpression : Expression
 			Categories = "null";
 	}
 	
-	public string Chars {get; private set;}
+	public string Chars {get; }
 	
-	public string Ranges {get; private set;}
+	public string Ranges {get; }
 	
-	public string Categories {get; private set;}
+	public string Categories {get; }
 	
-	public string CategoryLabel {get; private set;}
+	public string CategoryLabel {get; }
 	
-	public bool Inverted {get; private set;}
+	public bool Inverted {get; }
 	
 	public override Used FindUsed()
 	{
@@ -603,11 +603,11 @@ internal sealed class RepetitionExpression : Expression
 		Max = max;
 	}
 	
-	public Expression Expression {get; private set;}
+	public Expression Expression {get; }
 	
-	public int Min {get; private set;}
+	public int Min {get; }
 	
-	public int Max {get; private set;}
+	public int Max {get; }
 	
 	public override Used FindUsed()
 	{
@@ -710,7 +710,7 @@ internal sealed class RuleExpression : Expression
 		Name = name;
 	}
 	
-	public string Name {get; private set;}
+	public string Name {get; }
 	
 	public override Used FindUsed()
 	{
@@ -773,7 +773,7 @@ internal sealed class SequenceExpression : Expression
 		Expressions = expressions;
 	}
 	
-	public Expression[] Expressions {get; private set;}
+	public Expression[] Expressions {get; }
 	
 	public override IEnumerable<Expression> Select(Predicate<Expression> predicate)
 	{

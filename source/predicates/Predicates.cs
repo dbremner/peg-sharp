@@ -36,7 +36,7 @@ internal sealed class AndPredicate : Predicate
 		Terms = terms.ToArray();
 	}
 	
-	public Predicate[] Terms {get; private set;}
+	public Predicate[] Terms {get; }
 	
 	public override string ToString()
 	{
@@ -73,7 +73,7 @@ internal sealed class BoolPredicate : Predicate
 		Value = value;
 	}
 	
-	public bool Value {get; private set;}
+	public bool Value {get; }
 	
 	public override string ToString()
 	{
@@ -97,8 +97,8 @@ internal sealed class EqualsPredicate : Predicate
 		Rhs = rhs;
 	}
 	
-	public Predicate Lhs {get; private set;}
-	public Predicate Rhs {get; private set;}
+	public Predicate Lhs {get; }
+	public Predicate Rhs {get; }
 	
 	public override string ToString()
 	{
@@ -122,7 +122,7 @@ internal sealed class ExcludedPredicate : Predicate
 		Name = name;
 	}
 	
-	public Predicate Name {get; private set;}
+	public Predicate Name {get; }
 	
 	public override string ToString()
 	{
@@ -147,8 +147,8 @@ internal sealed class NotEqualsPredicate : Predicate
 		Rhs = rhs;
 	}
 	
-	public Predicate Lhs {get; private set;}
-	public Predicate Rhs {get; private set;}
+	public Predicate Lhs {get; }
+	public Predicate Rhs {get; }
 	
 	public override string ToString()
 	{
@@ -172,7 +172,7 @@ internal sealed class NotPredicate : Predicate
 		Expression = expression;
 	}
 	
-	public Predicate Expression {get; private set;}
+	public Predicate Expression {get; }
 	
 	public override string ToString()
 	{
@@ -194,7 +194,7 @@ internal sealed class OrPredicate : Predicate
 		Terms = terms.ToArray();
 	}
 	
-	public Predicate[] Terms {get; private set;}
+	public Predicate[] Terms {get; }
 	
 	public override string ToString()
 	{
@@ -233,7 +233,7 @@ internal sealed class StringPredicate : Predicate
 		Text = text.Substring(1, text.Length - 2);	// lose the quotes
 	}
 	
-	public string Text {get; private set;}
+	public string Text {get; }
 	
 	public override string ToString()
 	{
@@ -255,7 +255,7 @@ internal sealed class VariablePredicate : Predicate
 		Name = name;
 	}
 	
-	public string Name {get; private set;}
+	public string Name {get; }
 	
 	public override string ToString()
 	{

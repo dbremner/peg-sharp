@@ -34,9 +34,9 @@ internal sealed class Rule
 		Line = line;
 	}
 	
-	public string Name {get; private set;}
+	public string Name {get; }
 	
-	public Expression Expression {get; private set;}
+	public Expression Expression {get; }
 	
 	// May be null.
 	public string PassAction {get; private set;}

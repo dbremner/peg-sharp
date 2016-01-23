@@ -453,8 +453,8 @@ internal sealed class Grammar
 			RuleName = ruleName;
 		}
 		
-		public Hook Hook {get; private set;}
-		public string RuleName {get; private set;}
+		public Hook Hook {get; }
+		public string RuleName {get; }
 		
 		public override string ToString()
 		{

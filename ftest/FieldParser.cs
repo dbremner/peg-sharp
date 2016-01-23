@@ -37,8 +37,8 @@ internal struct Field
 		Line = line;
 	}
 	
-	public string Name {get; private set;}
-	public string Value {get; private set;}
+	public string Name {get; }
+	public string Value {get; }
 	public int Line {get; private set;}
 
 	public override string ToString()
@@ -226,10 +226,10 @@ internal static class FieldParser
 			return new Field(Name, value, Line);
 		}
 		
-		public string Name {get; private set;}
-		public StringBuilder Value {get; private set;}
-		public int Line {get; private set;}
-		public bool TextField {get; private set;}
+		public string Name {get; }
+		public StringBuilder Value {get; }
+		public int Line {get; }
+		public bool TextField {get; }
 	}
 	#endregion
 }
