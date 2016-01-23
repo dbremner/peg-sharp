@@ -153,7 +153,7 @@ internal static class Program
 	private static string ms_outFile = "Parser.cs";
 	private static int ms_verbosity;
 	
-	private static OptionSet ms_options = new OptionSet()
+	private static readonly OptionSet ms_options = new OptionSet()
 	{
 		{"h|?|help", "prints this message and exits", Program.DoShowHelp},
 		{"o=|out=", "path to the parser file to be generated", v => {ms_outFile = v;}},

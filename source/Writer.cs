@@ -312,11 +312,11 @@ internal sealed partial class Writer : IDisposable
 	#endregion
 	
 	#region Fields
-	private TextWriter m_writer;
-	private Grammar m_grammar;
-	private Dictionary<string, List<Rule>> m_rules = new Dictionary<string, List<Rule>>();
+	private readonly TextWriter m_writer;
+	private readonly Grammar m_grammar;
+	private readonly Dictionary<string, List<Rule>> m_rules = new Dictionary<string, List<Rule>>();
 	private string m_className;
 	private bool m_disposed;
-	private TemplateEngine m_engine = new TemplateEngine();
+	private readonly TemplateEngine m_engine = new TemplateEngine();
 	#endregion
 }

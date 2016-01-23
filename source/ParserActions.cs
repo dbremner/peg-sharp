@@ -182,7 +182,7 @@ internal sealed partial class Parser
 	#endregion
 	
 	#region Fields
-	private Grammar m_grammar = new Grammar();
-	private List<string> m_includes = new List<string>();
+	private readonly Grammar m_grammar = new Grammar();
+	private readonly List<string> m_includes = new List<string>();
 	#endregion
 }

@@ -1509,9 +1509,9 @@ internal sealed partial class Parser
 			return hash;
 		}
 		
-		private string m_rule;
-		private int m_index;
-		private object m_context;
+		private readonly string m_rule;
+		private readonly int m_index;
+		private readonly object m_context;
 	}
 	
 	private struct CacheValue
@@ -1524,8 +1524,8 @@ internal sealed partial class Parser
 		}
 		
 		public State State;
-		public Expression Value;
-		public bool HasResult;
+		public readonly Expression Value;
+		public readonly bool HasResult;
 	}
 	
 	private delegate State ParseMethod(State state, List<Result> results);
@@ -1548,10 +1548,10 @@ internal sealed partial class Parser
 		
 		// The location associated with the errors. For a failed parse this will be the
 		// same as State.Index. For a successful parse it will be State.Index or later.
-		public int Index;
+		public readonly int Index;
 		
 		// This will be the name of something which was expected, but not found.
-		public string[] Expected;
+		public readonly string[] Expected;
 		
 		public static ErrorSet Combine(ErrorSet lhs, ErrorSet rhs)
 		{
@@ -1603,10 +1603,10 @@ internal sealed partial class Parser
 		}
 		
 		// Index of the first unconsumed character.
-		public int Index;
+		public readonly int Index;
 		
 		// True if the expression associated with the state successfully parsed.
-		public bool Parsed;
+		public readonly bool Parsed;
 		
 		// If Parsed is false then this will explain why. If Parsed is true it will
 		// say why the parse stopped.
@@ -1639,21 +1639,21 @@ internal sealed partial class Parser
 			
 		// For non-terminals this will be the result of the semantic action,
 		// otherwise it will be the default value.
-		public Expression Value;
+		public readonly Expression Value;
 		
-		private Parser m_parser;
-		private int m_index;
-		private int m_length;
-		private string m_input;
+		private readonly Parser m_parser;
+		private readonly int m_index;
+		private readonly int m_length;
+		private readonly string m_input;
 	}
 	#endregion
 	
 	#region Fields
 	private string m_input;
 	private string m_file;
-	private object m_context = 0;
-	private Dictionary<string, ParseMethod[]> m_nonterminals = new Dictionary<string, ParseMethod[]>();
-	private Dictionary<CacheKey, CacheValue> m_cache = new Dictionary<CacheKey, CacheValue>();
+	private readonly object m_context = 0;
+	private readonly Dictionary<string, ParseMethod[]> m_nonterminals = new Dictionary<string, ParseMethod[]>();
+	private readonly Dictionary<CacheKey, CacheValue> m_cache = new Dictionary<CacheKey, CacheValue>();
 	private List<int> m_lineStarts;		// offsets at which each line starts
 	#endregion
 }

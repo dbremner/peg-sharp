@@ -150,9 +150,8 @@ namespace Mono.Options
 #endif
 {
 	public class OptionValueCollection : IList, IList<string> {
-
-		List<string> values = new List<string> ();
-		OptionContext c;
+	    readonly List<string> values = new List<string> ();
+	    readonly OptionContext c;
 
 		internal OptionValueCollection (OptionContext c)
 		{
@@ -243,8 +242,8 @@ namespace Mono.Options
 		private Option                option;
 		private string                name;
 		private int                   index;
-		private OptionSet             set;
-		private OptionValueCollection c;
+		private readonly OptionSet             set;
+		private readonly OptionValueCollection c;
 
 		public OptionContext (OptionSet set)
 		{
@@ -283,10 +282,11 @@ namespace Mono.Options
 	}
 
 	public abstract class Option {
-		string prototype, description;
-		string[] names;
-		OptionValueType type;
-		int count;
+	    readonly string prototype;
+	    readonly string description;
+	    readonly string[] names;
+	    readonly OptionValueType type;
+	    readonly int count;
 		string[] separators;
 
 		protected Option (string prototype, string description)
@@ -462,7 +462,7 @@ namespace Mono.Options
 
 	[Serializable]
 	public class OptionException : Exception {
-		private string option;
+		private readonly string option;
 
 		public OptionException ()
 		{
@@ -512,7 +512,7 @@ namespace Mono.Options
 			this.localizer = localizer;
 		}
 
-		Converter<string, string> localizer;
+	    readonly Converter<string, string> localizer;
 
 		public Converter<string, string> MessageLocalizer {
 			get {return localizer;}
@@ -591,7 +591,7 @@ namespace Mono.Options
 		}
 
 		sealed class ActionOption : Option {
-			Action<OptionValueCollection> action;
+		    readonly Action<OptionValueCollection> action;
 
 			public ActionOption (string prototype, string description, int count, Action<OptionValueCollection> action)
 				: base (prototype, description, count)
@@ -638,7 +638,7 @@ namespace Mono.Options
 		}
 
 		sealed class ActionOption<T> : Option {
-			Action<T> action;
+		    readonly Action<T> action;
 
 			public ActionOption (string prototype, string description, Action<T> action)
 				: base (prototype, description, 1)
@@ -655,7 +655,7 @@ namespace Mono.Options
 		}
 
 		sealed class ActionOption<TKey, TValue> : Option {
-			OptionAction<TKey, TValue> action;
+		    readonly OptionAction<TKey, TValue> action;
 
 			public ActionOption (string prototype, string description, OptionAction<TKey, TValue> action)
 				: base (prototype, description, 2)

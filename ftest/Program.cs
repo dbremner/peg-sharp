@@ -458,7 +458,7 @@ internal static class Program
 	private static int ms_numTests;
 	private static int ms_numFailed;
 	
-	private static OptionSet ms_options = new OptionSet()
+	private static readonly OptionSet ms_options = new OptionSet()
 	{
 		{"h|?|help", "prints this message and exits", Program.DoShowHelp},
 		{"v|verbose", "enables extra output, may be used more than once", v => ++ms_verbosity},

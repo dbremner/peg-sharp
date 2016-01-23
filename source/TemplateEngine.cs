@@ -250,17 +250,17 @@ internal sealed class TemplateEngine
 	#endregion
 	
 	#region Fields
-	private Dictionary<string, string> m_replacements = new Dictionary<string, string>();
-	private Context m_context = new Context();
-	private PredicateParser m_predicate = new PredicateParser();
-	private List<string> m_output = new List<string>();
+	private readonly Dictionary<string, string> m_replacements = new Dictionary<string, string>();
+	private readonly Context m_context = new Context();
+	private readonly PredicateParser m_predicate = new PredicateParser();
+	private readonly List<string> m_output = new List<string>();
 	
 	private const string Name = @"[a-zA-Z_][a-zA-Z0-9_-]*";
 	private const string Predicate = @"\{\{([^}]+)\}\}";
 	
-	private Regex m_beginMethodRe = DoMakeRe(@"^\s* //< \s* ({0}) \s* (?:{1})?", Name, Predicate);
-	private Regex m_endMethodRe = DoMakeRe(@"^\s* //> \s* ({0})", Name, Predicate);
-	private Regex m_lineRe = DoMakeRe(@"// \s* {0} \s* $", Predicate);
-	private Regex m_injectionRe = DoMakeRe(@"/\* \s* (.+?) (?:{0})? \s* \*/", Predicate);
+	private readonly Regex m_beginMethodRe = DoMakeRe(@"^\s* //< \s* ({0}) \s* (?:{1})?", Name, Predicate);
+	private readonly Regex m_endMethodRe = DoMakeRe(@"^\s* //> \s* ({0})", Name, Predicate);
+	private readonly Regex m_lineRe = DoMakeRe(@"// \s* {0} \s* $", Predicate);
+	private readonly Regex m_injectionRe = DoMakeRe(@"/\* \s* (.+?) (?:{0})? \s* \*/", Predicate);
 	#endregion
 }

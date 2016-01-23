@@ -58,7 +58,7 @@ internal sealed class Context
 	}
 	
 	#region Fields
-	private HashSet<string> m_excluded = new HashSet<string>();
-	private Dictionary<string, object> m_variables = new Dictionary<string, object>();
+	private readonly HashSet<string> m_excluded = new HashSet<string>();
+	private readonly Dictionary<string, object> m_variables = new Dictionary<string, object>();
 	#endregion
 }

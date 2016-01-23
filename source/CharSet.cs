@@ -223,6 +223,6 @@ internal sealed class CharSet
 	#endregion
 	
 	#region Fields
-	private string m_chars;
+	private readonly string m_chars;
 	#endregion
 }

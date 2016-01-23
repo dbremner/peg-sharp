@@ -510,8 +510,8 @@ internal sealed class Grammar
 	#endregion
 	
 	#region Fields
-	private Dictionary<string, string> m_settings = new Dictionary<string, string>();
-	private List<Rule> m_rules = new List<Rule>();			// note that the order is significant
-	private Dictionary<HookKey, List<string>> m_hooks = new Dictionary<HookKey, List<string>>();
+	private readonly Dictionary<string, string> m_settings = new Dictionary<string, string>();
+	private readonly List<Rule> m_rules = new List<Rule>();			// note that the order is significant
+	private readonly Dictionary<HookKey, List<string>> m_hooks = new Dictionary<HookKey, List<string>>();
 	#endregion
 }
