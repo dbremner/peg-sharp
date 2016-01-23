@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
+using System.Text;
 using System.Runtime.Serialization;
 using System.Security.Permissions;
 
@@ -617,7 +618,7 @@ internal sealed partial class PredicateParser
 	
 	public string DoEscapeAll(string s)
 	{
-		System.Text.StringBuilder builder = new System.Text.StringBuilder(s.Length);
+        StringBuilder builder = new StringBuilder(s.Length);
 		
 		foreach (char ch in s)
 		{

@@ -22,14 +22,15 @@
 using System;
 using System.Diagnostics.Contracts;
 using System.Globalization;
+using System.Text;
 
 internal sealed class CharSet
 {
 	public CharSet(RangeExpression range)
 	{
-		var builder = new System.Text.StringBuilder();
 	    Contract.Requires(range != null);
         Contract.Requires(range.Chars != null);
+	    var builder = new StringBuilder();
 		
 		char ch = char.MinValue;
 		while (true)							// note that we can't use a for loop or we'll get an overflow

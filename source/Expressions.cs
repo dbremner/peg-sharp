@@ -93,7 +93,7 @@ internal sealed class AssertExpression : Expression
 	
 	public override string ToString()
 	{
-		var result = new System.Text.StringBuilder();
+		var result = new StringBuilder();
 		
 		result.Append('&');
 		result.Append(Expression.ToSubString());
@@ -167,7 +167,7 @@ internal sealed class ChoiceExpression : Expression
 	
 	public override string ToString()
 	{
-		var result = new System.Text.StringBuilder();
+		var result = new StringBuilder();
 		
 		for (int i = 0; i < Expressions.Length; ++i)
 		{
@@ -322,7 +322,7 @@ internal sealed class NAssertExpression : Expression
 	
 	public override string ToString()
 	{
-		var result = new System.Text.StringBuilder();
+		var result = new StringBuilder();
 		
 		result.Append('!');
 		result.Append(Expression.ToSubString());
@@ -337,8 +337,8 @@ internal sealed class RangeExpression : Expression
 	{
 		Contract.Requires(!string.IsNullOrEmpty(text), "text is null or empty");
 		
-		var chars = new System.Text.StringBuilder();
-		var ranges = new System.Text.StringBuilder();
+		var chars = new StringBuilder();
+		var ranges = new StringBuilder();
 		var categories = new List<string>();
 		CategoryLabel = string.Empty;
 		
@@ -678,7 +678,7 @@ internal sealed class RepetitionExpression : Expression
 	
 	public override string ToString()
 	{
-		var result = new System.Text.StringBuilder();
+		var result = new StringBuilder();
 		
 		result.Append(Expression.ToSubString());
 		
@@ -847,7 +847,7 @@ internal sealed class SequenceExpression : Expression
 	
 	public override string ToString()
 	{
-		var result = new System.Text.StringBuilder();
+		var result = new StringBuilder();
 		
 		for (int i = 0; i < Expressions.Length; ++i)
 		{

@@ -24,7 +24,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 //using System.Globalization;
 using System.Linq;
-//using System.Text;
+using System.Text;
 
 // Concrete classes for predicate expressions within templates.
 internal sealed class AndPredicate : Predicate
@@ -40,7 +40,7 @@ internal sealed class AndPredicate : Predicate
 	
 	public override string ToString()
 	{
-		var builder = new System.Text.StringBuilder();
+		var builder = new StringBuilder();
 		
 		for (int i = 0; i < Terms.Length; ++i)
 		{
@@ -205,7 +205,7 @@ internal sealed class OrPredicate : Predicate
 	
 	public override string ToString()
 	{
-		var builder = new System.Text.StringBuilder();
+		var builder = new StringBuilder();
 		
 		for (int i = 0; i < Terms.Length; ++i)
 		{

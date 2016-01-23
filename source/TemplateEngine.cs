@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Text.RegularExpressions;
 
 // Writes the parser file.
@@ -69,7 +70,7 @@ internal sealed class TemplateEngine
 		DoCodeInjection();
 		DoTextReplacement();
 		
-		var builder = new System.Text.StringBuilder();
+		var builder = new StringBuilder();
 		for (int i = 0; i < m_output.Count; ++i)
 		{
 			if (i == 0 || !m_output[i].IsBlank() || !m_output[i - 1].IsBlank())	// don't write two blank lines in a row

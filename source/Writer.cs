@@ -24,6 +24,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using System.Text;
 
 // Writes the parser file.
 internal sealed partial class Writer : IDisposable
@@ -93,9 +94,9 @@ internal sealed partial class Writer : IDisposable
 	#region Private Methods
 	private string DoGetNonterminalMethodName(List<Rule> rules, int i)
 	{
-		var line = new System.Text.StringBuilder();
 	    Contract.Requires(rules != null);
         Contract.Requires(i >= 0);
+        var line = new StringBuilder();
 		
 		line.Append("DoParse");
 		line.Append(rules[i].Name.Replace('-', '_'));
@@ -110,7 +111,7 @@ internal sealed partial class Writer : IDisposable
 	private string DoCreateParser()
 	{
 		int count = 0;
-		var nonterminals = new System.Text.StringBuilder();
+		var nonterminals = new StringBuilder();
 		foreach (var entry in m_rules)
 		{
 			for (int i = 0; i < entry.Value.Count; ++i)
@@ -144,8 +145,8 @@ internal sealed partial class Writer : IDisposable
 	
 	private string DoGetHook(Rule rule, Hook hook)
 	{
-		var builder = new System.Text.StringBuilder();
 	    Contract.Requires(rule != null);
+	    var builder = new StringBuilder();
 		
 		List<string> code = rule.GetHook(hook);
 		if (code != null)
@@ -190,7 +191,7 @@ internal sealed partial class Writer : IDisposable
 		if (maxIndex > 1)
 			debugName += i + 1;
 		
-		var body = new System.Text.StringBuilder();
+		var body = new StringBuilder();
 		body.Append("\t");
 		rule.Expression.Write(body, 0);
 		body.Append(";");
@@ -301,7 +302,7 @@ internal sealed partial class Writer : IDisposable
 		m_engine.AddReplacement("VISIBILITY", m_grammar.Settings["visibility"]);
 		m_engine.AddReplacement("VALUE", m_grammar.Settings["value"]);
 		
-		var add = new System.Text.StringBuilder();
+		var add = new StringBuilder();
 		foreach (var entry in m_rules)
 		{
 			add.Append("\t\tm_nonterminals.Add(\"");

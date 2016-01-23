@@ -6,6 +6,7 @@ using System.Globalization;
 //using System.Linq;								// TODO: this is handy enough that we'd like to include it by default, but we want the generated parsers to work with .NET 2.0 for now
 using System.Runtime.Serialization;
 using System.Security.Permissions;
+using System.Text;
 using System.Xml;									// {{value == 'XmlNode'}}
 /* USING-DECLARATIONS */
 

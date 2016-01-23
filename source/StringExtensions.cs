@@ -21,6 +21,7 @@
 
 using System;
 using System.Diagnostics.Contracts;
+using System.Text;
 
 internal static class StringExtensions
 {
@@ -38,8 +39,8 @@ internal static class StringExtensions
 	
 	public static string EscapeAll(this string s)
 	{
-		var builder = new System.Text.StringBuilder(s.Length);
 	    Contract.Requires(s != null);
+	    var builder = new StringBuilder(s.Length);
 		
 		foreach (char ch in s)
 		{
