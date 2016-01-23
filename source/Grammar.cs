@@ -21,6 +21,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 
 // In-memory representation of the grammar encoded in a peg file.
@@ -43,7 +44,8 @@ internal sealed class Grammar
 	
 	public void AddHook(Hook hook, string ruleName, string code)
 	{
-		List<string> codes;
+	    Contract.Requires(code != null);
+	    List<string> codes;
 		
 		if (code.StartsWith("`"))
 			code = code.Substring(1, code.Length - 2);
@@ -137,7 +139,8 @@ internal sealed class Grammar
 	
 	private void DoCheckForMissingNonterminals(IEnumerable<string> used)
 	{
-		var missing = from name in used where !Rules.Exists(r => r.Name == name) select name;
+	    Contract.Requires(used != null);
+	    var missing = from name in used where !Rules.Exists(r => r.Name == name) select name;
 		missing = missing.Distinct();
 		
 		if (missing.Any())
@@ -166,7 +169,8 @@ internal sealed class Grammar
 	// (Foo := X Y where X or a rule called by X starts with Foo).
 	private bool DoIsLeftRecursive(Rule rule, string nonterminal, List<Rule> processed)
 	{
-		if (processed.IndexOf(rule) >= 0)
+	    Contract.Requires(processed != null);
+	    if (processed.IndexOf(rule) >= 0)
 			return false;
 		processed.Add(rule);
 		
@@ -287,7 +291,8 @@ internal sealed class Grammar
 	
 	private bool DoHasBadLiteralPrefix(ChoiceExpression choice)
 	{
-		bool bad = false;
+	    Contract.Requires(choice != null);
+	    bool bad = false;
 		
 		for (int i = 0; i < choice.Expressions.Length - 1 && !bad; ++i)
 		{
@@ -313,7 +318,8 @@ internal sealed class Grammar
 	
 	private bool DoHasBadRangePrefix(ChoiceExpression choice)
 	{
-		bool bad = false;
+	    Contract.Requires(choice != null);
+	    bool bad = false;
 		
 		for (int i = 0; i < choice.Expressions.Length - 1 && !bad; ++i)
 		{
@@ -339,7 +345,8 @@ internal sealed class Grammar
 	
 	private bool DoHasUnreachableAlternative(string ruleName, ChoiceExpression choice)
 	{
-		bool has = false;
+	    Contract.Requires(choice != null);
+	    bool has = false;
 		
 		for (int i = 0; i < choice.Expressions.Length - 1 && !has; ++i)
 		{
@@ -382,7 +389,8 @@ internal sealed class Grammar
 	
 	private bool DoHasBackwardsRange(string ranges)
 	{
-		for (int i = 0; i < ranges.Length; i += 2)
+	    Contract.Requires(ranges != null);
+	    for (int i = 0; i < ranges.Length; i += 2)
 		{
 			if (ranges[i] > ranges[i + 1])
 				return true;

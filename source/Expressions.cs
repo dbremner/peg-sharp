@@ -258,7 +258,13 @@ internal sealed class NAssertExpression : Expression
 		
 		Expression = expression;
 	}
-	
+
+    [ContractInvariantMethod]
+    private void ObjectInvariant()
+    {
+        Contract.Invariant(Expression != null);
+    }
+
 	public Expression Expression {get; }
 	
 	public override Used FindUsed()
@@ -365,7 +371,14 @@ internal sealed class RangeExpression : Expression
 		else
 			Categories = "null";
 	}
-	
+
+    [ContractInvariantMethod]
+    private void ObjectInvariant()
+    {
+        Contract.Invariant(Chars != null);
+        Contract.Invariant(Ranges != null);
+    }
+
 	public string Chars {get; }
 	
 	public string Ranges {get; }
@@ -452,10 +465,11 @@ internal sealed class RangeExpression : Expression
 	
 	private string DoEscape(string s)
 	{
-		return s.EscapeAll().Replace("]", "\\]");
+	    Contract.Requires(s != null);
+	    return s.EscapeAll().Replace("]", "\\]");
 	}
-	
-	private string DoGetCategory(string s)
+
+    private string DoGetCategory(string s)
 	{
 		string result;
 		
@@ -772,7 +786,13 @@ internal sealed class SequenceExpression : Expression
 		
 		Expressions = expressions;
 	}
-	
+
+    [ContractInvariantMethod]
+    private void ObjectInvariant()
+    {
+        Contract.Invariant(Expressions != null);
+    }
+    
 	public Expression[] Expressions {get; }
 	
 	public override IEnumerable<Expression> Select(Predicate<Expression> predicate)

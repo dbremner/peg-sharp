@@ -96,6 +96,13 @@ internal sealed class EqualsPredicate : Predicate
 		Lhs = lhs;
 		Rhs = rhs;
 	}
+
+    [ContractInvariantMethod]
+    private void ObjectInvariant()
+    {
+        Contract.Invariant(Lhs != null);
+        Contract.Invariant(Rhs != null);
+    }
 	
 	public Predicate Lhs {get; }
 	public Predicate Rhs {get; }

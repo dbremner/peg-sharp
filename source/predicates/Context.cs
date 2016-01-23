@@ -28,15 +28,17 @@ internal sealed class Context
 {
 	public void AddVariable(string name, object value)
 	{
-		m_variables.Add(name, value);
+	    Contract.Requires(name != null);
+	    m_variables.Add(name, value);
 	}
-	
-	public void SetVariable(string name, object value)
-	{
-		m_variables[name] = value;
-	}
-	
-	public void AddExcluded(string name)
+
+    public void SetVariable(string name, object value)
+    {
+        Contract.Requires(name != null);
+        m_variables[name] = value;
+    }
+
+    public void AddExcluded(string name)
 	{
 		m_excluded.Add(name);
 	}
@@ -50,7 +52,8 @@ internal sealed class Context
 	
 	public object Dereference(string name)
 	{
-		object result;
+	    Contract.Requires(name != null);
+	    object result;
 		if (m_variables.TryGetValue(name, out result))
 			return result;
 		else

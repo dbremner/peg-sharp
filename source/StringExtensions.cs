@@ -20,12 +20,14 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using System;
+using System.Diagnostics.Contracts;
 
 internal static class StringExtensions
 {
 	public static bool IsBlank(this string s)
 	{
-		foreach (char ch in s)
+	    Contract.Requires(s != null);
+	    foreach (char ch in s)
 		{
 			if (!char.IsWhiteSpace(ch))
 				return false;
@@ -37,6 +39,7 @@ internal static class StringExtensions
 	public static string EscapeAll(this string s)
 	{
 		var builder = new System.Text.StringBuilder(s.Length);
+	    Contract.Requires(s != null);
 		
 		foreach (char ch in s)
 		{

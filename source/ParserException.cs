@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Runtime.Serialization;
 using System.Security.Permissions;
@@ -33,7 +34,8 @@ internal sealed class ParserException : Exception
 	
 	private string DoGetContext(int offset, string input)
 	{
-		int begin = offset;
+	    Contract.Requires(input != null);
+	    int begin = offset;
 		while (begin > 0 && input[begin - 1] != '\n' && input[begin - 1] != '\r')
 			--begin;
 		

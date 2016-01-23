@@ -63,10 +63,11 @@ internal sealed partial class Parser
 	
 	private string DoAddSetting(List<Result> results)
 	{
-		return DoAddSetting(results[0].Text.Trim(), results[2].Text.Trim());
+	    Contract.Requires(results != null);
+	    return DoAddSetting(results[0].Text.Trim(), results[2].Text.Trim());
 	}
-	
-	private string DoAddSetting(string name, string value)
+
+    private string DoAddSetting(string name, string value)
 	{
 		if (name != "comment" && name != "parse-accessibility" && name != "debug" && name != "debug-file" && name != "exclude-exception" && name != "exclude-methods" && name != "ignore-case" && name != "namespace" && name != "start" && name != "unconsumed" && name != "used" && name != "using" && name != "value" && name != "visibility")
 			return string.Format("Setting '{0}' is not a valid name", name);
@@ -101,7 +102,8 @@ internal sealed partial class Parser
 	
 	private void DoAddRule(List<Result> results)
 	{
-		string pass = null;
+	    Contract.Requires(results != null);
+	    string pass = null;
 		if (results.Count >= 4)
 		{
 			pass = results[3].Text.Trim();
@@ -150,7 +152,8 @@ internal sealed partial class Parser
 	
 	private string DoRange(string text, ref Expression value)
 	{
-		string literal = text.Trim();
+	    Contract.Requires(text != null);
+	    string literal = text.Trim();
 		literal = literal.Substring(1, literal.Length - 2);
 		
 		if (literal == "^")

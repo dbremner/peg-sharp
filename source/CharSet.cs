@@ -20,6 +20,7 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using System;
+using System.Diagnostics.Contracts;
 using System.Globalization;
 
 internal sealed class CharSet
@@ -27,6 +28,8 @@ internal sealed class CharSet
 	public CharSet(RangeExpression range)
 	{
 		var builder = new System.Text.StringBuilder();
+	    Contract.Requires(range != null);
+        Contract.Requires(range.Chars != null);
 		
 		char ch = char.MinValue;
 		while (true)							// note that we can't use a for loop or we'll get an overflow
@@ -53,7 +56,8 @@ internal sealed class CharSet
 	
 	public bool IsSuperSetOf(CharSet rhs)
 	{
-		foreach (char ch in rhs.m_chars)
+	    Contract.Requires(rhs != null);
+	    foreach (char ch in rhs.m_chars)
 		{
 			if (m_chars.IndexOf(ch) < 0)
 				return false;
@@ -65,7 +69,8 @@ internal sealed class CharSet
 	#region Private Methods
 	private bool DoRangesInclude(string ranges, char ch)
 	{
-		for (int i = 0; i < ranges.Length; i += 2)
+	    Contract.Requires(ranges != null);
+	    for (int i = 0; i < ranges.Length; i += 2)
 		{
 			if (ranges[i] <= ch && ch <= ranges[i + 1])
 				return true;
@@ -76,7 +81,8 @@ internal sealed class CharSet
 	
 	private bool DoCategoriesInclude(string categories, char ch)
 	{
-		UnicodeCategory cat = char.GetUnicodeCategory(ch);
+	    Contract.Requires(categories != null);
+	    UnicodeCategory cat = char.GetUnicodeCategory(ch);
 		
 		for (int i = 0; i < categories.Length; i += 5)
 		{

@@ -22,6 +22,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 
 // Writes the parser file.
@@ -61,8 +62,14 @@ internal sealed partial class Writer : IDisposable
 		
 		DoSetUsed();
 	}
-	
-	public void Write(string pegFile)
+
+    [ContractInvariantMethod]
+    private void ObjectInvariant()
+    {
+        Contract.Invariant(m_grammar != null);
+    }
+
+    public void Write(string pegFile)
 	{
 		if (m_disposed)
 			throw new ObjectDisposedException(GetType().Name);
@@ -87,6 +94,8 @@ internal sealed partial class Writer : IDisposable
 	private string DoGetNonterminalMethodName(List<Rule> rules, int i)
 	{
 		var line = new System.Text.StringBuilder();
+	    Contract.Requires(rules != null);
+        Contract.Requires(i >= 0);
 		
 		line.Append("DoParse");
 		line.Append(rules[i].Name.Replace('-', '_'));
@@ -126,7 +135,8 @@ internal sealed partial class Writer : IDisposable
 	
 	private string DoGetCode(string indent, string code)
 	{
-		string trailer = string.Empty;
+	    Contract.Requires(code != null);
+	    string trailer = string.Empty;
 		if (code[code.Length - 1] != ';' && code[code.Length - 1] != '{' && code[code.Length - 1] != '}')
 			trailer = ";";
 		return indent + code + trailer;
@@ -135,6 +145,7 @@ internal sealed partial class Writer : IDisposable
 	private string DoGetHook(Rule rule, Hook hook)
 	{
 		var builder = new System.Text.StringBuilder();
+	    Contract.Requires(rule != null);
 		
 		List<string> code = rule.GetHook(hook);
 		if (code != null)
@@ -154,7 +165,8 @@ internal sealed partial class Writer : IDisposable
 	
 	private string DoCreateNonTerminal(string methodName, Rule rule, int i, int maxIndex)
 	{
-		string prolog = DoGetHook(rule, Hook.Prolog);
+	    Contract.Requires(rule != null);
+	    string prolog = DoGetHook(rule, Hook.Prolog);
 		string epilog = DoGetHook(rule, Hook.Epilog);
 		string failEpilog = DoGetHook(rule, Hook.FailEpilog);
 		string passEpilog = DoGetHook(rule, Hook.PassEpilog);
@@ -206,7 +218,8 @@ internal sealed partial class Writer : IDisposable
 	// enormous grammars.
 	private bool DoReferencesLocal(string text, string local)
 	{
-		if (text.Contains(local + " "))
+	    Contract.Requires(text != null);
+	    if (text.Contains(local + " "))
 			return true;
 			
 		else if (text.Contains(local + "\t"))
